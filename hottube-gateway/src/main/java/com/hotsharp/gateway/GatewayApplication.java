@@ -1,4 +1,4 @@
-package org.hotsharp.gateway;
+package com.hotsharp.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
