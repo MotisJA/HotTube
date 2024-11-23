@@ -6,3 +6,16 @@ minio:
   bucket: ${MINIO_BUCKET:hottube}
 ffmpeg:
   path: ${FFMPEG_PATH:ffmpeg}
+# 文件路径
+file:
+  video:
+    tmp: ${VIDEO_TMP:video/tmp}
+    m3u8: ${VIDEO_M3U8:video/m3u8}
+
+spring:
+  application:
+    name: video-process
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: -1
