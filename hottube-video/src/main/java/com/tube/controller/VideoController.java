@@ -47,7 +47,7 @@ public class VideoController {
 
     @GetMapping("/upload/complete")
     public Result complete (@RequestParam String uploadId) {
-        // TODO: 文件合并、转码、上传、地址返回
+        videoService.complete(uploadId);
         return Results.success();
     }
 }

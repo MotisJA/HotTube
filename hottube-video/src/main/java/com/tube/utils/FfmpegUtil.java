@@ -16,18 +16,13 @@ public class FfmpegUtil {
     @Resource
     private FfmpegProperty ffmpegProperty;
 
-    public boolean convertOss(String folderUrl,String fileName){
-        if (!checkFile(folderUrl + fileName)){
-            System.out.println("文件不存在!");
-            return false;
-        }
+    public boolean convertToM3U8(String videoPath, String destDir){
         //验证文件后缀
-        String suffix = StringUtils.substringAfter(fileName, ".");
-        String fileFullName = StringUtils.substringBefore(fileName, ".");
+        String suffix = StringUtils.substringAfterLast(videoPath, ".");
         if (!validFileType(suffix)){
-            return false;
+            throw new RuntimeException("error convert video to m3u8 : format \'" + suffix + "\' not supported");
         }
-        return processM3U8(folderUrl,fileName,fileFullName);
+        return processM3U8(videoPath, destDir);
     }
 
     /**
@@ -39,34 +34,25 @@ public class FfmpegUtil {
         return VideoConstant.VIDEO_SUFFIX.equals(type);
     }
 
-    /**
-     * 验证是否是文件格式
-     * @param path
-     * @return
-     */
-    private boolean checkFile(String path) {
-        return new File(path).isFile();
-    }
-
     // ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）
 
     /**
      * ffmpeg程序转换m3u8
-     * @param folderUrl
-     * @param fileName
-     * @param fileFullName
      * @return
      */
-    private boolean processM3U8(String folderUrl,String fileName, String fileFullName) {
-        //这里就写入执行语句就可以了
+    private boolean processM3U8(String videoPath, String destUrl) {
+        // 先处理特殊字符防止出错
+        videoPath = videoPath.replace(" ", "");
+        String filename = StringUtils.substringAfterLast(videoPath.replace("\\", "/"), "/");
+        filename = StringUtils.substringBefore(filename, ".");
         List commend = new ArrayList();
         commend.add(ffmpegProperty.getPath());
         commend.add("-i");
-        commend.add(folderUrl+fileName);
+        commend.add(videoPath);
         commend.add("-c:v");
         commend.add("libx264");
         commend.add("-hls_time");
-        commend.add("20");
+        commend.add("10");
         commend.add("-hls_list_size");
         commend.add("0");
         commend.add("-c:a");
@@ -75,7 +61,7 @@ public class FfmpegUtil {
         commend.add("-2");
         commend.add("-f");
         commend.add("hls");
-        commend.add(folderUrl+ fileFullName +".m3u8");
+        commend.add(destUrl+filename +".m3u8");
         try {
             ProcessBuilder builder = new ProcessBuilder();//java
             builder.command(commend);
