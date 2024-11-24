@@ -14,4 +14,12 @@ public class MinioProperty {
     private String secretKey;
     private String bucket;
 
+    /**
+     * 返回基础网址
+     * @return
+     */
+    public String getBaseUrl () {
+        return "http://" + endpoint + ":9000/" + bucket + "/";
+    }
+
 }

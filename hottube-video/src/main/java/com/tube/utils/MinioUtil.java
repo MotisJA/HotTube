@@ -1,5 +1,6 @@
 package com.tube.utils;
 
+import com.tube.constant.VideoConstant;
 import com.tube.properties.MinioProperty;
 import io.micrometer.common.util.StringUtils;
 import io.minio.*;
@@ -8,6 +9,9 @@ import io.minio.messages.Bucket;
 import jakarta.annotation.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
@@ -175,4 +179,24 @@ public class MinioUtil {
     }
 
 
+    /**
+     * 上传File对象 名字不变
+     * @param file
+     */
+    public void upload(File file, String dir) {
+        String name = file.getName();
+        String objectName = VideoConstant.MINIO_VIDEO_PREFIX + dir + "/" + name;
+        try {
+            InputStream stream = new FileInputStream(file);
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(properties.getBucket())
+                            .object(objectName)
+                            .stream(stream, stream.available(), -1)
+                            .build()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

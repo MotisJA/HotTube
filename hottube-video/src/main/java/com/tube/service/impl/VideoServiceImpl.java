@@ -1,22 +1,27 @@
 package com.tube.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.tube.constant.RedisConstant;
 import com.tube.constant.VideoConstant;
 import com.tube.pojo.dto.VideoInitDTO;
 import com.tube.pojo.vo.VideoUploadVo;
 import com.tube.properties.FileProperty;
+import com.tube.properties.MinioProperty;
 import com.tube.service.VideoService;
 import com.tube.utils.FfmpegUtil;
+import com.tube.utils.MinioUtil;
 import com.tube.utils.RedisUtil;
 import com.tube.utils.UserUtil;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -33,6 +38,15 @@ public class VideoServiceImpl implements VideoService {
 
     @Resource
     private FfmpegUtil ffmpegUtil;
+
+    @Resource
+    private MinioUtil minioUtil;
+
+    @Resource
+    private MinioProperty minioProperty;
+
+    @Resource
+    private ThreadPoolTaskExecutor minioUploadThreadPool;
 
     @Override
     public VideoUploadVo init(VideoInitDTO videoDTO) {
@@ -90,7 +104,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Async("videoProcessThreadPool") // 异步执行
     public void complete(String uploadId) {
-        // TODO: 文件合并、转码、上传、地址返回
+        // TODO: 地址返回
         String path = fileProperty.getTmp() + uploadId;
         File dir = new File(path);
         // 1. 合并文件分片
@@ -101,7 +115,67 @@ public class VideoServiceImpl implements VideoService {
         if (!destDir.exists()) destDir.mkdir();
         ffmpegUtil.convertToM3U8(videoPath, destFolder);
         // 3. 上传文件 更换m3u8中的路径
+        try {
+            uploadM3U8ToMinio(uploadId);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         // 4. 更新数据库中视频文件的信息
+    }
+
+    /**
+     * 上传流视频到服务器
+     *    注意需要更改路径
+     * @param uploadId
+     */
+    private String uploadM3U8ToMinio(String uploadId) throws InterruptedException {
+        String dir = fileProperty.getM3u8() + uploadId;
+        File file = new File(dir);
+        if (!file.exists()) return "";
+        String fullPath = dir + "/" + uploadId + ".m3u8";
+        replaceUrl(fullPath, minioProperty.getBaseUrl());
+        File[] files = file.listFiles();
+        // 依次上传和处理
+        CountDownLatch latch = new CountDownLatch(files.length);  // 计数器，等待所有文件上传完成
+        for (File f : files) {
+            minioUploadThreadPool.execute(() -> {
+                minioUtil.upload(f, uploadId);
+                latch.countDown();
+            });
+        }
+        latch.await();
+        return minioProperty.getBaseUrl() + "/" + VideoConstant.MINIO_VIDEO_PREFIX + uploadId + "/" + uploadId + ".m3u8";
+    }
+
+    /**
+     * 替换文件路径
+     * @param fullPath
+     * @param baseUrl
+     */
+    private void replaceUrl(String fullPath, String baseUrl) {
+        // 读
+        File file = new File(fullPath);
+        try (FileReader in = new FileReader(file);
+             BufferedReader bufIn = new BufferedReader(in);
+             CharArrayWriter tempStream = new CharArrayWriter()) {
+            // 替换
+            String line = null;
+            while ( (line = bufIn.readLine()) != null) {
+                // 替换每行中, 符合条件的字符串
+                line = line.replaceAll(VideoConstant.M3U8_REGEX, baseUrl+"$1");
+                // 将该行写入内存
+                tempStream.write(line);
+                // 添加换行符
+                tempStream.append(System.getProperty("line.separator"));
+            }
+            FileWriter out = new FileWriter(file);
+            tempStream.writeTo(out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
