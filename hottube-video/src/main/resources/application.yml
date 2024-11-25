@@ -33,3 +33,10 @@ spring:
 # 服务配置
 server:
   port: ${SERVER_PORT:8090}
+# mp 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+#    auto-mapping-behavior: partial # 默认值 非嵌套的自动映射
+  mapper-locations: classpath:/mapper/**.xml
+  type-aliases-package: com.tube.pojo.entity

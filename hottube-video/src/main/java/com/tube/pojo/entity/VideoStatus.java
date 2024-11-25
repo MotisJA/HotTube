@@ -1,4 +1,4 @@
-package com.hotsharp.pojo;
+package com.tube.pojo.entity;
 
 import java.io.Serializable;
 import lombok.Data;

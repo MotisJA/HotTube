@@ -1,4 +1,4 @@
-package com.hotsharp.pojo;
+package com.tube.pojo.entity;
 
 import java.io.Serializable;
 import lombok.Data;
@@ -32,7 +32,7 @@ public class Category implements Serializable {
     /**
      * 描述
      */
-    private String descr;
+    private String desc;
 
     /**
      * 推荐标签
