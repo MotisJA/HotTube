@@ -3,7 +3,9 @@ package com.tube.service.impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.tube.constant.RedisConstant;
 import com.tube.constant.VideoConstant;
+import com.tube.mapper.VideoMapper;
 import com.tube.pojo.dto.VideoInitDTO;
+import com.tube.pojo.entity.Video;
 import com.tube.pojo.vo.VideoUploadVo;
 import com.tube.properties.FileProperty;
 import com.tube.properties.MinioProperty;
@@ -47,6 +49,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Resource
     private ThreadPoolTaskExecutor minioUploadThreadPool;
+
+    @Resource
+    private VideoMapper videoMapper;
 
     @Override
     public VideoUploadVo init(VideoInitDTO videoDTO) {
@@ -131,8 +136,12 @@ public class VideoServiceImpl implements VideoService {
      * @param url
      */
     private void sendBackUrl(String uploadId, String url) {
-        String videoId = redisUtil.get(RedisConstant.VIDEO_URL_PREFIX + uploadId);
-        // TODO: 构建实体 通过id更新对应的视频地址和状态
+        int videoId = redisUtil.get(RedisConstant.VIDEO_URL_PREFIX + uploadId, Integer.class);
+        Video video = new Video();
+        video.setVid(videoId);
+        video.setVideoUrl(url);
+        video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
+        videoMapper.updateById(video);
     }
 
     /**

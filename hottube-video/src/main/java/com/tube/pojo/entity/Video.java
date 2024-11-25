@@ -58,7 +58,7 @@ public class Video implements Serializable {
     /**
      * 简介
      */
-    private String descr;
+    private String desc;
 
     /**
      * 封面url
