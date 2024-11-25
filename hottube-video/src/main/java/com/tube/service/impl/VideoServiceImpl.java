@@ -1,6 +1,5 @@
 package com.tube.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.tube.constant.RedisConstant;
 import com.tube.constant.VideoConstant;
@@ -13,6 +12,7 @@ import com.tube.utils.FfmpegUtil;
 import com.tube.utils.MinioUtil;
 import com.tube.utils.RedisUtil;
 import com.tube.utils.UserUtil;
+import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -104,7 +104,6 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Async("videoProcessThreadPool") // 异步执行
     public void complete(String uploadId) {
-        // TODO: 地址返回
         String path = fileProperty.getTmp() + uploadId;
         File dir = new File(path);
         // 1. 合并文件分片
@@ -115,12 +114,24 @@ public class VideoServiceImpl implements VideoService {
         if (!destDir.exists()) destDir.mkdir();
         ffmpegUtil.convertToM3U8(videoPath, destFolder);
         // 3. 上传文件 更换m3u8中的路径
+        String url = null;
         try {
-            uploadM3U8ToMinio(uploadId);
+            url = uploadM3U8ToMinio(uploadId);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         // 4. 更新数据库中视频文件的信息
+        if (StringUtils.isNotEmpty(url)) sendBackUrl(uploadId, url);
+    }
+
+    /**
+     * 更新数据库的url
+     * @param uploadId
+     * @param url
+     */
+    private void sendBackUrl(String uploadId, String url) {
+        String videoId = redisUtil.get(RedisConstant.VIDEO_URL_PREFIX + uploadId);
+        // TODO: 构建实体 通过id更新对应的视频地址和状态
     }
 
     /**
