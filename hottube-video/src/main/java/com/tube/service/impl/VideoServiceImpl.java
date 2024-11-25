@@ -12,8 +12,8 @@ import com.tube.utils.FfmpegUtil;
 import com.tube.utils.MinioUtil;
 import com.tube.utils.RedisUtil;
 import com.tube.utils.UserUtil;
-import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -122,6 +122,7 @@ public class VideoServiceImpl implements VideoService {
         }
         // 4. 更新数据库中视频文件的信息
         if (StringUtils.isNotEmpty(url)) sendBackUrl(uploadId, url);
+        else throw new RuntimeException("error convert : " + uploadId + " url is empty ...");
     }
 
     /**
