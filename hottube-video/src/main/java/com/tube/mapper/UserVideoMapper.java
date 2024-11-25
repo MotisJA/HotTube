@@ -1,6 +1,9 @@
 package com.tube.mapper;
 
-public interface UserVideoMapper {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tube.pojo.entity.UserVideo;
+
+public interface UserVideoMapper extends BaseMapper<UserVideo> {
 
 }
 

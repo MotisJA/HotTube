@@ -1,6 +1,9 @@
 package com.tube.mapper;
 
-public interface VideoStatusMapper {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tube.pojo.entity.VideoStatus;
+
+public interface VideoStatusMapper extends BaseMapper<VideoStatus> {
 
 }
 
