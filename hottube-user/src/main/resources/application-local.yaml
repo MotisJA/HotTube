@@ -1,0 +1,4 @@
+hotsharp:
+  db:
+    host: 172.31.170.153 # 修改为你自己的虚拟机IP地址
+    pw: root # 修改为docker中的MySQL密码

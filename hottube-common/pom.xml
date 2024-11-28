@@ -17,6 +17,12 @@
             <artifactId>spring-core</artifactId>
             <version>5.3.10</version>
         </dependency>
+        <!--完成SpringMVC自动装配-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <properties>

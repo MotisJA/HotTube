@@ -1,0 +1,4 @@
+hotsharp:
+  db:
+    host: mysql
+    pw: root
