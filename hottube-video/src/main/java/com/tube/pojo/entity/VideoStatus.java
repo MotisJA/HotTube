@@ -1,7 +1,8 @@
 package com.tube.pojo.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 视频数据统计表

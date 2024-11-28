@@ -1,6 +1,5 @@
 package com.hotsharp.user.domain.vo;
 
-import com.alibaba.nacos.shaded.org.checkerframework.common.value.qual.IntRange;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

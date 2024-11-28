@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/hottube-comment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hottube-favorite/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-favorive/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-favorive/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-gateway/src/main/java" charset="UTF-8" />
@@ -21,6 +22,7 @@
     <file url="file://$PROJECT_DIR$/hottube-search/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-user/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-user/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hottube-video/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-videoprocess/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hottube-videoprocess/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

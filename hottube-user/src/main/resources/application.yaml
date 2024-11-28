@@ -1,5 +1,5 @@
 server:
-  port: 8084
+  port: 50000
 spring:
   application:
     name: user-service # 微服务名称
@@ -41,7 +41,7 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.hmall.user.controller
-hotsharp:
+hottube:
   jwt:
     location: classpath:hottube.jks
     alias: hottube
