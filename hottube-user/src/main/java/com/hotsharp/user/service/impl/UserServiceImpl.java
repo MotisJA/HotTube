@@ -1,7 +1,7 @@
 package com.hotsharp.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hotsharp.exception.BadRequestException;
+import com.hotsharp.common.exception.BadRequestException;
 import com.hotsharp.user.config.JwtProperties;
 import com.hotsharp.user.domain.dto.LoginFormDTO;
 import com.hotsharp.user.domain.dto.RegisterFormDTO;

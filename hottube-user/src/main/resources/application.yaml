@@ -6,7 +6,7 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://${hotsharp.db.host}:3306/hm-user?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${hotsharp.db.host}:3306/hottube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ${hotsharp.db.pw}
@@ -27,20 +27,23 @@ logging:
     dateformat: HH:mm:ss:SSS
   file:
     path: "logs/${spring.application.name}"
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.hotsharp.user.controller
+# knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
-  openapi:
-    title: HotTube用户服务接口文档
-    description: "HotTube用户服务接口文档"
-    email: hmotisja@gmail.com
-    concat: MotisJA
-    version: v1.0.0
-    group:
-      default:
-        group-name: default
-        api-rule: package
-        api-rule-resources:
-          - com.hmall.user.controller
+  setting:
+    language: zh_cn
 hottube:
   jwt:
     location: classpath:hottube.jks

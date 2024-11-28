@@ -5,7 +5,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.signers.JWTSigner;
 import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.hotsharp.exception.UnauthorizedException;
+import com.hotsharp.common.exception.UnauthorizedException;
 import org.springframework.stereotype.Component;
 
 import java.security.KeyPair;

@@ -5,9 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 
 @Data
+@Accessors(chain = true)
 @ApiModel(description = "注册表单实体")
 public class RegisterFormDTO {
 

@@ -1,4 +1,4 @@
 hotsharp:
   db:
-    host: mysql
+    host: 172.31.170.153
     pw: root
