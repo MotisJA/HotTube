@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tube.mapper.VideoStatusMapper">
+
+    <resultMap id="BaseResultMap" type="VideoStatus">
+            <id property="vid" column="vid" jdbcType="INTEGER"/>
+            <result property="play" column="play" jdbcType="INTEGER"/>
+            <result property="danmu" column="danmu" jdbcType="INTEGER"/>
+            <result property="good" column="good" jdbcType="INTEGER"/>
+            <result property="bad" column="bad" jdbcType="INTEGER"/>
+            <result property="coin" column="coin" jdbcType="INTEGER"/>
+            <result property="collect" column="collect" jdbcType="INTEGER"/>
+            <result property="share" column="share" jdbcType="INTEGER"/>
+            <result property="comment" column="comment" jdbcType="INTEGER"/>
+    </resultMap>
+
+</mapper>
