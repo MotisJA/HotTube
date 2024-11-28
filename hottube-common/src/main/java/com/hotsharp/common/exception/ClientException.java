@@ -15,39 +15,33 @@
  * limitations under the License.
  */
 
-package com.hotsharp.exception;
+package com.hotsharp.common.exception;
 
 
-import com.hotsharp.constant.BaseErrorCode;
-import com.hotsharp.constant.IErrorCode;
+import com.hotsharp.common.constant.BaseErrorCode;
+import com.hotsharp.common.constant.IErrorCode;
 
-import java.util.Optional;
+public class ClientException extends AbstractException {
 
-/**
- * 服务端异常
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
- */
-public class ServiceException extends AbstractException {
-
-    public ServiceException(String message) {
-        this(message, null, BaseErrorCode.SERVICE_ERROR);
+    public ClientException(IErrorCode errorCode) {
+        this(null, null, errorCode);
     }
 
-    public ServiceException(IErrorCode errorCode) {
-        this(null, errorCode);
+    public ClientException(String message) {
+        this(message, null, BaseErrorCode.CLIENT_ERROR);
     }
 
-    public ServiceException(String message, IErrorCode errorCode) {
+    public ClientException(String message, IErrorCode errorCode) {
         this(message, null, errorCode);
     }
 
-    public ServiceException(String message, Throwable throwable, IErrorCode errorCode) {
-        super(Optional.ofNullable(message).orElse(errorCode.message()), throwable, errorCode);
+    public ClientException(String message, Throwable throwable, IErrorCode errorCode) {
+        super(message, throwable, errorCode);
     }
 
     @Override
     public String toString() {
-        return "ServiceException{" +
+        return "ClientException{" +
                 "code='" + errorCode + "'," +
                 "message='" + errorMessage + "'" +
                 '}';

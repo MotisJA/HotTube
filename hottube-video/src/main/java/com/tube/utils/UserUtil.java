@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserUtil {
 
-    private Long userId = 123456L; // 暂时模拟 后面对接
+    private final Long userId = 123456L; // 暂时模拟 后面对接
 
     public Long getUserId () {
         return userId;

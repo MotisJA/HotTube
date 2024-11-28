@@ -1,4 +1,4 @@
-package com.hotsharp.exception;
+package com.hotsharp.common.exception;
 
 public class BadRequestException extends CommonException{
 

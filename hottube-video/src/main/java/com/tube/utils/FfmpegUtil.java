@@ -22,7 +22,7 @@ public class FfmpegUtil {
         //验证文件后缀
         String suffix = StringUtils.substringAfterLast(videoPath, ".");
         if (!validFileType(suffix)){
-            throw new RuntimeException("error convert video to m3u8 : format \'" + suffix + "\' not supported");
+            throw new RuntimeException("error convert video to m3u8 : format '" + suffix + "' not supported");
         }
         return processM3U8(videoPath, destDir);
     }

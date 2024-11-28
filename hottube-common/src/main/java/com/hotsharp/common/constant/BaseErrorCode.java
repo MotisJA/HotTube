@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.hotsharp.constant;
+package com.hotsharp.common.constant;
 
 /**
  * 基础错误码定义

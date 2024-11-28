@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.hotsharp.result;
+package com.hotsharp.common.result;
 
 
-import com.hotsharp.constant.BaseErrorCode;
-import com.hotsharp.exception.AbstractException;
+import com.hotsharp.common.constant.BaseErrorCode;
+import com.hotsharp.common.exception.AbstractException;
 
 import java.util.Optional;
 
@@ -48,7 +48,7 @@ public final class Results {
     /**
      * 构建服务端失败响应
      */
-    protected static Result<Void> failure() {
+    private static Result<Void> failure() {
         return new Result<Void>()
                 .setCode(BaseErrorCode.SERVICE_ERROR.code())
                 .setMessage(BaseErrorCode.SERVICE_ERROR.message());
@@ -57,7 +57,7 @@ public final class Results {
     /**
      * 通过 {@link AbstractException} 构建失败响应
      */
-    protected static Result<Void> failure(AbstractException abstractException) {
+    private static Result<Void> failure(AbstractException abstractException) {
         String errorCode = Optional.ofNullable(abstractException.getErrorCode())
                 .orElse(BaseErrorCode.SERVICE_ERROR.code());
         String errorMessage = Optional.ofNullable(abstractException.getErrorMessage())
@@ -70,7 +70,7 @@ public final class Results {
     /**
      * 通过 errorCode、errorMessage 构建失败响应
      */
-    protected static Result<Void> failure(String errorCode, String errorMessage) {
+    private static Result<Void> failure(String errorCode, String errorMessage) {
         return new Result<Void>()
                 .setCode(errorCode)
                 .setMessage(errorMessage);

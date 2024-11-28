@@ -15,27 +15,48 @@
  * limitations under the License.
  */
 
-package com.hotsharp.exception;
+package com.hotsharp.common.result;
 
-import com.hotsharp.constant.IErrorCode;
-import lombok.Getter;
-import org.springframework.util.StringUtils;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import java.util.Optional;
+import java.io.Serializable;
 
 /**
- * 抽象项目中三类异常体系，客户端异常、服务端异常以及远程服务调用异常
+ * 全局返回对象
  */
-@Getter
-public abstract class AbstractException extends RuntimeException {
+@Data
+@Accessors(chain = true)
+public class Result<T> implements Serializable {
 
-    public final String errorCode;
+    private static final long serialVersionUID = 5679018624309023727L;
 
-    public final String errorMessage;
+    /**
+     * 正确返回码
+     */
+    public static final String SUCCESS_CODE = "0";
 
-    public AbstractException(String message, Throwable throwable, IErrorCode errorCode) {
-        super(message, throwable);
-        this.errorCode = errorCode.code();
-        this.errorMessage = Optional.ofNullable(StringUtils.hasLength(message) ? message : null).orElse(errorCode.message());
+    /**
+     * 返回码
+     */
+    private String code;
+
+    /**
+     * 返回消息
+     */
+    private String message;
+
+    /**
+     * 响应数据
+     */
+    private T data;
+
+    /**
+     * 请求ID
+     */
+    private String requestId;
+
+    public boolean isSuccess() {
+        return SUCCESS_CODE.equals(code);
     }
 }

@@ -15,21 +15,33 @@
  * limitations under the License.
  */
 
-package com.hotsharp.constant;
+package com.hotsharp.common.exception;
+
+import com.hotsharp.common.constant.BaseErrorCode;
+import com.hotsharp.common.constant.IErrorCode;
 
 /**
- * 平台错误码
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
+ * 远程服务调用异常
  */
-public interface IErrorCode {
+public class RemoteException extends AbstractException {
 
-    /**
-     * 错误码
-     */
-    String code();
+    public RemoteException(String message) {
+        this(message, null, BaseErrorCode.REMOTE_ERROR);
+    }
 
-    /**
-     * 错误信息
-     */
-    String message();
+    public RemoteException(String message, IErrorCode errorCode) {
+        this(message, null, errorCode);
+    }
+
+    public RemoteException(String message, Throwable throwable, IErrorCode errorCode) {
+        super(message, throwable, errorCode);
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteException{" +
+                "code='" + errorCode + "'," +
+                "message='" + errorMessage + "'" +
+                '}';
+    }
 }

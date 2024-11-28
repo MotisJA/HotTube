@@ -53,7 +53,8 @@ public class MinioUtil {
      */
     public String preview(String objectName) {
         // 查看文件地址
-        GetPresignedObjectUrlArgs build = new GetPresignedObjectUrlArgs().builder().bucket(properties.getBucket()).object(objectName).method(Method.GET).build();
+        new GetPresignedObjectUrlArgs();
+        GetPresignedObjectUrlArgs build = GetPresignedObjectUrlArgs.builder().bucket(properties.getBucket()).object(objectName).method(Method.GET).build();
         try {
             return minioClient.getPresignedObjectUrl(build);
         } catch (Exception e) {

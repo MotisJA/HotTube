@@ -1,7 +1,7 @@
 package com.tube.controller;
 
-import com.hotsharp.result.Result;
-import com.hotsharp.result.Results;
+import com.hotsharp.common.result.Result;
+import com.hotsharp.common.result.Results;
 import com.tube.pojo.dto.VideoInitDTO;
 import com.tube.service.VideoService;
 import jakarta.annotation.Resource;
