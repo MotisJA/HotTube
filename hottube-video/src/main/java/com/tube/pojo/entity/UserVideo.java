@@ -1,5 +1,7 @@
 package com.tube.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,10 +12,12 @@ import java.util.Date;
  * @TableName user_video
  */
 @Data
+@TableName("user_video")
 public class UserVideo implements Serializable {
     /**
      * 唯一标识
      */
+    @TableId
     private Integer id;
 
     /**

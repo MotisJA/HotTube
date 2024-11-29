@@ -1,5 +1,6 @@
 package com.tube.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @TableName video_status
  */
 @Data
+@TableName("video_status")
 public class VideoStatus implements Serializable {
     /**
      * 视频ID
