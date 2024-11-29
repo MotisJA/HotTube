@@ -7,6 +7,7 @@ import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class MinioUtil {
 
     @Resource
