@@ -22,7 +22,7 @@ public class ThreadPoolConfiguration {
         // 设置核心线程数，采用IO密集 h/(1-拥塞)
         executor.setCorePoolSize(3);
         // 设置最大线程数 不做限制
-        executor.setMaxPoolSize(-1);
+        executor.setMaxPoolSize(8);
         // 设置线程活跃时间（秒）
         executor.setKeepAliveSeconds(60);
         // 设置默认线程名称
