@@ -19,7 +19,7 @@ public class MinioProperty {
      * @return
      */
     public String getBaseUrl () {
-        return "http://" + endpoint + ":9000/" + bucket + "/";
+        return endpoint + bucket + "/";
     }
 
 }

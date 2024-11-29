@@ -166,7 +166,7 @@ public class VideoServiceImpl implements VideoService {
             });
         }
         latch.await();
-        return minioProperty.getBaseUrl() + "/" + VideoConstant.MINIO_VIDEO_PREFIX + uploadId + "/" + uploadId + ".m3u8";
+        return minioProperty.getBaseUrl() + VideoConstant.MINIO_VIDEO_PREFIX + uploadId + "/" + uploadId + ".m3u8";
     }
 
     /**
