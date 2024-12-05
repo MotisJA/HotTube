@@ -2,7 +2,6 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="wsl-mysql" uuid="5562bbef-f3ff-4100-a425-ed1b85412656">
-      <driver-ref>mysql_aurora.aws_wrapper</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>software.amazon.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:aws-wrapper:mysql://172.31.170.153:3306/hottube</jdbc-url>

@@ -405,4 +405,24 @@ CREATE TABLE `video_stats`  (
 -- Records of video_stats
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for `relation`
+-- ----------------------------
+
+DROP TABLE IF EXISTS `relation`;
+CREATE TABLE `relation` (
+  `follower_id` int NOT NULL COMMENT '关注者id',
+  `followed_id` int NOT NULL COMMENT '被关注者id',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '关注条目状态 0未关注（取关） 1正常关注',
+  `created_date` datetime NOT NULL COMMENT '关注时间',
+  `deleted_date` datetime NULL DEFAULT NULL COMMENT '取关时间',
+  PRIMARY KEY (`follower_uid`) USING BTREE,
+  UNIQUE INDEX `follower_uid`(`follower_uid` ASC) USING BTREE,
+  UNIQUE INDEX `followed_uid`(`followed_uid` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户关注关系表' ROW FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of relation
+-- ----------------------------
+
 SET FOREIGN_KEY_CHECKS = 1;
