@@ -54,9 +54,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
             return response.setComplete();
         }
         // 5.传递用户信息
-        String userInfo = userId.toString();
+        String uid = userId.toString();
         ServerWebExchange swe = exchange.mutate()
-                .request(builder -> builder.header("user-info", userInfo))
+                .request(builder -> builder.header("uid", uid))
                 .build();
         // 6.放行
         return chain.filter(swe);
