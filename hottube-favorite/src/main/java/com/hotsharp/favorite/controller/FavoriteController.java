@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
+//@Tag(name = "收藏夹相关接口")
 @RestController
 public class FavoriteController {
 

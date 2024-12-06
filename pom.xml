@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>hottube-relation</module>
         <module>hottube-auth</module>
         <module>hottube-comment</module>
         <module>hottube-user</module>
