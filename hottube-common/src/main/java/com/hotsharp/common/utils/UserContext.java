@@ -13,10 +13,11 @@ public class UserContext {
 
     /**
      * 获取当前登录用户信息
+     *
      * @return 用户id
      */
-    public static Long getUser() {
-        return tl.get();
+    public static Integer getUserId() {
+        return tl.get().intValue();
     }
 
     /**
