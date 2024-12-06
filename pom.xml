@@ -28,7 +28,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.4</version>
-        <relativePath/>
     </parent>
 
     <properties>
@@ -43,6 +42,7 @@
         <hutool.version>5.8.27</hutool.version>
         <mysql.version>8.0.28</mysql.version>
         <elasticsearch.version>8.13.4</elasticsearch.version>
+        <knife4j.version>4.5.0</knife4j.version>
     </properties>
 
 
@@ -85,7 +85,12 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
-
+            <!-- Knife4j OpenAPI 3 Jakarta -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>

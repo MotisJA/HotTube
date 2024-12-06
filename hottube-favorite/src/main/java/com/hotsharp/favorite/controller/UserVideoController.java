@@ -1,6 +1,5 @@
 package com.hotsharp.favorite.controller;
 
-import com.hotsharp.api.dto.User;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.UserContext;

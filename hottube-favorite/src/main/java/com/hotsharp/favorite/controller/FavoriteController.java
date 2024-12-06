@@ -5,6 +5,7 @@ import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.UserContext;
 import com.hotsharp.favorite.domain.po.Favorite;
 import com.hotsharp.favorite.service.IFavoriteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
-//@Tag(name = "收藏夹相关接口")
+@Tag(name = "收藏夹相关接口")
 @RestController
 public class FavoriteController {
 
