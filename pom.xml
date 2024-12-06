@@ -18,8 +18,9 @@
         <module>hottube-video</module>
         <module>hottube-gateway</module>
         <module>hottube-message</module>
-        <module>hottube-favorite</module>
         <module>hottube-common</module>
+        <module>hottube-api</module>
+        <module>hottube-favorite</module>
     </modules>
 
     <parent>
@@ -83,6 +84,7 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>
