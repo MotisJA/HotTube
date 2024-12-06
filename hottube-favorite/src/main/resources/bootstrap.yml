@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: favorite-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 172.31.170.153:8848
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: shared-mybatis-plus.yaml
+          - data-id: shared-log.yaml
+          - data-id: shared-openapi.yaml
