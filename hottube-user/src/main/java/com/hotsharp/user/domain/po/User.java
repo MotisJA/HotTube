@@ -2,67 +2,36 @@ package com.hotsharp.user.domain.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-/**
- * 用户实体类
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("user")
-public class User implements Serializable {
-
-    @TableId(value = "uid", type = IdType.AUTO)
-    private Long uid; // 用户ID
-
-    private String username; // 用户账号
-
-    private String password; // 用户密码
-
-    private String nickname; // 用户昵称
-
-    private String avatar; // 用户头像 URL
-
-    private String background; // 主页背景图 URL
-
-    private Byte gender; // 性别 0女 1男 2未知
-
-    private String description; // 个性签名
-
-    private Long exp; // 经验值
-
-    private Double coin; // 硬币数
-
-    private Byte vip; // 会员类型 0普通用户 1月度大会员 2季度大会员 3年度大会员
-
-    private Byte state; // 状态 0正常 1封禁 2注销
-
-    private Byte role; // 角色类型 0普通用户 1管理员 2超级管理员
-
-    private Byte auth; // 官方认证 0普通用户 1个人认证 2机构认证
-
-    private String authMsg; // 认证说明
-
-    private LocalDateTime createDate; // 创建时间
-
-    private LocalDateTime deleteDate; // 注销时间
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+    @TableId(type = IdType.AUTO)
+    private Integer uid;
+    private String username;
+    private String password;
+    private String nickname;
+    private String avatar;
+    private String background;
+    private Integer gender; // 性别，0女性 1男性 2无性别，默认2
+    private String description;
+    private Integer exp;    // 经验值 50/200/1500/4500/10800/28800 分别是0~6级的区间
+    private Double coin;    // 硬币数 保留一位小数
+    private Integer vip;    // 0 普通用户，1 月度大会员，2 季度大会员，3 年度大会员
+    private Integer state;  // 0 正常，1 封禁中，2 已注销
+    private Integer role;   // 0 普通用户，1 普通管理员，2 超级管理员
+    private Integer auth;   // 0 普通用户，1 个人认证，2 机构认证
+    private String authMsg; // 认证信息，如 teriteri官方账号
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
+    private Date createDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
+    private Date deleteDate;
 }
-
-

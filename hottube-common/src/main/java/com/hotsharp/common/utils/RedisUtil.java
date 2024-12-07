@@ -28,7 +28,9 @@ public class RedisUtil {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    // 默认的 Redis 过期时间 1h
     public static final long REDIS_DEFAULT_EXPIRE_TIME = 60 * 60;
+    // 默认的时间单位为秒
     public static final TimeUnit REDIS_DEFAULT_EXPIRE_TIMEUNIT = TimeUnit.SECONDS;
 
     // 定义ZSetObject类，表示需要写入到ZSet中的数据
@@ -69,7 +71,7 @@ public class RedisUtil {
     }
 
     /**
-     * 清楚指定key的缓存
+     * 清除指定key的缓存
      * @param key
      */
     public void removeCache(String key){

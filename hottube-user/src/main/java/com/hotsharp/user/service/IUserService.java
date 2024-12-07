@@ -1,15 +1,13 @@
 package com.hotsharp.user.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.hotsharp.user.domain.dto.LoginFormDTO;
-import com.hotsharp.user.domain.dto.RegisterFormDTO;
-import com.hotsharp.user.domain.po.User;
-import com.hotsharp.user.domain.vo.UserLoginVO;
-import com.hotsharp.user.domain.vo.UserRegisterVO;
+import com.hotsharp.api.dto.UserDTO;
 
-public interface IUserService extends IService<User> {
+public interface IUserService {
 
-    UserLoginVO login(LoginFormDTO loginFormDTO);
-
-    UserRegisterVO register(RegisterFormDTO registerFormDTO);
+    /**
+     * 根据uid查询用户信息
+     * @param id 用户ID
+     * @return 用户可见信息实体类 UserDTO
+     */
+    UserDTO getUserById(Integer id);
 }

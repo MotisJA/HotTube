@@ -1,5 +1,5 @@
 server:
-  port: 50001
+  port: 40001
 spring:
   datasource:
     url: jdbc:mysql://${hotsharp.db.host}:3306/hottube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai

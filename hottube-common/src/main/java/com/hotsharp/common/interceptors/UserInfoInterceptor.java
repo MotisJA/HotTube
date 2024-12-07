@@ -2,9 +2,9 @@ package com.hotsharp.common.interceptors;
 
 import cn.hutool.core.util.StrUtil;
 import com.hotsharp.common.utils.UserContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
-import jakarta.servlet.http.HttpServletRequest;
 
 public class UserInfoInterceptor implements HandlerInterceptor {
 

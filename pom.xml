@@ -10,9 +10,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>hottube-relation</module>
-        <module>hottube-auth</module>
         <module>hottube-comment</module>
-        <module>hottube-user</module>
+        <module>hottube-auth</module>
         <module>hottube-publish</module>
         <module>hottube-recommend</module>
         <module>hottube-search</module>
@@ -22,6 +21,8 @@
         <module>hottube-common</module>
         <module>hottube-api</module>
         <module>hottube-favorite</module>
+        <module>hottube-user</module>
+        <module>hottube-auth</module>
     </modules>
 
     <parent>
@@ -41,7 +42,7 @@
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <hutool.version>5.8.27</hutool.version>
         <mysql.version>8.0.28</mysql.version>
-        <elasticsearch.version>8.13.4</elasticsearch.version>
+        <elasticsearch.version>7.12.1</elasticsearch.version>
         <knife4j.version>4.5.0</knife4j.version>
     </properties>
 
@@ -90,6 +91,11 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

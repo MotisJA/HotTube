@@ -6,11 +6,12 @@ import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.favorite.domain.po.UserVideo;
 import com.hotsharp.favorite.mapper.UserVideoMapper;
 import com.hotsharp.favorite.service.IUserVideoService;
+import com.hotsharp.favorite.service.VideoStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -19,6 +20,9 @@ public class UserVideoServiceImpl implements IUserVideoService {
 
     @Autowired
     private UserVideoMapper userVideoMapper;
+
+    @Autowired
+    private VideoStatusService videoStatsService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -53,7 +57,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
         // 异步线程更新video表和redis
         CompletableFuture.runAsync(() -> {
             redisUtil.zset("user_video_history:" + uid, vid);   // 添加到/更新观看历史记录
-//            videoStatsService.updateStats(vid, "play", true, 1);
+            videoStatsService.updateStatus(vid, "play", true, 1);
         }, taskExecutor);
         return userVideo;
     }
@@ -72,111 +76,20 @@ public class UserVideoServiceImpl implements IUserVideoService {
         QueryWrapper<UserVideo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid", uid).eq("vid", vid);
         UserVideo userVideo = userVideoMapper.selectOne(queryWrapper);
+
         if (isLove && isSet) {
-            // 点赞
-            if (userVideo.getLove() == 1) {
-                // 原本就点了赞就直接返回
-                return userVideo;
-            }
-            // 插入点赞记录
-            userVideo.setLove(1);
-            UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("uid", uid).eq("vid", vid);
-            updateWrapper.setSql("love = 1");
-            updateWrapper.set("love_time", new Date());
-            if (userVideo.getUnlove() == 1) {
-                // 原本点了踩，要取消踩
-                userVideo.setUnlove(0);
-                updateWrapper.setSql("unlove = 0");
-                CompletableFuture.runAsync(() -> {
-//                    videoStatsService.updateGoodAndBad(vid, true);
-                }, taskExecutor);
-            } else {
-                // 原本没点踩，只需要点赞就行
-                CompletableFuture.runAsync(() -> {
-//                    videoStatsService.updateStats(vid, "good", true, 1);
-                }, taskExecutor);
-            }
-            redisUtil.zset(key, vid);   // 添加点赞记录
-            userVideoMapper.update(null, updateWrapper);
-            // 通知up主视频被赞了
-            CompletableFuture.runAsync(() -> {
-//                // 查询UP主uid
-//                Video video = videoMapper.selectById(vid);
-//                if(!Objects.equals(video.getUid(), uid)) {
-//                    // 更新最新被点赞的视频
-//                    redisUtil.zset("be_loved_zset:" + video.getUid(), vid);
-//                    msgUnreadService.addOneUnread(video.getUid(), "love");
-//                    // netty 通知未读消息
-//                    Map<String, Object> map = new HashMap<>();
-//                    map.put("type", "接收");
-//                    Set<Channel> channels = IMServer.userChannel.get(video.getUid());
-//                    if (channels != null) {
-//                        for (Channel channel: channels) {
-//                            channel.writeAndFlush(IMResponse.message("love", map));
-//                        }
-//                    }
-//                }
-            }, taskExecutor);
+            // 处理点赞
+            return handleLove(uid, vid, key, userVideo);
         } else if (isLove) {
-            // 取消点赞
-            if (userVideo.getLove() == 0) {
-                // 原本就没有点赞就直接返回
-                return userVideo;
-            }
-            // 取消赞
-            userVideo.setLove(0);
-            UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("uid", uid).eq("vid", vid);
-            updateWrapper.setSql("love = 0");
-            userVideoMapper.update(null, updateWrapper);
-            redisUtil.zsetDelMember(key, vid);  // 移除点赞记录
-            CompletableFuture.runAsync(() -> {
-//                videoStatsService.updateStats(vid, "good", false, 1);
-            }, taskExecutor);
+            // 处理取消点赞
+            return handleUnlove(uid, vid, key, userVideo);
         } else if (isSet) {
-            // 点踩
-            if (userVideo.getUnlove() == 1) {
-                // 原本就点了踩就直接返回
-                return userVideo;
-            }
-            // 更新用户点踩记录
-            userVideo.setUnlove(1);
-            UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("uid", uid).eq("vid", vid);
-            updateWrapper.setSql("unlove = 1");
-            if (userVideo.getLove() == 1) {
-                // 原本点了赞，要取消赞
-                userVideo.setLove(0);
-                updateWrapper.setSql("love = 0");
-                redisUtil.zsetDelMember(key, vid);  // 移除点赞记录
-                CompletableFuture.runAsync(() -> {
-//                    videoStatsService.updateGoodAndBad(vid, false);
-                }, taskExecutor);
-            } else {
-                // 原本没点赞，只需要点踩就行
-                CompletableFuture.runAsync(() -> {
-//                    videoStatsService.updateStats(vid, "bad", true, 1);
-                }, taskExecutor);
-            }
-            userVideoMapper.update(null, updateWrapper);
+            // 处理点踩
+            return handleDislike(uid, vid, key, userVideo);
         } else {
-            // 取消点踩
-            if (userVideo.getUnlove() == 0) {
-                // 原本就没有点踩就直接返回
-                return userVideo;
-            }
-            // 取消用户点踩记录
-            userVideo.setUnlove(0);
-            UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("uid", uid).eq("vid", vid);
-            updateWrapper.setSql("unlove = 0");
-            userVideoMapper.update(null, updateWrapper);
-            CompletableFuture.runAsync(() -> {
-//                videoStatsService.updateStats(vid, "bad", false, 1);
-            }, taskExecutor);
+            // 处理取消点踩
+            return handleCancelDislike(uid, vid, userVideo);
         }
-        return userVideo;
     }
 
     /**
@@ -191,13 +104,109 @@ public class UserVideoServiceImpl implements IUserVideoService {
         UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("uid", uid).eq("vid", vid);
         if (isCollect) {
-            updateWrapper.setSql("collect = 1");
+            updateWrapper.set("collect", 1);
         } else {
-            updateWrapper.setSql("collect = 0");
+            updateWrapper.set("collect", 0);
         }
         CompletableFuture.runAsync(() -> {
-//            videoStatsService.updateStats(vid, "collect", isCollect, 1);
+            videoStatsService.updateStatus(vid, "collect", isCollect, 1);
         }, taskExecutor);
         userVideoMapper.update(null, updateWrapper);
+    }
+
+    private UserVideo handleLove(Integer uid, Integer vid, String key, UserVideo userVideo) {
+        if (userVideo.getLove() == 1) {
+            return userVideo;
+        }
+        userVideo.setLove(1);
+        UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<UserVideo>()
+                .eq("uid", uid).eq("vid", vid)
+                .set("love", 1).set("love_time", new Date());
+        if (userVideo.getUnlove() == 1) {
+            userVideo.setUnlove(0);
+            updateWrapper.set("unlove", 0);
+            CompletableFuture.runAsync(() -> {
+            videoStatsService.updateGoodAndBad(vid, true);
+            }, taskExecutor);
+        } else {
+            CompletableFuture.runAsync(() -> {
+            videoStatsService.updateStatus(vid, "good", true, 1);
+            }, taskExecutor);
+        }
+        redisUtil.zset(key, vid);
+        userVideoMapper.update(null, updateWrapper);
+        notifyUp(uid, vid);
+        return userVideo;
+    }
+
+    private UserVideo handleUnlove(Integer uid, Integer vid, String key, UserVideo userVideo) {
+        if (userVideo.getLove() == 0) {
+            return userVideo;
+        }
+        userVideo.setLove(0);
+        UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("uid", uid).eq("vid", vid).set("love", 0);
+        userVideoMapper.update(null, updateWrapper);
+        redisUtil.zsetDelMember(key, vid);
+        CompletableFuture.runAsync(() -> {
+        videoStatsService.updateStatus(vid, "good", false, 1);
+        }, taskExecutor);
+        return userVideo;
+    }
+
+    private UserVideo handleDislike(Integer uid, Integer vid, String key, UserVideo userVideo) {
+        if (userVideo.getUnlove() == 1) {
+            return userVideo;
+        }
+        userVideo.setUnlove(1);
+        UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("uid", uid).eq("vid", vid).set("unlove", 1);
+        if (userVideo.getLove() == 1) {
+            userVideo.setLove(0);
+            updateWrapper.set("love", 0);
+            redisUtil.zsetDelMember(key, vid);
+            CompletableFuture.runAsync(() -> {
+            videoStatsService.updateGoodAndBad(vid, false);
+            }, taskExecutor);
+        } else {
+            CompletableFuture.runAsync(() -> {
+            videoStatsService.updateStatus(vid, "bad", true, 1);
+            }, taskExecutor);
+        }
+        userVideoMapper.update(null, updateWrapper);
+        return userVideo;
+    }
+
+    private UserVideo handleCancelDislike(Integer uid, Integer vid, UserVideo userVideo) {
+        if (userVideo.getUnlove() == 0) {
+            return userVideo;
+        }
+        userVideo.setUnlove(0);
+        UpdateWrapper<UserVideo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("uid", uid).eq("vid", vid).set("unlove", 0);
+        userVideoMapper.update(null, updateWrapper);
+        CompletableFuture.runAsync(() -> {
+        videoStatsService.updateStatus(vid, "bad", false, 1);
+        }, taskExecutor);
+        return userVideo;
+    }
+
+    // 通知视频的上传者（UP主）他们的视频被点赞了
+    private void notifyUp(Integer uid, Integer vid) {
+//        CompletableFuture.runAsync(() -> {
+//        Video video = videoMapper.selectById(vid);
+//        if (!Objects.equals(video.getUid(), uid)) {
+//            redisUtil.zset("be_loved_zset:" + video.getUid(), vid);
+//            msgUnreadService.addOneUnread(video.getUid(), "love");
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("type", "接收");
+//            Set<Channel> channels = IMServer.userChannel.get(video.getUid());
+//            if (channels != null) {
+//                for (Channel channel : channels) {
+//                    channel.writeAndFlush(IMResponse.message("love", map));
+//                }
+//            }
+//        }
+//        }, taskExecutor);
     }
 }

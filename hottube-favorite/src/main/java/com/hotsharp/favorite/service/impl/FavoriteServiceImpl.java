@@ -8,8 +8,6 @@ import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.favorite.domain.po.Favorite;
 import com.hotsharp.favorite.mapper.FavoriteMapper;
 import com.hotsharp.favorite.service.IFavoriteService;
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,62 +35,44 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
 
     @Override
     public List<Favorite> getFavorites(Integer uid, boolean isOwner) {
-        String key = "favorites:" + uid;   // uid用户的收藏夹列表
+        // 从缓存中获取
+        String key = "favorites:" + uid;
         String string = redisUtil.getObjectString(key);
         List<Favorite> list = JSONArray.parseArray(string, Favorite.class);
         if (list != null) {
-            if (!isOwner) {
-                List<Favorite> list1 = new ArrayList<>();
-                for (Favorite favorite : list) {
-                    if (favorite.getVisible() == 1) {
-                        list1.add(favorite);
-                    }
-                }
-                return list1;
-            }
-            return list;
+            return filterFavorites(list, isOwner);
         }
+        // 从数据库中获取
         QueryWrapper<Favorite> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid", uid).ne("is_delete", 1).orderByDesc("fid");
         list = favoriteMapper.selectList(queryWrapper);
+        // 批量设置收藏夹封面
         if (list != null && !list.isEmpty()) {
-            // 使用事务批量操作 减少连接sql的开销
-            try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
-                // 设置收藏夹封面
-                list.stream().parallel().forEach(favorite -> {
-                    if (favorite.getCover() == null) {
-                        Set<Object> set = redisUtil.zReverange("favorite_video:" + favorite.getFid(), 0, 0);    // 找到最近一个收藏的视频
-                        if (set != null && !set.isEmpty()) {
-                            Integer vid = (Integer) set.iterator().next();
-//                            Video video = videoMapper.selectById(vid);
-//                            favorite.setCover(video.getCoverUrl());
-
-                        }
-                    }
-                });
-                sqlSession.commit();
-            }
+//            // 使用事务批量操作 减少连接sql的开销
+//            try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+//                // 设置收藏夹封面
+//                list.stream().parallel().forEach(favorite -> {
+//                    if (favorite.getCover() == null) {
+//                        Set<Object> set = redisUtil.zReverange("favorite_video:" + favorite.getFid(), 0, 0);    // 找到最近一个收藏的视频
+//                        if (set != null && !set.isEmpty()) {
+//                            Integer vid = (Integer) set.iterator().next();
+//                             Video video = videoMapper.selectById(vid);
+//                             favorite.setCover(video.getCoverUrl());
+//                        }
+//                    }
+//                });
+//                sqlSession.commit();
+//            }
             List<Favorite> finalList = list;
-            CompletableFuture.runAsync(() -> {
-                redisUtil.setExObjectValue(key, finalList);
-            }, taskExecutor);
-            if (!isOwner) {
-                List<Favorite> list1 = new ArrayList<>();
-                for (Favorite favorite : list) {
-                    if (favorite.getVisible() == 1) {
-                        list1.add(favorite);
-                    }
-                }
-                return list1;
-            }
-            return list;
+            CompletableFuture.runAsync(() -> redisUtil.setExObjectValue(key, finalList), taskExecutor);
+            return filterFavorites(list, isOwner);
         }
         return Collections.emptyList();
     }
 
     @Override
     public Favorite addFavorite(Integer uid, String title, String desc, Integer visible) {
-        // 懒得做字数等的合法判断了，前端做吧
+        // 字段合法判断由前端完成
         Favorite favorite = new Favorite(null, uid, 2, visible, null, title, desc, 0, null);
         favoriteMapper.insert(favorite);
         redisUtil.delValue("favorites:" + uid);
@@ -117,12 +97,26 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
 
     }
 
-    /// 提取某用户的全部收藏夹信息的 FID 整合成集合
+    // 提取某用户的全部收藏夹信息的 FID 整合成集合
     public Set<Integer> findFidsOfUserFavorites(Integer uid) {
         List<Favorite> list = getFavorites(uid, true);
         if (list == null) return new HashSet<>();
         return list.stream()
                 .map(Favorite::getFid)
                 .collect(Collectors.toSet());
+    }
+
+    // 过滤收藏夹列表，根据是否公开
+    private List<Favorite> filterFavorites(List<Favorite> list, boolean isOwner) {
+        if (isOwner) {
+            return list;
+        }
+        List<Favorite> filteredList = new ArrayList<>();
+        for (Favorite favorite : list) {
+            if (favorite.getVisible() == 1) {
+                filteredList.add(favorite);
+            }
+        }
+        return filteredList;
     }
 }
