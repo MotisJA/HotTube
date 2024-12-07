@@ -3,21 +3,27 @@ package com.hotsharp.favorite.controller;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.UserContext;
+import com.hotsharp.favorite.domain.po.UserVideo;
 import com.hotsharp.favorite.service.IFavoriteService;
 import com.hotsharp.favorite.service.IFavoriteVideoService;
 import com.hotsharp.favorite.service.IUserVideoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Tag(name = "用户收藏点赞动作接口")
 @RestController
-public class FavoriteVideoController {
+@RequestMapping("/favorite")
+public class FavoriteActionController {
+
+    @Autowired
+    private IUserVideoService userVideoService;
 
     @Autowired
     private IFavoriteVideoService favoriteVideoService;
@@ -25,14 +31,28 @@ public class FavoriteVideoController {
     @Autowired
     private IFavoriteService favoriteService;
 
-    @Autowired
-    private IUserVideoService userVideoService;
+    /**
+     * 点赞或点踩
+     * @param vid   视频ID
+     * @param isLove    赞还是踩 true赞 false踩
+     * @param isSet     点还是取消 true点 false取消
+     * @return 返回用户与该视频更新后的交互数据
+     */
+    @Operation(summary = "点赞或点踩")
+    @PostMapping("/video/love-or-not")
+    public Result<UserVideo> loveOrNot(@RequestParam("vid") Integer vid,
+                                       @RequestParam("isLove") boolean isLove,
+                                       @RequestParam("isSet") boolean isSet) {
+        Integer uid = UserContext.getUserId();
+        return Results.success(userVideoService.setLoveOrUnlove(uid, vid, isLove, isSet));
+    }
 
     /**
      * 获取用户收藏了该视频的收藏夹列表
      * @param vid   视频id
      * @return  收藏了该视频的收藏夹列表
      */
+    @Operation(summary = "获取用户收藏了该视频的收藏夹列表")
     @GetMapping("/video/collected-fids")
     public Result<?> getCollectedFids(@RequestParam("vid") Integer vid) {
         Integer uid = UserContext.getUserId();
@@ -48,10 +68,11 @@ public class FavoriteVideoController {
      * @param removeArray   包含需要移出收藏的多个收藏夹ID组成的字符串，形式如 1,12,13,20 不能含有字符"["和"]"
      * @return  无数据返回
      */
+    @Operation(summary = "收藏或取消收藏某视频")
     @PostMapping("/video/collect")
     public Result<?> collectVideo(@RequestParam("vid") Integer vid,
-                                       @RequestParam("adds") String[] addArray,
-                                       @RequestParam("removes") String[] removeArray) {
+                                  @RequestParam("adds") String[] addArray,
+                                  @RequestParam("removes") String[] removeArray) {
         Integer uid = UserContext.getUserId();
         Set<Integer> fids = favoriteService.findFidsOfUserFavorites(uid);
         Set<Integer> addSet = Arrays.stream(addArray).map(Integer::parseInt).collect(Collectors.toSet());
@@ -83,6 +104,7 @@ public class FavoriteVideoController {
      * @param fid   收藏夹id
      * @return  响应对象
      */
+    @Operation(summary = "取消单个视频在单个收藏夹的收藏")
     @PostMapping("/video/cancel-collect")
     public Result<?> cancelCollect(@RequestParam("vid") Integer vid, @RequestParam("fid") Integer fid) {
         Integer uid = UserContext.getUserId();
