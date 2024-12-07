@@ -3,6 +3,7 @@ package com.hotsharp.comment.service;
 
 import com.hotsharp.comment.domain.po.Comment;
 import com.hotsharp.comment.domain.po.CommentTree;
+import com.hotsharp.common.result.Result;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CommentService {
 
     CommentTree sendComment(Integer vid, Integer uid, Integer rootId, Integer parentId, Integer toUserId, String content);
 
-    void deleteComment(Integer id, Integer uid, boolean isAdmin);
+    Result deleteComment(Integer id, Integer uid, boolean isAdmin);
 
     List<Comment> getChildCommentsByRootId(Integer rootId, Integer vid, Long start, Long stop);
 
