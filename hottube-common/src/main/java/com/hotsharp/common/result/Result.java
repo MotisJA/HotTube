@@ -20,7 +20,6 @@ package com.hotsharp.common.result;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**

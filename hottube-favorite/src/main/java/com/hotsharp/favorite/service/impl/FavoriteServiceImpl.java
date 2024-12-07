@@ -8,8 +8,6 @@ import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.favorite.domain.po.Favorite;
 import com.hotsharp.favorite.mapper.FavoriteMapper;
 import com.hotsharp.favorite.service.IFavoriteService;
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
