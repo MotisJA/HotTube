@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class SpringDocConfigurationByGjy {
+public class SpringDocConfiguration {
 
     /**
      * 根据@Tag 上的排序，写入x-order
