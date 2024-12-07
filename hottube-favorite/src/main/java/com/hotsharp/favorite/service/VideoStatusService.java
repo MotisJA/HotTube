@@ -1,15 +1,15 @@
 package com.hotsharp.favorite.service;
 
 
-import com.hotsharp.favorite.domain.po.VideoStats;
+import com.hotsharp.favorite.domain.po.VideoStatus;
 
-public interface VideoStatsService {
+public interface VideoStatusService {
     /**
      * 根据视频ID查询视频常变数据
      * @param vid 视频ID
      * @return 视频数据统计
      */
-    VideoStats getVideoStatsById(Integer vid);
+    VideoStatus getVideoStatusById(Integer vid);
 
     /**
      * 更新指定字段
@@ -18,7 +18,7 @@ public interface VideoStatsService {
      * @param increase  是否增加，true则增加 false则减少
      * @param count 增减数量 一般是1，只有投币可以加2
      */
-    void updateStats(Integer vid, String column, boolean increase, Integer count);
+    void updateStatus(Integer vid, String column, boolean increase, Integer count);
 
     /**
      * 同时更新点赞和点踩

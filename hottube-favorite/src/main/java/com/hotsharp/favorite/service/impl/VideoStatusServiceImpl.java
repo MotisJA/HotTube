@@ -2,9 +2,9 @@ package com.hotsharp.favorite.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.common.utils.RedisUtil;
-import com.hotsharp.favorite.domain.po.VideoStats;
-import com.hotsharp.favorite.mapper.VideoStatsMapper;
-import com.hotsharp.favorite.service.VideoStatsService;
+import com.hotsharp.favorite.domain.po.VideoStatus;
+import com.hotsharp.favorite.mapper.VideoStatusMapper;
+import com.hotsharp.favorite.service.VideoStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 @Service
-public class VideoStatsServiceImpl implements VideoStatsService {
+public class VideoStatusServiceImpl implements VideoStatusService {
     @Autowired
-    private VideoStatsMapper videoStatsMapper;
+    private VideoStatusMapper videoStatsMapper;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -30,12 +30,12 @@ public class VideoStatsServiceImpl implements VideoStatsService {
      * @return 视频数据统计
      */
     @Override
-    public VideoStats getVideoStatsById(Integer vid) {
-        VideoStats videoStats = redisUtil.getObject("videoStats:" + vid, VideoStats.class);
+    public VideoStatus getVideoStatusById(Integer vid) {
+        VideoStatus videoStats = redisUtil.getObject("videoStats:" + vid, VideoStatus.class);
         if (videoStats == null) {
             videoStats = videoStatsMapper.selectById(vid);
             if (videoStats != null) {
-                VideoStats finalVideoStats = videoStats;
+                VideoStatus finalVideoStats = videoStats;
                 CompletableFuture.runAsync(() -> {
                     redisUtil.setExObjectValue("videoStats:" + vid, finalVideoStats);    // 异步更新到redis
                 }, taskExecutor);
@@ -55,8 +55,8 @@ public class VideoStatsServiceImpl implements VideoStatsService {
      * @param count 增减数量 一般是1，只有投币可以加2
      */
     @Override
-    public void updateStats(Integer vid, String column, boolean increase, Integer count) {
-        UpdateWrapper<VideoStats> updateWrapper = new UpdateWrapper<>();
+    public void updateStatus(Integer vid, String column, boolean increase, Integer count) {
+        UpdateWrapper<VideoStatus> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("vid", vid);
         if (increase) {
             updateWrapper.setSql(column + " = " + column + " + " + count);
@@ -75,7 +75,7 @@ public class VideoStatsServiceImpl implements VideoStatsService {
      */
     @Override
     public void updateGoodAndBad(Integer vid, boolean addGood) {
-        UpdateWrapper<VideoStats> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<VideoStatus> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("vid", vid);
         if (addGood) {
             updateWrapper.setSql("good = good + 1");

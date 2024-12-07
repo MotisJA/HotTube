@@ -6,7 +6,7 @@ import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.favorite.domain.po.UserVideo;
 import com.hotsharp.favorite.mapper.UserVideoMapper;
 import com.hotsharp.favorite.service.IUserVideoService;
-import com.hotsharp.favorite.service.VideoStatsService;
+import com.hotsharp.favorite.service.VideoStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
     private UserVideoMapper userVideoMapper;
 
     @Autowired
-    private VideoStatsService videoStatsService;
+    private VideoStatusService videoStatsService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -57,7 +57,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
         // 异步线程更新video表和redis
         CompletableFuture.runAsync(() -> {
             redisUtil.zset("user_video_history:" + uid, vid);   // 添加到/更新观看历史记录
-            videoStatsService.updateStats(vid, "play", true, 1);
+            videoStatsService.updateStatus(vid, "play", true, 1);
         }, taskExecutor);
         return userVideo;
     }
@@ -109,7 +109,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
             updateWrapper.set("collect", 0);
         }
         CompletableFuture.runAsync(() -> {
-            videoStatsService.updateStats(vid, "collect", isCollect, 1);
+            videoStatsService.updateStatus(vid, "collect", isCollect, 1);
         }, taskExecutor);
         userVideoMapper.update(null, updateWrapper);
     }
@@ -130,7 +130,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
             }, taskExecutor);
         } else {
             CompletableFuture.runAsync(() -> {
-            videoStatsService.updateStats(vid, "good", true, 1);
+            videoStatsService.updateStatus(vid, "good", true, 1);
             }, taskExecutor);
         }
         redisUtil.zset(key, vid);
@@ -149,7 +149,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
         userVideoMapper.update(null, updateWrapper);
         redisUtil.zsetDelMember(key, vid);
         CompletableFuture.runAsync(() -> {
-        videoStatsService.updateStats(vid, "good", false, 1);
+        videoStatsService.updateStatus(vid, "good", false, 1);
         }, taskExecutor);
         return userVideo;
     }
@@ -170,7 +170,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
             }, taskExecutor);
         } else {
             CompletableFuture.runAsync(() -> {
-            videoStatsService.updateStats(vid, "bad", true, 1);
+            videoStatsService.updateStatus(vid, "bad", true, 1);
             }, taskExecutor);
         }
         userVideoMapper.update(null, updateWrapper);
@@ -186,7 +186,7 @@ public class UserVideoServiceImpl implements IUserVideoService {
         updateWrapper.eq("uid", uid).eq("vid", vid).set("unlove", 0);
         userVideoMapper.update(null, updateWrapper);
         CompletableFuture.runAsync(() -> {
-        videoStatsService.updateStats(vid, "bad", false, 1);
+        videoStatsService.updateStatus(vid, "bad", false, 1);
         }, taskExecutor);
         return userVideo;
     }

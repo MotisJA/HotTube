@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoStats {
+public class VideoStatus {
     @TableId
     private Integer vid;
     private Integer play;
