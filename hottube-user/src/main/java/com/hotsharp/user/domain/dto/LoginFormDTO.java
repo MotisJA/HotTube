@@ -1,24 +1,23 @@
 package com.hotsharp.user.domain.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-@ApiModel(description = "登录表单实体")
+@Schema(name = "登录表单实体")
 public class LoginFormDTO {
 
-    @ApiModelProperty(value = "用户名", required = true)
+    @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED,example = "admin")
     private String username;
 
     @NotNull(message = "密码不能为空")
-    @ApiModelProperty(value = "用户名", required = true)
+    @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED,example = "123456")
     private String password;
 
-    @ApiModelProperty(value = "是否记住我", required = false)
+    @Schema(description = "是否记住我", requiredMode = Schema.RequiredMode.REQUIRED,example = "false")
     private Boolean rememberMe = false;
 
 }
