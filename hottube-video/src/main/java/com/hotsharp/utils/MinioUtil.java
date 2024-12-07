@@ -1,6 +1,6 @@
 package com.hotsharp.utils;
 
-import com.hotsharp.constant.VideoConstant;
+import com.hotsharp.constant.FileConstant;
 import com.hotsharp.properties.MinioProperty;
 import io.micrometer.common.util.StringUtils;
 import io.minio.*;
@@ -187,7 +187,7 @@ public class MinioUtil {
      */
     public void upload(File file, String dir) {
         String name = file.getName();
-        String objectName = VideoConstant.MINIO_VIDEO_PREFIX + dir + "/" + name;
+        String objectName = FileConstant.MINIO_VIDEO_PREFIX + dir + "/" + name;
         try {
             InputStream stream = new FileInputStream(file);
             minioClient.putObject(

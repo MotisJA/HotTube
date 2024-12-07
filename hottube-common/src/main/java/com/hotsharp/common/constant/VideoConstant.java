@@ -1,13 +1,14 @@
-package com.hotsharp.constant;
+package com.hotsharp.common.constant;
 
 public class VideoConstant {
-    public static final String VIDEO_SUFFIX = ".mp4";
-    public static final String M3U8_REGEX = "([\\S]+\\.ts)";
-    public static final String MINIO_VIDEO_PREFIX = "videos/";
-
+    /** 转码中 */
     public static final int VIDEO_STATUS_CONVERTING = 0;
+    /** 审核 */
     public static final int VIDEO_STATUS_AUDIT = 1;
+    /** 已过审 */
     public static final int VIDEO_STATUS_REVIEWED = 2;
+    /** 未通过 */
     public static final int VIDEO_STATUS_FAILED = 3;
+    /** 已删除 */
     public static final int VIDEO_STATUS_DELETED = 4;
 }

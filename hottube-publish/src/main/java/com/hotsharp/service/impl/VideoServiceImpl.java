@@ -2,7 +2,7 @@ package com.hotsharp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hotsharp.common.utils.UserContext;
-import com.hotsharp.constant.VideoStatus;
+import com.hotsharp.common.constant.VideoStatus;
 import com.hotsharp.mapper.VideoMapper;
 import com.hotsharp.pojo.dto.VideoDTO;
 import com.hotsharp.pojo.entity.Video;

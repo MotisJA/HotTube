@@ -1,8 +1,9 @@
 package com.hotsharp.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import com.hotsharp.common.constant.VideoConstant;
+import com.hotsharp.constant.FileConstant;
 import com.hotsharp.constant.RedisConstant;
-import com.hotsharp.constant.VideoConstant;
 import com.hotsharp.mapper.VideoMapper;
 import com.hotsharp.pojo.dto.VideoInitDTO;
 import com.hotsharp.pojo.entity.Video;
@@ -166,7 +167,7 @@ public class VideoServiceImpl implements VideoService {
             });
         }
         latch.await();
-        return minioProperty.getBaseUrl() + VideoConstant.MINIO_VIDEO_PREFIX + uploadId + "/" + uploadId + ".m3u8";
+        return minioProperty.getBaseUrl() + FileConstant.MINIO_VIDEO_PREFIX + uploadId + "/" + uploadId + ".m3u8";
     }
 
     /**
@@ -184,7 +185,7 @@ public class VideoServiceImpl implements VideoService {
             String line = null;
             while ( (line = bufIn.readLine()) != null) {
                 // 替换每行中, 符合条件的字符串
-                line = line.replaceAll(VideoConstant.M3U8_REGEX, baseUrl+"$1");
+                line = line.replaceAll(FileConstant.M3U8_REGEX, baseUrl+"$1");
                 // 将该行写入内存
                 tempStream.write(line);
                 // 添加换行符
@@ -206,7 +207,7 @@ public class VideoServiceImpl implements VideoService {
     private String mergeChunks(File dir, String uploadId) {
         File[] chunkFiles = dir.listFiles();
         Arrays.sort(chunkFiles, Comparator.comparing(File::getName)); // 按照文件名排序
-        File fullVideo = new File(dir, uploadId+VideoConstant.VIDEO_SUFFIX);
+        File fullVideo = new File(dir, uploadId+FileConstant.VIDEO_SUFFIX);
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fullVideo))) {
             for (File chunk : chunkFiles) {
                 try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(chunk))) {

@@ -1,11 +1,10 @@
 package com.hotsharp.utils;
 
-import com.hotsharp.constant.VideoConstant;
+import com.hotsharp.constant.FileConstant;
 import com.hotsharp.properties.FfmpegProperty;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +32,7 @@ public class FfmpegUtil {
      * @return
      */
     private boolean validFileType (String type) {
-        return VideoConstant.VIDEO_SUFFIX.equals(type);
+        return FileConstant.VIDEO_SUFFIX.equals(type);
     }
 
     // ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）
