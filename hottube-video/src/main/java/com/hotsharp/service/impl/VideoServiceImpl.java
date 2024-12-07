@@ -142,7 +142,7 @@ public class VideoServiceImpl implements VideoService {
         video.setVid(videoId);
         video.setVideoUrl(url);
         video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
-        videoMapper.updateById(video);
+        videoMapper.updateById(video); // TODO: 应该是调用publish服务
     }
 
     /**
