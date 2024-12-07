@@ -2,5 +2,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.hotsharp.common.config.MyBatisConfig,\
   com.hotsharp.common.config.MvcConfig,\
   com.hotsharp.common.config.MqConfig,\
-  com.hotsharp.common.config.JsonConfig,\
-  com.hotsharp.common.config.RedisConfig
+  com.hotsharp.common.config.JsonConfig
