@@ -1,5 +1,10 @@
 # 视频业务
 
+## todo
+- 依赖重复/冲突 与 common video pom已删除部分
+- redisUtil 工具类定义问题
+- 服务注册、服务调用问题
+
 ## 综合解决方案选取
 
 1. minio存储+range分片获取播放
