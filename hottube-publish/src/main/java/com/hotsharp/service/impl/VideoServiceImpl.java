@@ -2,7 +2,7 @@ package com.hotsharp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hotsharp.common.utils.UserContext;
-import com.hotsharp.common.constant.VideoStatus;
+import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.mapper.VideoMapper;
 import com.hotsharp.pojo.dto.VideoDTO;
 import com.hotsharp.pojo.entity.Video;
@@ -25,7 +25,7 @@ public class VideoServiceImpl implements VideoService {
         Video video = new Video();
         BeanUtils.copyProperties(videoDTO, video);
         video.setUid(UserContext.getUserId());
-        video.setStatus(VideoStatus.VIDEO_STATUS_CONVERTING);
+        video.setStatus(VideoConstant.VIDEO_STATUS_CONVERTING);
         video.setUploadDate(new Date());
         videoMapper.insert(video);
     }

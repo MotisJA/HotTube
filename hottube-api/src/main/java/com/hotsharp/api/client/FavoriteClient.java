@@ -14,7 +14,7 @@ public interface FavoriteClient {
 
     @PostMapping("/video/status/update")
     public Result updateStatus(@RequestParam("vid") Integer vid,
-                              @RequestParam("column") String column,
-                              @RequestParam("increase") boolean increase,
-                              @RequestParam("count") Integer count);
+                               @RequestParam("column") String column,
+                               @RequestParam("increase") boolean increase,
+                               @RequestParam("count") Integer count);
 }

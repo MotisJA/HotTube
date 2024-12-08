@@ -6,6 +6,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ${hotsharp.db.pw}
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
 hottube:
   jwt:
     location: classpath:hottube.jks
@@ -14,4 +17,7 @@ hottube:
     tokenTTL: 30m
   auth:
     excludePaths:
-      - /users/register
+      - /auth/register
+      - /**
+
+

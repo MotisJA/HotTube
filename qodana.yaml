@@ -4,15 +4,15 @@
 #-------------------------------------------------------------------------------#
 version: "1.0"
 
-#Specify inspection profile for code analysis
+# Specify inspection profile for code analysis
 profile:
   name: qodana.starter
 
-#Enable inspections
+# Enable inspections
 #include:
 #  - name: <SomeEnabledInspectionId>
 
-#Disable inspections
+# Disable inspections
 #exclude:
 #  - name: <SomeDisabledInspectionId>
 #    paths:
@@ -20,12 +20,20 @@ profile:
 
 projectJDK: "17" #(Applied in CI/CD pipeline)
 
-#Execute shell command before Qodana execution (Applied in CI/CD pipeline)
+# Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
 
-#Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
+# Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #plugins:
 #  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
 
-#Specify Qodana linter for analysis (Applied in CI/CD pipeline)
+# Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:2024.3
+
+include:
+  - name: JavadocDeclaration
+    path:
+      - src/main/java
+  - name: DanglingJavadoc
+    path:
+      - src/main/java

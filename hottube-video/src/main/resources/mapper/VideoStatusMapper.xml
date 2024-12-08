@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tube.mapper.VideoStatusMapper">
+<mapper namespace="com.hotsharp.video.mapper.VideoStatusMapper">
 
-    <resultMap id="BaseResultMap" type="VideoStatus">
+    <resultMap id="BaseResultMap" type="com.hotsharp.video.pojo.entity.VideoStatus">
             <id property="vid" column="vid" jdbcType="INTEGER"/>
             <result property="play" column="play" jdbcType="INTEGER"/>
             <result property="danmu" column="danmu" jdbcType="INTEGER"/>
