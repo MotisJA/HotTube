@@ -124,7 +124,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
         queryWrapper.ne("state", 2);
         User user = userMapper.selectOne(queryWrapper);   //查询数据库里值等于username并且没有注销的数据
         if (user != null) {
-            return Results.failure("403", "账号已存在");
+            return Results.failure(403, "账号已存在");
         }
 
         QueryWrapper<User> queryWrapper1 = new QueryWrapper<>();
@@ -187,19 +187,19 @@ public class UserAccountServiceImpl implements IUserAccountService {
         try {
             authenticate = authenticationProvider.authenticate(authenticationToken);
         } catch (Exception e) {
-            return Results.failure("403", "账号或密码不正确");
+            return Results.failure(403, "账号或密码不正确");
         }
 
         //将用户取出来
-        User loginUser = (User) authenticate.getPrincipal();
-        User user = loginUser;
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
+        User user = loginUser.getUser();
 
         // 顺便更新redis中的数据
         redisUtil.setExObjectValue("user:" + user.getUid(), user);  // 默认存活1小时
 
         // 检查账号状态，1 表示封禁中，不允许登录
         if (user.getState() == 1) {
-            return Results.failure("403", "账号异常，封禁中");
+            return Results.failure(403, "账号异常，封禁中");
         }
 
         //将uid封装成一个jwttoken，同时token也会被缓存到redis中
@@ -235,7 +235,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
         final_map.put("token", token);
         final_map.put("user", userDTO);
 
-        return Results.success(final_map);
+        return Results.success(final_map).setMessage("登录成功");
     }
 
 

@@ -33,7 +33,7 @@ public class UserAccountController {
             return userAccountService.register(username, password, confirmedPassword);
         } catch (Exception e) {
             e.printStackTrace();
-            return Results.failure("500", "注册失败");
+            return Results.failure(500, "注册失败");
         }
     }
 

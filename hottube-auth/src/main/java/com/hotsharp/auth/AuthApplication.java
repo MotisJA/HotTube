@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableFeignClients(basePackages = "com.hotsharp.api.client", defaultConfiguration = DefaultFeignConfig.class)
 @MapperScan("com.hotsharp.auth.mapper")
-@ComponentScan(basePackages = {"com.hotsharp.common.utils"})
+@ComponentScan(basePackages = {"com.hotsharp.auth", "com.hotsharp.common.utils"})
 @SpringBootApplication
 public class AuthApplication {
     public static void main(String[] args) {
