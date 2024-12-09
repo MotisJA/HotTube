@@ -416,10 +416,10 @@ CREATE TABLE `relation` (
   `status` tinyint NOT NULL DEFAULT 0 COMMENT '关注条目状态 0未关注（取关） 1正常关注',
   `created_date` datetime NOT NULL COMMENT '关注时间',
   `deleted_date` datetime NULL DEFAULT NULL COMMENT '取关时间',
-  PRIMARY KEY (`follower_uid`) USING BTREE,
-  UNIQUE INDEX `follower_uid`(`follower_uid` ASC) USING BTREE,
-  UNIQUE INDEX `followed_uid`(`followed_uid` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户关注关系表' ROW FORMAT = Dynamic;
+  PRIMARY KEY (`follower_id`) USING BTREE,
+  UNIQUE INDEX `follower_uid`(`follower_id` ASC) USING BTREE,
+  UNIQUE INDEX `followed_uid`(`followed_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户关注关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of relation
