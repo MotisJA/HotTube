@@ -7,9 +7,9 @@ import com.hotsharp.auth.config.JwtProperties;
 import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.mapper.UserMapper;
 import com.hotsharp.auth.service.IUserAccountService;
-import com.hotsharp.auth.utils.JwtTool;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
+import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
 import org.springframework.security.authentication.AuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
 //    private RedisUtil redisUtil;
 //
     @Autowired
-    private JwtTool jwtUtil;
+    private JwtUtil jwtUtil;
 //
 //    @Autowired
 //    private ESUtil esUtil;
@@ -203,7 +203,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
         }
 
         //将uid封装成一个jwttoken，同时token也会被缓存到redis中
-        String token = jwtUtil.createToken(Long.valueOf(user.getUid()), jwtProperties.getTokenTTL());
+        String token = jwtUtil.createToken(String.valueOf(user.getUid()), "user");
 
         try {
             // 把完整的用户信息存入redis，时间跟token一样，注意单位
