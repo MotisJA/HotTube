@@ -1,4 +1,4 @@
-package com.hotsharp.common.config;
+package com.hotsharp.message.config;
 
 import com.hotsharp.common.interceptors.UserInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +9,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ConditionalOnClass(DispatcherServlet.class)
+//@ConditionalOnClass(DispatcherServlet.class)
 public class MvcConfig implements WebMvcConfigurer {
-
-    @Autowired
-    private UserInfoInterceptor userInfoInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(userInfoInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(new UserInfoInterceptor()).addPathPatterns("/**");
     }
 
 }
