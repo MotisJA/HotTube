@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @FeignClient("video-service")
-@RequestMapping("/video")
 public interface VideoClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/video/{id}")
     Result<VideoDTO> getVideoById(@PathVariable("id") Integer id);
 }

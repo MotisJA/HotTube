@@ -90,8 +90,8 @@ public class CommentServiceImpl implements CommentService {
         tree.setLove(comment.getLove());
         tree.setBad(comment.getBad());
         // 远程调用获取用户信息
-        tree.setUser(userClient.getOneUserInfo(comment.getUid()).getData());
-        tree.setToUser(userClient.getOneUserInfo(comment.getToUserId()).getData());
+        tree.setUser(userClient.getUserById(comment.getUid()).getData());
+        tree.setToUser(userClient.getUserById(comment.getToUserId()).getData());
 
         // 递归查询构建子评论树
         // 这里如果是根节点的评论，则查出他的子评论； 如果不是根节点评论，则不查，只填写 User 信息。
@@ -179,7 +179,7 @@ public class CommentServiceImpl implements CommentService {
         queryWrapper.eq("id", id).ne("is_deleted", 1);
         Comment comment = commentMapper.selectOne(queryWrapper);
         if (comment == null) {
-            return Results.failure("404","评论不存在");
+            return Results.failure(404,"评论不存在");
         }
 
         // 判断该用户是否有权限删除这条评论
@@ -206,7 +206,7 @@ public class CommentServiceImpl implements CommentService {
             }
             return Results.success();
         }
-        return Results.failure("403", "你无权删除该条评论");
+        return Results.failure(403, "你无权删除该条评论");
     }
 
     /**

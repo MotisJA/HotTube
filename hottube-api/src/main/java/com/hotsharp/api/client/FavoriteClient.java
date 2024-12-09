@@ -6,13 +6,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient("favorite-service")
-@RequestMapping("/favorite")
 public interface FavoriteClient {
 
-    @GetMapping("/video/status/{vid}")
+    @GetMapping("/favorite/video/status/{vid}")
     VideoStatusDTO getVideoStatusByVid(@PathVariable("vid") Integer vid);
 
-    @PostMapping("/video/status/update")
+    @PostMapping("/favorite/video/status/update")
     public Result updateStatus(@RequestParam("vid") Integer vid,
                                @RequestParam("column") String column,
                                @RequestParam("increase") boolean increase,

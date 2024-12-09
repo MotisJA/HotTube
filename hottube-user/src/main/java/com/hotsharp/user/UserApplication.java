@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableFeignClients(basePackages = "com.hotsharp.api.client", defaultConfiguration = DefaultFeignConfig.class)
 @SpringBootApplication
-@ComponentScan("com.hotsharp.common.utils")
+@ComponentScan({"com.hotsharp.common.utils", "com.hotsharp.user"})
 public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);

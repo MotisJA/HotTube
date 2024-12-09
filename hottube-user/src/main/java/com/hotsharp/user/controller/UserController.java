@@ -3,6 +3,8 @@ package com.hotsharp.user.controller;
 import com.hotsharp.api.dto.UserDTO;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
+import com.hotsharp.user.domain.po.User;
+import com.hotsharp.user.mapper.UserMapper;
 import com.hotsharp.user.service.IUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,16 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     /**
      * 获取用户信息
      * @param uid 用户ID
      * @return  用户信息
      */
     @GetMapping("/info/get-one")
-    public Result<UserDTO> getOneUserInfo(@RequestParam("uid") Integer uid) {
+    public Result<UserDTO> getUserById(@RequestParam("uid") Integer uid) {
         return Results.success(userService.getUserById(uid));
     }
 
@@ -50,6 +55,5 @@ public class UserController {
     public Result updateUserAvatar(@RequestParam("file") MultipartFile file) {
         return null;
     }
-
 
 }
