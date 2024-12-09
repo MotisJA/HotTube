@@ -17,7 +17,7 @@ hottube:
     tokenTTL: 30m
   auth:
     excludePaths:
-      - /auth/register
-      - /**
+      - /auth/account/register
+      - /auth/account/login
 
 

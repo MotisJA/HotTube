@@ -20,7 +20,7 @@ public class UserInfoInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 从请求头中获取用户信息
-        String userInfo = request.getHeader("user-info");
+        String userInfo = request.getHeader("uid");
 
         // 判断用户信息是否为空，如果不为空则解析并存入 UserContext
         if (StrUtil.isNotBlank(userInfo)) {
@@ -29,7 +29,7 @@ public class UserInfoInterceptor implements HandlerInterceptor {
                 UserContext.setUser(userId); // 存储用户信息到 ThreadLocal
             } catch (NumberFormatException e) {
                 // 如果 user-info 无法解析为 Long，返回 400 错误
-                System.err.println("无效的 user-info 值：" + userInfo);
+                System.err.println("无效的 uid 值：" + userInfo);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return false; // 拦截请求
             }

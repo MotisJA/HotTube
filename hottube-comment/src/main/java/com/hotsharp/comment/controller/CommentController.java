@@ -89,7 +89,7 @@ public class CommentController {
 
         CommentTree commentTree = commentService.sendComment(vid, uid, rootId, parentId, toUserId, content);
         if (commentTree == null) {
-            return Results.failure("500", "发送失败！");
+            return Results.failure(500, "发送失败！");
         }
         return Results.success(commentTree);
     }

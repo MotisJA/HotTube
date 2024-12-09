@@ -16,8 +16,6 @@ public class MsgUnreadController {
     @Autowired
     private MsgUnreadService msgUnreadService;
 
-    private UserContext currentUser;
-
     /**
      * 获取当前用户全部消息未读数
      * @return
@@ -25,7 +23,7 @@ public class MsgUnreadController {
     @Operation(summary = "获取当前用户全部消息未读数")
     @GetMapping("/all")
     public Result getMsgUnread() {
-        Integer uid = currentUser.getUserId();
+        Integer uid = UserContext.getUserId();
         return Results.success(msgUnreadService.getUnread(uid));
     }
 
@@ -36,7 +34,7 @@ public class MsgUnreadController {
     @Operation(summary = "清除某一列的未读消息提示")
     @PostMapping("/clear")
     public void clearUnread(@RequestParam("column") String column) {
-        Integer uid = currentUser.getUserId();
+        Integer uid = UserContext.getUserId();
         msgUnreadService.clearUnread(uid, column);
     }
 }
