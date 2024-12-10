@@ -30,11 +30,11 @@ public interface IUserAccountService {
 //     */
 //    Result adminLogin(String username, String password);
 
-//    /**
-//     * 获取用户个人信息
-//     * @return CustomResponse对象
-//     */
-//    Result personalInfo();
+    /**
+     * 获取用户个人信息
+     * @return CustomResponse对象
+     */
+    Result personalInfo();
 //
 //    /**
 //     * 获取管理员个人信息

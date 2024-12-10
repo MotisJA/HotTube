@@ -6,16 +6,13 @@ import com.hotsharp.common.result.Results;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @Tag(name = "用户登录认证接口")
 @RestController
-@RequestMapping("/auth/account")
+@RequestMapping("/auth")
 public class UserAccountController {
 
     @Autowired
@@ -27,7 +24,7 @@ public class UserAccountController {
      * @return CustomResponse对象
      */
     @Operation(summary = "用户注册接口")
-    @PostMapping("/register")
+    @PostMapping("/account/register")
     public Result register(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -46,12 +43,20 @@ public class UserAccountController {
      * @return CustomResponse对象
      */
     @Operation(summary = "用户登录接口")
-    @PostMapping("/login")
+    @PostMapping("/account/login")
     public Result login(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
         return userAccountService.login(username, password);
     }
 
-
+    /**
+     * 获取当前登录用户信息接口
+     * @return CustomResponse对象
+     */
+    @Operation(summary = "获取当前登录用户信息接口")
+    @GetMapping("/account/info")
+    public Result personalInfo() {
+        return userAccountService.personalInfo();
+    }
 }

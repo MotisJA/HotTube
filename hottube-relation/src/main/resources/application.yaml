@@ -1,52 +1,7 @@
 server:
-  port: 50006
+  port: 40002
 spring:
-  application:
-    name: relation-service # ?????
-  profiles:
-    active: dev
-  datasource:
-    url: jdbc:mysql://${hotsharp.db.host}:3306/hottube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ${hotsharp.db.pw}
   cloud:
     nacos:
-      server-addr: 172.31.170.153:8848
-mybatis-plus:
-  configuration:
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
-  global-config:
-    db-config:
-      update-strategy: not_null
-      id-type: auto
-logging:
-  level:
-    com.hotsharp: debug
-  pattern:
-    dateformat: HH:mm:ss:SSS
-  file:
-    path: "logs/${spring.application.name}"
-# springdoc-openapi????
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
-      packages-to-scan: com.hotsharp.relation.controller
-# knife4j???????????????
-knife4j:
-  enable: true
-  setting:
-    language: zh_cn
-hottube:
-  jwt:
-    location: classpath:hottube.jks
-    alias: hottube
-    password: hottube123
-    tokenTTL: 30m
+      discovery:
+        namespace: ${hotsharp.nacos.namespace}

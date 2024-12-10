@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: relation-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 49.235.47.8:8848
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: shared-mybatis-plus.yaml
+          - data-id: shared-log.yaml
+          - data-id: shared-openapi.yaml
+          - data-id: shared-datasource-motisja.yaml

@@ -1,0 +1,6 @@
+hotsharp:
+  db:
+    host: 49.235.47.8
+    pw: admin@123
+  nacos:
+    namespace: b62f0c48-d9bd-4496-aaf4-4f380dfbe1ee

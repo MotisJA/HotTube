@@ -1,6 +1,7 @@
 package com.hotsharp.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hotsharp.api.client.UserClient;
 import com.hotsharp.api.dto.UserDTO;
 import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.mapper.UserMapper;
@@ -9,6 +10,8 @@ import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
+import com.hotsharp.common.utils.UserContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,34 +31,32 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserAccountServiceImpl implements IUserAccountService {
-//    @Autowired
-//    private UserService userService;
+
+    private final UserClient userClient;
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
     private UserMapper userMapper;
-//
+
 //    @Autowired
 //    private MsgUnreadMapper msgUnreadMapper;
-//
+
 //    @Autowired
 //    private FavoriteMapper favoriteMapper;
-//
+
 //    @Autowired
 //    private RedisUtil redisUtil;
-//
+
     @Autowired
     private JwtUtil jwtUtil;
-//
+
 //    @Autowired
 //    private ESUtil esUtil;
-//
-//    @Autowired
-//    private CurrentUser currentUser;
-//
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -234,5 +235,23 @@ public class UserAccountServiceImpl implements IUserAccountService {
         return Results.success(final_map).setMessage("登录成功");
     }
 
+    /**
+     * 获取用户个人信息
+     * @return CustomResponse对象
+     */
+    @Override
+    public Result personalInfo() {
+        Integer loginUserId = UserContext.getUserId();
+        UserDTO userDTO = userClient.getUserById(loginUserId).getData();
 
+        // 检查账号状态，1 表示封禁中，不允许登录，2表示账号注销了
+        if (userDTO.getState() == 2) {
+            return Results.failure(404, "账号已注销");
+        }
+        if (userDTO.getState() == 1) {
+            return Results.failure(403, "账号异常，封禁中");
+        }
+
+        return Results.success(userDTO);
+    }
 }
