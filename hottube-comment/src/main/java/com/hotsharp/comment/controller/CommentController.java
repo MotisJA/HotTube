@@ -17,13 +17,12 @@ import java.util.Map;
 
 @Tag(name = "评论操作接口")
 @RestController
-@RequestMapping("/comment")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
-    @Autowired
-    private UserContext currentUser;
+//    @Autowired
+//    private UserContext currentUser;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -35,7 +34,7 @@ public class CommentController {
      * @return  评论树列表
      */
     @Operation(summary = "获取评论树列表")
-    @GetMapping("/get")
+    @GetMapping("/comment/get")
     public Result getCommentTreeByVid(@RequestParam("vid") Integer vid,
                                       @RequestParam("offset") Long offset,
                                       @RequestParam("type") Integer type) {
@@ -63,7 +62,7 @@ public class CommentController {
      * @return 完整的一棵包含全部评论的评论树
      */
     @Operation(summary = "展开更多回复评论")
-    @GetMapping("/reply/get-more")
+    @GetMapping("/comment/reply/get-more")
     public CommentTree getMoreCommentById(@RequestParam("id") Integer id) {
         return commentService.getMoreCommentsById(id);
     }
@@ -78,14 +77,14 @@ public class CommentController {
      * @return  响应对象
      */
     @Operation(summary = "发表评论")
-    @PostMapping("/add")
+    @PostMapping("/comment/add")
     public Result addComment(
             @RequestParam("vid") Integer vid,
             @RequestParam("root_id") Integer rootId,
             @RequestParam("parent_id") Integer parentId,
             @RequestParam("to_user_id") Integer toUserId,
             @RequestParam("content") String content ) {
-        Integer uid = currentUser.getUserId();
+        Integer uid = UserContext.getUserId();
 
         CommentTree commentTree = commentService.sendComment(vid, uid, rootId, parentId, toUserId, content);
         if (commentTree == null) {
@@ -100,9 +99,9 @@ public class CommentController {
      * @return  响应对象
      */
     @Operation(summary = "删除评论")
-    @PostMapping("/delete")
+    @PostMapping("/comment/delete")
     public Result delComment(@RequestParam("id") Integer id) {
-        Integer loginUid = currentUser.getUserId();
+        Integer loginUid = UserContext.getUserId();
         return commentService.deleteComment(id, loginUid, false);
     }
 }

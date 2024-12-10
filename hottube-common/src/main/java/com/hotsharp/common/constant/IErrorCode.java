@@ -22,7 +22,7 @@ public interface IErrorCode {
     /**
      * 错误码
      */
-    String code();
+    Integer code();
 
     /**
      * 错误信息

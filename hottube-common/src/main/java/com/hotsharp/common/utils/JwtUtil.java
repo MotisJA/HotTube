@@ -1,5 +1,6 @@
 package com.hotsharp.common.utils;
 
+import com.hotsharp.common.exception.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +87,10 @@ public class JwtUtil {
                     .getBody();
         } catch (ExpiredJwtException eje) {
             claims = null;
-//            log.error("获取token信息异常，jwt已过期");
+            log.error("获取token信息异常，jwt已过期");
         } catch (Exception e) {
             claims = null;
-//            log.error("获取token信息失败", e);
+            log.error("获取token信息失败", e);
         }
         return claims;
     }
@@ -160,6 +161,7 @@ public class JwtUtil {
         } catch (Exception e) {
             subject = null;
             log.error("从token里获取不到主题", e);
+            throw new UnauthorizedException("无效的token");
         }
         return subject;
     }

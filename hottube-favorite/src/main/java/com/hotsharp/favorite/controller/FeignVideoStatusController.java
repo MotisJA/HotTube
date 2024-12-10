@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("favorite")
 public class FeignVideoStatusController {
 
     @Autowired
@@ -19,14 +18,14 @@ public class FeignVideoStatusController {
     @Autowired
     private VideoStatusService videoStatsService;
 
-    @GetMapping("/video/status/{vid}")
+    @GetMapping("/favorite/video/status/{vid}")
     public VideoStatusDTO getVideoStatusByVid(@PathVariable("vid") Integer vid) {
         VideoStatusDTO videoStatusDTO = new VideoStatusDTO();
         BeanUtils.copyProperties(videoStatusMapper.selectById(vid), videoStatusDTO);
         return videoStatusDTO;
     }
 
-    @PostMapping("/video/status/update")
+    @PostMapping("/favorite/video/status/update")
     public Result updateStatus(@RequestParam("vid") Integer vid,
                                @RequestParam("column") String column,
                                @RequestParam("increase") boolean increase,
