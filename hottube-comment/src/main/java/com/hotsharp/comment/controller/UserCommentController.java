@@ -7,6 +7,7 @@ import com.hotsharp.common.utils.UserContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +16,9 @@ import java.util.Map;
 @Tag(name = "用户评论点赞点踩接口")
 @Slf4j
 @RestController
-@RequestMapping("/comment")
 public class UserCommentController {
-    @Autowired
-    private UserContext currentUser;
+//    @Autowired
+//    private UserContext currentUser;
 
     @Autowired
     private UserCommentService userCommentService;
@@ -27,9 +27,9 @@ public class UserCommentController {
      * 获取用户点赞点踩评论集合
      */
     @Operation(summary = "获取用户点赞点踩评论集合")
-    @GetMapping("/get-like-and-dislike")
+    @GetMapping("/comment/get-like-and-dislike")
     public Result getLikeAndDislike() {
-        Integer uid = currentUser.getUserId();
+        Integer uid = UserContext.getUserId();
         return Results.success(userCommentService.getUserLikeAndDislike(uid));
     }
 
@@ -40,11 +40,11 @@ public class UserCommentController {
      * @param isSet  true 点 false 取消
      */
     @Operation(summary = "点赞或点踩某条评论")
-    @PostMapping("/love-or-not")
+    @PostMapping("/comment/love-or-not")
     public Result loveOrNot(@RequestParam("id") Integer id,
                           @RequestParam("isLike") boolean isLike,
                           @RequestParam("isSet") boolean isSet) {
-        Integer uid = currentUser.getUserId();
+        Integer uid = UserContext.getUserId();
         userCommentService.userSetLikeOrUnlike(uid, id, isLike, isSet);
         return Results.success();
     }
@@ -55,7 +55,7 @@ public class UserCommentController {
      * @return  点赞的评论id列表
      */
     @Operation(summary = "获取UP主觉得很淦的评论")
-    @GetMapping("/get-up-like")
+    @GetMapping("/comment/get-up-like")
     public Result getUpLike(@RequestParam("uid") Integer uid) {
         Map<String, Object> map = userCommentService.getUserLikeAndDislike(uid);
         return Results.success(map.get("userLike"));

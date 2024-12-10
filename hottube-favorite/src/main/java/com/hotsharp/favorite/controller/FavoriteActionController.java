@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Tag(name = "用户收藏点赞动作接口")
 @RestController
-@RequestMapping("/favorite")
 public class FavoriteActionController {
 
     @Autowired
@@ -39,7 +38,7 @@ public class FavoriteActionController {
      * @return 返回用户与该视频更新后的交互数据
      */
     @Operation(summary = "点赞或点踩")
-    @PostMapping("/video/love-or-not")
+    @PostMapping("/favorite/video/love-or-not")
     public Result<UserVideo> loveOrNot(@RequestParam("vid") Integer vid,
                                        @RequestParam("isLove") boolean isLove,
                                        @RequestParam("isSet") boolean isSet) {
@@ -53,7 +52,7 @@ public class FavoriteActionController {
      * @return  收藏了该视频的收藏夹列表
      */
     @Operation(summary = "获取用户收藏了该视频的收藏夹列表")
-    @GetMapping("/video/collected-fids")
+    @GetMapping("/favorite/video/collected-fids")
     public Result<?> getCollectedFids(@RequestParam("vid") Integer vid) {
         Integer uid = UserContext.getUserId();
         Set<Integer> fids = favoriteService.findFidsOfUserFavorites(uid);
@@ -69,7 +68,7 @@ public class FavoriteActionController {
      * @return  无数据返回
      */
     @Operation(summary = "收藏或取消收藏某视频")
-    @PostMapping("/video/collect")
+    @PostMapping("/favorite/video/collect")
     public Result<?> collectVideo(@RequestParam("vid") Integer vid,
                                   @RequestParam("adds") String[] addArray,
                                   @RequestParam("removes") String[] removeArray) {
@@ -105,7 +104,7 @@ public class FavoriteActionController {
      * @return  响应对象
      */
     @Operation(summary = "取消单个视频在单个收藏夹的收藏")
-    @PostMapping("/video/cancel-collect")
+    @PostMapping("/favorite/video/cancel-collect")
     public Result<?> cancelCollect(@RequestParam("vid") Integer vid, @RequestParam("fid") Integer fid) {
         Integer uid = UserContext.getUserId();
         Set<Integer> fids = favoriteService.findFidsOfUserFavorites(uid);

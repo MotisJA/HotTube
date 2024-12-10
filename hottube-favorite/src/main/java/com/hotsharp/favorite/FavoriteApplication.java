@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients(basePackages = "com.hotsharp.api.client", defaultConfiguration = DefaultFeignConfig.class)
 @MapperScan("com.hotsharp.favorite.mapper")
 @SpringBootApplication
-@ComponentScan("com.hotsharp.common.utils")
+@ComponentScan({"com.hotsharp.common.utils", "com.hotsharp.favorite"})
 public class FavoriteApplication {
     public static void main(String[] args) {
         SpringApplication.run(FavoriteApplication.class, args);

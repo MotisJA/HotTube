@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Tag(name = "收藏夹获取和创建接口")
-@RequestMapping("/favorite")
 @RestController
 public class FavoriteController {
 
@@ -27,7 +26,7 @@ public class FavoriteController {
      * @return  包含收藏夹列表的响应对象
      */
     @Operation(summary = "获取用户的收藏夹列表")
-    @GetMapping("/get-all/user")
+    @GetMapping("/favorite/get-all/user")
     public Result<List<Favorite>> getAllFavoritesForUser(@RequestParam("uid") Integer uid){
         // 获取当前用户
         Integer loginUid = UserContext.getUserId();
@@ -43,7 +42,7 @@ public class FavoriteController {
      * @return  包含收藏夹列表的响应对象
      */
     @Operation(summary = "游客请求某个用户的收藏夹列表")
-    @GetMapping("/get-all/visitor")
+    @GetMapping("/favorite/get-all/visitor")
     public Result<List<Favorite>> getAllFavoritiesForVisitor(@RequestParam("uid") Integer uid) {
         return Results.success(favoriteService.getFavorites(uid, false));
     }
@@ -56,7 +55,7 @@ public class FavoriteController {
      * @return  包含新创建的收藏夹信息的响应对象
      */
     @Operation(summary = "创建一个新收藏夹")
-    @PostMapping("/create")
+    @PostMapping("/favorite/create")
     public Result<Favorite> createFavorite(@RequestParam("title") String title,
                                            @RequestParam("desc") String desc,
                                            @RequestParam("visible") Integer visible) {
