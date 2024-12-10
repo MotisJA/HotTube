@@ -12,3 +12,18 @@ hottube:
     alias: hottube
     password: hottube123
     tokenTTL: 30m
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+api-docs:
+  path: v3/api-docs # 指定生成文档的路径，网关会访问这个路径来拉取文档
+group-configs:
+  - group: 'default'
+    paths-to-match: '/**'
+    packages-to-scan: com.hotsharp.auth.controller # 指定要扫描的包
+knife4j:
+  enable: true  # 开启knife4j接口文档美化
+  setting:
+    language: zh_cn # 指定语言

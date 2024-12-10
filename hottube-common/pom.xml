@@ -55,7 +55,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-
         <!--caffeine-->
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
@@ -89,7 +88,6 @@
             <artifactId>jakarta.json</artifactId>
             <version>2.0.1</version>
         </dependency>
-        <!--JSON解析器-->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
@@ -157,6 +155,11 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
