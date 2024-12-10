@@ -1,14 +1,7 @@
 server:
   port: 40001
 spring:
-  datasource:
-    url: jdbc:mysql://${hotsharp.db.host}:3306/hottube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ${hotsharp.db.pw}
-hottube:
-  jwt:
-    location: classpath:hottube.jks
-    alias: hottube
-    password: hottube123
-    tokenTTL: 30m
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${hotsharp.nacos.namespace}

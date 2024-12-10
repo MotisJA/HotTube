@@ -2,7 +2,6 @@ package com.hotsharp.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hotsharp.api.dto.UserDTO;
-import com.hotsharp.auth.config.JwtProperties;
 import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.mapper.UserMapper;
 import com.hotsharp.auth.service.IUserAccountService;
@@ -10,17 +9,20 @@ import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
-import org.springframework.security.authentication.AuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
@@ -56,9 +58,6 @@ public class UserAccountServiceImpl implements IUserAccountService {
 //
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtProperties jwtProperties;
 
     @Autowired
     private AuthenticationProvider authenticationProvider;

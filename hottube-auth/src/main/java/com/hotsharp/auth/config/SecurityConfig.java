@@ -1,9 +1,9 @@
 package com.hotsharp.auth.config;
 
 import com.hotsharp.auth.config.filter.JwtAuthenticationTokenFilter;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,40 +19,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.security.KeyPair;
 import java.util.Objects;
 
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(JwtProperties.class)
 @EnableWebSecurity
 public class SecurityConfig {
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
+    @Resource
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
+    /**
+     * 密码BCrypt加密
+     * @return BCrypt加密后的密码
+     */
     @Bean
-    public KeyPair keyPair(JwtProperties properties){
-        // 获取秘钥工厂
-        KeyStoreKeyFactory keyStoreKeyFactory =
-                new KeyStoreKeyFactory(
-                        properties.getLocation(),
-                        properties.getPassword().toCharArray());
-        //读取钥匙对
-        return keyStoreKeyFactory.getKeyPair(
-                properties.getAlias(),
-                properties.getPassword().toCharArray());
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**
@@ -128,7 +117,7 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
 //                        // 其他地址的访问均需验证权限
 //                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 )
                 // 添加 JWT 过滤器，JWT 过滤器在用户名密码认证过滤器之前
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

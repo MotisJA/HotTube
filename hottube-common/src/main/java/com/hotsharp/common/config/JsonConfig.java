@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.math.BigInteger;
 
-@Configuration
+//@Configuration
 public class JsonConfig {
 //    @Bean
 //    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {

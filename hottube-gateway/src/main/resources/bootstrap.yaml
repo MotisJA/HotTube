@@ -6,9 +6,14 @@ spring:
   cloud:
     nacos:
       server-addr: 49.235.47.8:8848
+      discovery:
+        metadata:
+          response-timeout: 10000
+          connect-timeout: 3000
+        namespace: b62f0c48-d9bd-4496-aaf4-4f380dfbe1ee
       config:
         file-extension: yaml
         shared-configs:
           - data-id: shared-log.yaml
           - data-id: shared-mybatis-plus.yaml
-#          - data-id: shared-openapi.yaml
+          - data-id: shared-datasource-motisja.yaml

@@ -53,8 +53,8 @@ public class JwtUtil {
                 .setId(uuid)    // 随机id，用于生成无规则token
                 .setSubject(uid)    // 加密主体
                 .claim("role", role)    // token角色参数 user/admin 用于区分普通用户和管理员
-                .setIssuer("https://api.teriteri.fun")      // 发行方  都是用来验证token合法性的，可以不设置，
-                .setAudience("https://www.teriteri.fun")    // 接收方  本项目也没有额外用来验证合法性的逻辑
+                .setIssuer("https://api.hotsharp.fun")      // 发行方  都是用来验证token合法性的，可以不设置，
+                .setAudience("https://www.hotsharp.fun")    // 接收方  本项目也没有额外用来验证合法性的逻辑
                 .signWith(secretKey, signatureAlgorithm)
                 .setIssuedAt(now)
                 .setExpiration(expDate)

@@ -11,5 +11,6 @@ spring:
         shared-configs:
           - data-id: shared-mybatis-plus.yaml
           - data-id: shared-log.yaml
-#          - data-id: shared-openapi.yaml
+          - data-id: shared-openapi.yaml
           - data-id: shared-redis.yaml
+          - data-id: shared-datasource-motisja.yaml
