@@ -12,12 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConditionalOnClass(DispatcherServlet.class)
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private UserInfoInterceptor userInfoInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(userInfoInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(new UserInfoInterceptor()).addPathPatterns("/**");
     }
 
 }

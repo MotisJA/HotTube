@@ -79,7 +79,7 @@ public class FavoriteActionController {
         Set<Integer> removeSet = Arrays.stream(removeArray).map(Integer::parseInt).collect(Collectors.toSet());
         boolean allElementsInFids = fids.containsAll(addSet) && fids.containsAll(removeSet);    // 判断添加或移出的收藏夹是否都属于该用户
         if (!allElementsInFids) {
-            return Results.failure("403", "无权操作该收藏夹");
+            return Results.failure(403, "无权操作该收藏夹");
         }
         Set<Integer> collectedFids = favoriteVideoService.findFidsOfCollected(vid, fids);   // 原本该用户已收藏该视频的收藏夹ID集合
         if (!addSet.isEmpty()) {
@@ -112,7 +112,7 @@ public class FavoriteActionController {
         Set<Integer> removeSet = new HashSet<>();
         removeSet.add(fid);
         if (!fids.containsAll(removeSet)) {
-            return Results.failure("403", "无权操作该收藏夹");
+            return Results.failure(403, "无权操作该收藏夹");
         }
         Set<Integer> collectedFids = favoriteVideoService.findFidsOfCollected(vid, fids);   // 原本该用户已收藏该视频的收藏夹ID集合
         favoriteVideoService.removeFromFav(uid, vid, removeSet);

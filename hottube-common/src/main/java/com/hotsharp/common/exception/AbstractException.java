@@ -29,7 +29,7 @@ import java.util.Optional;
 @Getter
 public abstract class AbstractException extends RuntimeException {
 
-    public final String errorCode;
+    public final Integer errorCode;
 
     public final String errorMessage;
 
