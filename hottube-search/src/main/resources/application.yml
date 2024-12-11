@@ -1,0 +1,7 @@
+server:
+  port: 40007
+spring:
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${hotsharp.nacos.namespace}
