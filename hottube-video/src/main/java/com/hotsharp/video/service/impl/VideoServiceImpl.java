@@ -2,11 +2,11 @@ package com.hotsharp.video.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.hotsharp.common.constant.VideoConstant;
+import com.hotsharp.common.domain.Video;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.mapper.VideoMapper;
 import com.hotsharp.video.pojo.dto.VideoInitDTO;
-import com.hotsharp.video.pojo.entity.Video;
 import com.hotsharp.video.pojo.vo.VideoUploadVo;
 import com.hotsharp.video.properties.FileProperty;
 import com.hotsharp.video.properties.MinioProperty;

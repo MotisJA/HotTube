@@ -1,7 +1,6 @@
 package com.hotsharp.common.config;
 
 import com.hotsharp.common.interceptors.UserInfoInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;

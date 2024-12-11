@@ -42,7 +42,7 @@
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <hutool.version>5.8.27</hutool.version>
         <mysql.version>8.0.28</mysql.version>
-        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <elasticsearch.version>7.17.16</elasticsearch.version>
         <knife4j.version>4.5.0</knife4j.version>
     </properties>
 
@@ -103,8 +103,8 @@
                 <version>${knife4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
         </dependencies>

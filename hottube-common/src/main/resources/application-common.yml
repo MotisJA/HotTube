@@ -8,3 +8,6 @@ hotsharp:
     pw: 250@wangqiang
   nacos:
     namespace: b62f0c48-d9bd-4496-aaf4-4f380dfbe1ee
+  elasticsearch:
+    host:
+    port:

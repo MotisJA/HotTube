@@ -1,6 +1,6 @@
 package com.hotsharp.auth.service.impl;
 
-import com.hotsharp.auth.domain.po.User;
+import com.hotsharp.common.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

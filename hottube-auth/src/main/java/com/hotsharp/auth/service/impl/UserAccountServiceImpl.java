@@ -1,40 +1,40 @@
 package com.hotsharp.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.hotsharp.api.client.MessageClient;
 import com.hotsharp.api.client.UserClient;
 import com.hotsharp.api.dto.UserDTO;
-import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.mapper.UserMapper;
 import com.hotsharp.auth.service.IUserAccountService;
+import com.hotsharp.common.domain.User;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.common.utils.UserContext;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserAccountServiceImpl implements IUserAccountService {
 
-    private final UserClient userClient;
+    @Autowired
+    private UserClient userClient;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -66,6 +66,8 @@ public class UserAccountServiceImpl implements IUserAccountService {
     @Autowired
     @Qualifier("taskExecutor")
     private Executor taskExecutor;
+    @Autowired
+    private MessageClient messageClient;
 
     /**
      * 用户注册
@@ -253,5 +255,54 @@ public class UserAccountServiceImpl implements IUserAccountService {
         }
 
         return Results.success(userDTO);
+    }
+
+    /**
+     * 退出登录，清空redis中相关用户登录认证
+     */
+    @Override
+    public void logout() {
+        Integer LoginUserId = UserContext.getUserId();
+        // 清除redis中该用户的登录认证数据
+        redisUtil.delValue("token:user:" + LoginUserId);
+        redisUtil.delValue("security:user:" + LoginUserId);
+        redisUtil.delMember("login_member", LoginUserId);   // 从在线用户集合中移除
+        redisUtil.deleteKeysWithPrefix("whisper:" + LoginUserId + ":"); // 清除全部在聊天窗口的状态
+        messageClient.disconnectUser(LoginUserId);
+    }
+
+    @Override
+    public Result updatePassword(String pw, String npw) {
+        if (npw == null || npw.length() == 0) {
+            return Results.failure(500, "密码不能为空");
+        }
+
+        // 取出当前登录的用户
+        UsernamePasswordAuthenticationToken authenticationToken1 =
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails1 = (UserDetailsImpl) authenticationToken1.getPrincipal();
+        User user = userDetails1.getUser();
+
+        // 验证旧密码
+        UsernamePasswordAuthenticationToken authenticationToken2 =
+                new UsernamePasswordAuthenticationToken(user.getUsername(), pw);
+        try {
+            authenticationProvider.authenticate(authenticationToken2);
+        } catch (Exception e) {
+            return Results.failure(403, "密码不正确");
+        }
+
+        if (Objects.equals(pw, npw)) {
+            return Results.failure(500, "新密码不能与旧密码相同");
+        }
+
+        String encodedPassword = passwordEncoder.encode(npw);  // 密文存储
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("uid", user.getUid()).set("password", encodedPassword);
+        userMapper.update(null, updateWrapper);
+
+        logout();
+        return Results.success();
     }
 }
