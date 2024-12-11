@@ -9,5 +9,5 @@ hotsharp:
   nacos:
     namespace: b62f0c48-d9bd-4496-aaf4-4f380dfbe1ee
   elasticsearch:
-    host:
-    port:
+    host: 172.31.170.153
+    port: 9200
