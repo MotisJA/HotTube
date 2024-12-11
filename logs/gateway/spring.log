@@ -1,0 +1,133 @@
+15:33:12:945  WARN 9156 --- [main] c.a.nacos.client.logging.NacosLogging    : Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+15:33:12:949  INFO 9156 --- [main] c.hotsharp.gateway.GatewayApplication    : No active profile set, falling back to 1 default profile: "default"
+15:33:13:357  INFO 9156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+15:33:13:359  INFO 9156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+15:33:13:373  INFO 9156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+15:33:13:462  WARN 9156 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.hotsharp.gateway]' package. Please check your configuration.
+15:33:13:519  INFO 9156 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=292bf401-45de-38f0-9503-3283395f946c
+15:33:13:643  INFO 9156 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:33:13:645  INFO 9156 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:33:13:646  INFO 9156 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:33:13:775  INFO 9156 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 50000 (http)
+15:33:13:776  INFO 9156 --- [main] o.a.catalina.core.AprLifecycleListener   : An older version [1.2.35] of the Apache Tomcat Native library is installed, while Tomcat recommends a minimum version of [2.0.5]
+15:33:13:776  INFO 9156 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.35] using APR version [1.7.0].
+15:33:13:779  INFO 9156 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1q  5 Jul 2022]
+15:33:13:785  INFO 9156 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+15:33:13:785  INFO 9156 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+15:33:14:121  INFO 9156 --- [main] c.a.nacos.client.config.impl.CacheData   : nacos.cache.data.init.snapshot = true 
+15:33:14:121  INFO 9156 --- [main] c.a.n.client.config.impl.ClientWorker    : [fixed-172.31.170.153_8848] [subscribe] gateway-routes.json+DEFAULT_GROUP
+15:33:14:127  INFO 9156 --- [main] c.a.nacos.client.config.impl.CacheData   : [fixed-172.31.170.153_8848] [add-listener] ok, tenant=, dataId=gateway-routes.json, group=DEFAULT_GROUP, cnt=1
+15:33:14:135  WARN 9156 --- [main] onfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dynamicRouteLoader': Invocation of init method failed
+15:33:14:136  INFO 9156 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+15:33:14:147  INFO 9156 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+15:33:14:162 ERROR 9156 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dynamicRouteLoader': Invocation of init method failed
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:222) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:419) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1762) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:942) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext.refresh(ReactiveWebServerApplicationContext.java:66) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
+	at com.hotsharp.gateway.GatewayApplication.main(GatewayApplication.java:9) ~[classes/:na]
+Caused by: cn.hutool.json.JSONException: A JSONArray text must start with '[' at 1 [character 2 line 1]
+	at cn.hutool.json.JSONTokener.syntaxError(JSONTokener.java:450) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONParser.parseTo(JSONParser.java:111) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.ObjectMapper.mapFromTokener(ObjectMapper.java:254) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.ObjectMapper.mapFromStr(ObjectMapper.java:231) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.ObjectMapper.map(ObjectMapper.java:140) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONArray.<init>(JSONArray.java:168) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONArray.<init>(JSONArray.java:147) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONArray.<init>(JSONArray.java:128) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONArray.<init>(JSONArray.java:110) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONUtil.parseArray(JSONUtil.java:150) ~[hutool-all-5.8.27.jar:5.8.27]
+	at cn.hutool.json.JSONUtil.toList(JSONUtil.java:525) ~[hutool-all-5.8.27.jar:5.8.27]
+	at com.hotsharp.gateway.routers.DynamicRouteLoader.updateConfigInfo(DynamicRouteLoader.java:56) ~[classes/:na]
+	at com.hotsharp.gateway.routers.DynamicRouteLoader.initRouteConfigListener(DynamicRouteLoader.java:50) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 18 common frames omitted
+
+15:33:14:165  WARN 9156 --- [Thread-7] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
+15:33:14:165  WARN 9156 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
+15:33:14:165  WARN 9156 --- [Thread-7] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end
+15:44:17:465  WARN 16220 --- [main] c.a.nacos.client.logging.NacosLogging    : Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+15:44:17:468  INFO 16220 --- [main] c.hotsharp.gateway.GatewayApplication    : No active profile set, falling back to 1 default profile: "default"
+15:44:17:922  INFO 16220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+15:44:17:924  INFO 16220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+15:44:17:943  INFO 16220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+15:44:18:043  WARN 16220 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.hotsharp.gateway]' package. Please check your configuration.
+15:44:18:102  INFO 16220 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=292bf401-45de-38f0-9503-3283395f946c
+15:44:18:230  INFO 16220 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:44:18:231  INFO 16220 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:44:18:233  INFO 16220 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:44:18:402  INFO 16220 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 50000 (http)
+15:44:18:403  INFO 16220 --- [main] o.a.catalina.core.AprLifecycleListener   : An older version [1.2.35] of the Apache Tomcat Native library is installed, while Tomcat recommends a minimum version of [2.0.5]
+15:44:18:403  INFO 16220 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.35] using APR version [1.7.0].
+15:44:18:422  INFO 16220 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1q  5 Jul 2022]
+15:44:18:431  INFO 16220 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+15:44:18:431  INFO 16220 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+15:44:18:793  INFO 16220 --- [main] c.a.nacos.client.config.impl.CacheData   : nacos.cache.data.init.snapshot = true 
+15:44:18:794  INFO 16220 --- [main] c.a.n.client.config.impl.ClientWorker    : [fixed-172.31.170.153_8848] [subscribe] gateway-routes.json+DEFAULT_GROUP
+15:44:18:799  INFO 16220 --- [main] c.a.nacos.client.config.impl.CacheData   : [fixed-172.31.170.153_8848] [add-listener] ok, tenant=, dataId=gateway-routes.json, group=DEFAULT_GROUP, cnt=1
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+15:44:19:915  INFO 16220 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+15:44:20:326  WARN 16220 --- [main] onfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Failed to determine a suitable driver class
+15:44:20:330  INFO 16220 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+15:44:20:340  INFO 16220 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+15:44:20:355 ERROR 16220 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+15:44:20:356  WARN 16220 --- [Thread-7] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
+15:44:20:356  WARN 16220 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
+15:44:20:356  WARN 16220 --- [Thread-7] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end
+15:44:20:357  WARN 16220 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Destruction of the end
