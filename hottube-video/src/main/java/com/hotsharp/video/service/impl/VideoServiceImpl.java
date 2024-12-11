@@ -29,8 +29,8 @@ import java.util.concurrent.CountDownLatch;
 @Component
 public class VideoServiceImpl implements VideoService {
 
-    @Resource
-    private UserContext userContext;
+//    @Resource
+//    private UserContext UserContext;
 
     @Resource
     private RedisUtil redisUtil;
@@ -56,7 +56,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoUploadVo init(VideoInitDTO videoDTO) {
         // 通过文件hash判断文件是否已经上传一部分
-        Integer userId = userContext.getUserId();
+        Integer userId = UserContext.getUserId();
         String userFileHash = videoDTO.getFileHash()+userId;
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
@@ -80,7 +80,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoUploadVo uploadTrunk(MultipartFile file, Integer index, String hash) {
-        Integer userId = userContext.getUserId();
+        Integer userId = UserContext.getUserId();
         String userFileHash = hash+userId;
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
@@ -135,7 +135,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public int ask(String hash) {
-        Integer userId = userContext.getUserId();
+        Integer userId = UserContext.getUserId();
         String userFileHash = hash + userId;
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
@@ -146,7 +146,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public void cancel(String hash) {
         // 删除redis
-        Integer userId = userContext.getUserId();
+        Integer userId = UserContext.getUserId();
         String userFileHash = hash + userId;
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
