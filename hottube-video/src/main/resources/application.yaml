@@ -24,12 +24,10 @@ spring:
     username: ${com.hotsharp.mysql.username}
     password: ${com.hotsharp.mysql.passwd}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  data:
-    redis:
-      host: ${com.hotsharp.redis.host}
-      port: ${com.hotsharp.redis.port}
-      password: ${com.hotsharp.redis.passwd}
-      timeout: 6000ms
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${hotsharp.nacos.namespace}
 # 服务配置
 server:
   port: ${SERVER_PORT:40006}
@@ -39,4 +37,4 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 #    auto-mapping-behavior: partial # 默认值 非嵌套的自动映射
   mapper-locations: classpath:/mapper/**.xml
-  type-aliases-package: com.tube.pojo.entity
+  type-aliases-package: com.hotsharp.pojo.entity

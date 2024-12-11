@@ -2,13 +2,13 @@ package com.hotsharp.video.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.hotsharp.common.constant.VideoConstant;
+import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.common.utils.UserContext;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.mapper.VideoMapper;
 import com.hotsharp.video.pojo.dto.VideoInitDTO;
-import com.hotsharp.video.pojo.entity.Video;
 import com.hotsharp.video.pojo.vo.VideoUploadVo;
 import com.hotsharp.video.properties.FileProperty;
 import com.hotsharp.video.properties.MinioProperty;
@@ -25,7 +25,6 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class VideoServiceImpl implements VideoService {

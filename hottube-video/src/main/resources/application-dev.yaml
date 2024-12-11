@@ -11,7 +11,3 @@ com:
       db: hot-tube
       username: root
       passwd: hottube123
-    redis:
-      host: 47.121.126.119
-      port: 6379
-      passwd: 250@wangqiang

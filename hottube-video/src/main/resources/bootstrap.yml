@@ -12,3 +12,4 @@ spring:
         shared-configs:
           - data-id: shared-log.yaml
           - data-id: shared-openapi.yaml
+          - data-id: shared-redis.yaml

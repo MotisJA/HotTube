@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @Slf4j
 @MapperScan("com.hotsharp.video.mapper")
-@ComponentScan("com.hotsharp.common")
+@ComponentScan({"com.hotsharp.common", "com.hotsharp.video"})
 public class VideoApplication {
 
     public static void main(String[] args) {
