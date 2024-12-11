@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
-@Component
+//@Component
 public class RedisUtil {
 
     @Resource
@@ -30,5 +30,9 @@ public class RedisUtil {
 
     public String get (String key) {
         return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    public void remove(String key) {
+        stringRedisTemplate.delete(key);
     }
 }

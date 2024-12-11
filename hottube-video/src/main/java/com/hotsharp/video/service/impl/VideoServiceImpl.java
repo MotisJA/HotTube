@@ -2,6 +2,8 @@ package com.hotsharp.video.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.hotsharp.common.constant.VideoConstant;
+import com.hotsharp.common.utils.RedisUtil;
+import com.hotsharp.common.utils.UserContext;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.mapper.VideoMapper;
@@ -13,15 +15,12 @@ import com.hotsharp.video.properties.MinioProperty;
 import com.hotsharp.video.service.VideoService;
 import com.hotsharp.video.utils.FfmpegUtil;
 import com.hotsharp.video.utils.MinioUtil;
-import com.hotsharp.video.utils.RedisUtil;
-import com.hotsharp.video.utils.UserUtil;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -32,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class VideoServiceImpl implements VideoService {
 
     @Resource
-    private UserUtil userUtil;
+    private UserContext userContext;
 
     @Resource
     private RedisUtil redisUtil;
@@ -58,11 +57,11 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoUploadVo init(VideoInitDTO videoDTO) {
         // 通过文件hash判断文件是否已经上传一部分
-        Long userId = userUtil.getUserId();
+        Integer userId = userContext.getUserId();
         String userFileHash = videoDTO.getFileHash()+userId;
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
-        VideoUploadVo videoUploadVo = redisUtil.get(key, VideoUploadVo.class);
+        VideoUploadVo videoUploadVo = redisUtil.getObject(key, VideoUploadVo.class);
         // 是则返回上传进度
         if (videoUploadVo != null) {
             return videoUploadVo;
@@ -76,16 +75,19 @@ public class VideoServiceImpl implements VideoService {
         }
         // 存入redis 设置超时时间24h
         videoUploadVo = VideoUploadVo.builder().uploadId(uploadId).build();
-        redisUtil.put(key, videoUploadVo, RedisConstant.VIDEO_UPLOAD_TIMEOUT, TimeUnit.HOURS);
+        redisUtil.setExValue(key, videoUploadVo);
         return videoUploadVo;
     }
 
     @Override
-    public VideoUploadVo uploadTrunk(MultipartFile file, Integer trunkIndex, String uploadId) {
-        String key = RedisConstant.VIDEO_UPLOAD_PREFIX + uploadId;
-        VideoUploadVo uploadVo = redisUtil.get(key, VideoUploadVo.class);
+    public VideoUploadVo uploadTrunk(MultipartFile file, Integer index, String hash) {
+        Integer userId = userContext.getUserId();
+        String userFileHash = hash+userId;
+        String uploadId = DigestUtil.sha256(userFileHash).toString();
+        String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
+        VideoUploadVo uploadVo = redisUtil.getObject(key, VideoUploadVo.class);
         // 查看是否重复上传
-        if (uploadVo.getTrunks().contains(trunkIndex)) return uploadVo;
+        if (uploadVo == null || uploadVo.getTrunk() != index-1) return uploadVo;
         String path = fileProperty.getTmp() + uploadId;
         // 确保目录存在，如果不存在则创建
         File targetDir = new File(path);
@@ -93,14 +95,14 @@ public class VideoServiceImpl implements VideoService {
             targetDir.mkdirs();  // 创建文件夹
         }
         // 将分片文件存储到指定路径，文件名包含分片索引
-        String fileName = trunkIndex + "_" + file.getOriginalFilename();  // 根据分片索引生成文件名
+        String fileName = index + "_" + file.getOriginalFilename();  // 根据分片索引生成文件名
         File targetFile = new File(path, fileName);
         try {
             // 将上传的文件存储到目标文件
             file.transferTo(targetFile);
             // 返回上传成功信息，VideoUploadVo 可以封装上传的状态和信息
-            uploadVo.getTrunks().add(trunkIndex);
-            redisUtil.put(key, uploadVo, RedisConstant.VIDEO_UPLOAD_TIMEOUT, TimeUnit.HOURS);
+            uploadVo.setTrunk(index);
+            redisUtil.setExValue(key, uploadVo);
             return uploadVo;
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,13 +134,48 @@ public class VideoServiceImpl implements VideoService {
         else throw new RuntimeException("error convert : " + uploadId + " url is empty ...");
     }
 
+    @Override
+    public int ask(String hash) {
+        Integer userId = userContext.getUserId();
+        String userFileHash = hash + userId;
+        String uploadId = DigestUtil.sha256(userFileHash).toString();
+        String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
+        VideoUploadVo videoUploadVo = redisUtil.getObject(key, VideoUploadVo.class);
+        return videoUploadVo.getTrunk()+1; // 返回下一个需要上传的分片
+    }
+
+    @Override
+    public void cancel(String hash) {
+        // 删除redis
+        Integer userId = userContext.getUserId();
+        String userFileHash = hash + userId;
+        String uploadId = DigestUtil.sha256(userFileHash).toString();
+        String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
+        redisUtil.removeCache(key);
+        // 找到文件夹 删除文件
+        String path = fileProperty.getTmp() + uploadId;
+        File targetDir = new File(path);
+        deleteFile(targetDir);
+    }
+
+    private void deleteFile(File file) {
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                for (File listFile : file.listFiles()) {
+                    deleteFile(listFile);
+                }
+            }
+            file.delete();
+        }
+    }
+
     /**
      * 更新数据库的url
      * @param uploadId
      * @param url
      */
     private void sendBackUrl(String uploadId, String url) {
-        int videoId = redisUtil.get(RedisConstant.VIDEO_URL_PREFIX + uploadId, Integer.class);
+        int videoId = redisUtil.getObject(RedisConstant.VIDEO_URL_PREFIX + uploadId, Integer.class);
         Video video = new Video();
         video.setVid(videoId);
         video.setVideoUrl(url);

@@ -3,6 +3,7 @@ package com.hotsharp.video.controller;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.video.pojo.dto.VideoInitDTO;
+import com.hotsharp.video.pojo.dto.VideoUploadDTO;
 import com.hotsharp.video.service.VideoService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -31,17 +32,23 @@ public class VideoController {
         return Results.success(videoService.init(videoInitDTO));
     }
 
+    @GetMapping("/video/ask-chunk")
+    public Result askChunk(@RequestParam String hash) {
+        return Results.success(videoService.ask(hash));
+    }
+
     /**
-     * @param file
-     * @param trunkIndex
-     * @param uploadId
      * @return
      */
-    @PostMapping("/video/upload/chunk")
-    public Result upload (@RequestParam MultipartFile file,
-                         @RequestParam Integer trunkIndex,
-                         @RequestParam String uploadId) {
-        return Results.success(videoService.uploadTrunk(file, trunkIndex, uploadId));
+    @PostMapping("/video/upload-chunk")
+    public Result upload (@RequestBody VideoUploadDTO dto) {
+        return Results.success(videoService.uploadTrunk(dto.getChunk(), dto.getIndex(), dto.getHash()));
+    }
+
+    @GetMapping("/video/cancel-upload")
+    public Result cancel(@RequestParam String hash) {
+        videoService.cancel(hash);
+        return Results.success();
     }
 
     @GetMapping("/video/upload/complete")

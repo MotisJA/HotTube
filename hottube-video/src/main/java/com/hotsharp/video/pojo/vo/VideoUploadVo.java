@@ -9,5 +9,5 @@ import java.util.List;
 @Builder
 public class VideoUploadVo {
     private String uploadId;
-    private List<Integer> trunks;
+    private Integer trunk;
 }
