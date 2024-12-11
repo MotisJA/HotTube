@@ -9,13 +9,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/video")
 public class FeignVideoController {
 
     @Resource
     private VideoMapper videoMapper;
 
-    @GetMapping("/{id}")
+    @GetMapping("/video/{id}")
     public Result<VideoDTO> getVideoById(@PathVariable("id") Integer id) {
         VideoDTO videoDTO = new VideoDTO();
         BeanUtils.copyProperties(videoMapper.selectById(id), videoDTO);

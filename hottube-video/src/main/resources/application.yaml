@@ -32,7 +32,7 @@ spring:
       timeout: 6000ms
 # 服务配置
 server:
-  port: ${SERVER_PORT:8090}
+  port: ${SERVER_PORT:40006}
 # mp 配置
 mybatis-plus:
   configuration:

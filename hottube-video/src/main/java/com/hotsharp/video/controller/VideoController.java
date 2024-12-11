@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/video")
 public class VideoController {
 
     @Resource
@@ -27,7 +26,7 @@ public class VideoController {
      * @param videoInitDTO
      * @return
      */
-    @PostMapping("/upload/init")
+    @PostMapping("/video/upload/init")
     public Result init (@RequestBody VideoInitDTO videoInitDTO) {
         return Results.success(videoService.init(videoInitDTO));
     }
@@ -38,14 +37,14 @@ public class VideoController {
      * @param uploadId
      * @return
      */
-    @PostMapping("/upload/chunk")
+    @PostMapping("/video/upload/chunk")
     public Result upload (@RequestParam MultipartFile file,
                          @RequestParam Integer trunkIndex,
                          @RequestParam String uploadId) {
         return Results.success(videoService.uploadTrunk(file, trunkIndex, uploadId));
     }
 
-    @GetMapping("/upload/complete")
+    @GetMapping("/video/upload/complete")
     public Result complete (@RequestParam String uploadId) {
         videoService.complete(uploadId);
         return Results.success();
