@@ -3,6 +3,7 @@ spring:
     name: message-service
   profiles:
     active: dev
+    include: common
   cloud:
     nacos:
       server-addr: 49.235.47.8:8848
