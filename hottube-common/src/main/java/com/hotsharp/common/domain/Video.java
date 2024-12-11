@@ -1,15 +1,25 @@
-package com.hotsharp.api.dto;
+package com.hotsharp.common.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 视频表
+ * @TableName video
+ */
 @Data
-public class VideoDTO implements Serializable {
+@TableName("video")
+@Accessors(chain = true)
+public class Video implements Serializable {
     /**
      * 视频ID
      */
+    @TableId
     private Integer vid;
 
     /**

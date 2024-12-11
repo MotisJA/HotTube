@@ -1,8 +1,8 @@
 package com.hotsharp.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.mapper.UserMapper;
+import com.hotsharp.common.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

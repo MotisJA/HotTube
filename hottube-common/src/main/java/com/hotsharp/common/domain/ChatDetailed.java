@@ -1,4 +1,4 @@
-package com.hotsharp.message.domain.po;
+package com.hotsharp.common.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

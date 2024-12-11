@@ -5,3 +5,4 @@ spring:
     nacos:
       discovery:
         namespace: ${hotsharp.nacos.namespace}
+

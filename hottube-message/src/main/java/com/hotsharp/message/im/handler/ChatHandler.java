@@ -4,7 +4,6 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.api.client.UserClient;
 import com.hotsharp.common.utils.RedisUtil;
-import com.hotsharp.message.domain.po.ChatDetailed;
 import com.hotsharp.message.domain.vo.IMResponse;
 import com.hotsharp.message.im.IMServer;
 import com.hotsharp.message.mapper.ChatDetailedMapper;

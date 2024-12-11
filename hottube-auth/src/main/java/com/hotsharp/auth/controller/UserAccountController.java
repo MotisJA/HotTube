@@ -59,4 +59,24 @@ public class UserAccountController {
     public Result personalInfo() {
         return userAccountService.personalInfo();
     }
+
+    /**
+     * 退出登录接口
+     */
+    @Operation(summary = "退出登录接口")
+    @GetMapping("/account/logout")
+    public void logout() {
+        userAccountService.logout();
+    }
+
+    /**
+     * 修改当前用户密码
+     * @param pw    就密码
+     * @param npw   新密码
+     * @return  响应对象
+     */
+    @PostMapping("/password/update")
+    public Result updatePassword(@RequestParam("pw") String pw, @RequestParam("npw") String npw) {
+        return userAccountService.updatePassword(pw, npw);
+    }
 }

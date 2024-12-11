@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.api.client.FavoriteClient;
 import com.hotsharp.api.client.UserClient;
 import com.hotsharp.api.client.VideoClient;
-import com.hotsharp.api.dto.VideoDTO;
 import com.hotsharp.comment.domain.po.Comment;
 import com.hotsharp.comment.domain.po.CommentTree;
 import com.hotsharp.comment.mapper.CommentMapper;
 import com.hotsharp.comment.service.CommentService;
+import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.RedisUtil;
@@ -183,7 +183,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 判断该用户是否有权限删除这条评论
-        VideoDTO video = videoClient.getVideoById(comment.getVid()).getData();
+        Video video = videoClient.getVideoById(comment.getVid()).getData();
         if (Objects.equals(comment.getUid(), uid) || isAdmin || Objects.equals(video.getUid(), uid)) {
             // 删除评论
             UpdateWrapper<Comment> commentWrapper = new UpdateWrapper<>();

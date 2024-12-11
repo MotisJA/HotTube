@@ -10,10 +10,10 @@ import com.hotsharp.message.im.IMServer;
 import com.hotsharp.message.mapper.ChatMapper;
 import com.hotsharp.message.mapper.MsgUnreadMapper;
 import com.hotsharp.message.service.MsgUnreadService;
+import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import io.netty.channel.*;
 
 import java.util.HashMap;
 import java.util.Map;

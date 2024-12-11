@@ -3,7 +3,6 @@ package com.hotsharp.message.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.common.utils.RedisUtil;
-import com.hotsharp.message.domain.po.ChatDetailed;
 import com.hotsharp.message.mapper.ChatDetailedMapper;
 import com.hotsharp.message.service.ChatDetailedService;
 import lombok.extern.slf4j.Slf4j;

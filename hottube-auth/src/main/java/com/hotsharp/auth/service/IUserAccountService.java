@@ -35,6 +35,10 @@ public interface IUserAccountService {
      * @return CustomResponse对象
      */
     Result personalInfo();
+
+    void logout();
+
+    Result updatePassword(String pw, String npw);
 //
 //    /**
 //     * 获取管理员个人信息

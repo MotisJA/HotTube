@@ -1,7 +1,7 @@
 package com.hotsharp.auth.config.filter;
 
-import com.hotsharp.auth.domain.po.User;
 import com.hotsharp.auth.service.impl.UserDetailsImpl;
+import com.hotsharp.common.domain.User;
 import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
 import jakarta.servlet.FilterChain;
