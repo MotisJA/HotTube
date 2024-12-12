@@ -20,9 +20,9 @@ spring:
       max-file-size: 20MB
       max-request-size: -1
   datasource:
-    url: jdbc:mysql://${com.hotsharp.mysql.host}:${com.hotsharp.mysql.port}/${com.hotsharp.mysql.db}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: ${com.hotsharp.mysql.username}
-    password: ${com.hotsharp.mysql.passwd}
+    url: jdbc:mysql://${hotsharp.db.motisja.host}:3306/hottube?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: ${hotsharp.db.motisja.pw}
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:

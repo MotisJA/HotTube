@@ -5,9 +5,3 @@ com:
       accessKey: dBx9QNbiq9ztwqRChXXO
       secretKey: jeC6bk0rCHyFWn08uKUxSp2cVaAG67t2Jkkc5nqP
       bucket: hottube
-    mysql:
-      host: 47.121.126.119
-      port: 3307
-      db: hot-tube
-      username: root
-      passwd: hottube123

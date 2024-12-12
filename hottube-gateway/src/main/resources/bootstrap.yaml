@@ -17,3 +17,4 @@ spring:
           - data-id: shared-log.yaml
           - data-id: shared-mybatis-plus.yaml
           - data-id: shared-datasource-motisja.yaml
+          - data-id: shared-redis.yaml
