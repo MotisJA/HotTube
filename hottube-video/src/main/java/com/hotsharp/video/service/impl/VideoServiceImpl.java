@@ -1,6 +1,5 @@
 package com.hotsharp.video.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.Video;
@@ -24,8 +23,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -115,10 +117,21 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public void complete(VideoUploadDTO videoUploadDTO) {
         // TODO: 封面上传 写入实体
-        Video video = new Video();
-        BeanUtil.copyProperties(videoUploadDTO, video);
-        video.setUid(UserContext.getUserId());
-        int i = videoMapper.insert(video);
+        Video video = Video.builder()
+                .title(videoUploadDTO.getTitle())
+                .type(videoUploadDTO.getType())
+                .auth(videoUploadDTO.getAuth())
+                .duration(videoUploadDTO.getDuration())
+                .mcId(videoUploadDTO.getMcid())
+                .scId(videoUploadDTO.getScid())
+                .tags(videoUploadDTO.getTags())
+                .desc(videoUploadDTO.getDesc())
+                .uploadDate(new Date())
+                .coverUrl("")
+                .videoUrl("")
+                .uid(UserContext.getUserId()).build();
+        videoMapper.insert(video); // TODO : 返回vid
+        int i = video.getVid();
         Integer userId = UserContext.getUserId();
         String uploadId = videoUploadDTO.getHash() + userId;
         redisUtil.setExValue(RedisConstant.VIDEO_URL_PREFIX + uploadId, i, 24, TimeUnit.HOURS);

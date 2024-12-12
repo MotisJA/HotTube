@@ -1,5 +1,6 @@
 package com.hotsharp.common.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,9 @@ import java.util.Date;
 @Data
 @TableName("video")
 @Accessors(chain = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Video implements Serializable {
     /**
      * 视频ID
@@ -68,6 +72,7 @@ public class Video implements Serializable {
     /**
      * 简介
      */
+    @TableField("`desc`")
     private String desc;
 
     /**

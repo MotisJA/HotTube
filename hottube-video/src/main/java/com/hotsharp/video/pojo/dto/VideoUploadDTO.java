@@ -18,8 +18,8 @@ public class VideoUploadDTO {
     Integer type;
     Integer auth;
     Double duration;
-    String mcId;
-    String scId;
+    String mcid;
+    String scid;
     String tags;
     String desc;
 }
