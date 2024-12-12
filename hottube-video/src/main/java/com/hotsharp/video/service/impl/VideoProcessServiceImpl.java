@@ -100,7 +100,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         File file = new File(dir);
         if (!file.exists()) return "";
         String fullPath = dir + "/" + uploadId + ".m3u8";
-        replaceUrl(fullPath, minioProperty.getBaseUrl()+"video/");
+        replaceUrl(fullPath, minioProperty.getBaseUrl()+"videos/");
         File[] files = file.listFiles();
         // 依次上传和处理
         CountDownLatch latch = new CountDownLatch(files.length);  // 计数器，等待所有文件上传完成
