@@ -14,7 +14,7 @@ file:
 # spring配置
 spring:
   application:
-    name: video-process
+    name: video-service
   servlet:
     multipart:
       max-file-size: 20MB

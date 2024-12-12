@@ -65,5 +65,23 @@ hottube:
       - /v3/api-docs/**
       - /doc.html
       - /webjars/**
+      - /druid/**
+      - /favicon.ico
+      - /video/category/getall
+      - /video/random/visitor
+      - /video/cumulative/visitor
+      - /video/getone
+      - /msg/chat/outline
+      - /video/play/visitor
+      - /favorite/get-all/visitor
+      - /search/**
+      - /comment/get
+      - /comment/reply/get-more
+      - /comment/get-up-like
+      - /user/info/get-one
+      - /video/user-works-count
+      - /video/user-works
+      - /video/user-love
+      - /video/user-collect
 
 

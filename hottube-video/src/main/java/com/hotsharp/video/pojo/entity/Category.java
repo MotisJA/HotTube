@@ -1,5 +1,6 @@
 package com.hotsharp.video.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -35,7 +36,8 @@ public class Category implements Serializable {
     /**
      * 描述
      */
-    private String desc;
+    @TableField("`desc`")
+    private String descr;
 
     /**
      * 推荐标签

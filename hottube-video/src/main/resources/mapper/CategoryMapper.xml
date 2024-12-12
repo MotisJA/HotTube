@@ -9,7 +9,7 @@
             <id property="scId" column="sc_id" jdbcType="VARCHAR"/>
             <result property="mcName" column="mc_name" jdbcType="VARCHAR"/>
             <result property="scName" column="sc_name" jdbcType="VARCHAR"/>
-            <result property="desc" column="desc" jdbcType="VARCHAR"/>
+            <result property="descr" column="desc" jdbcType="VARCHAR"/>
             <result property="rcmTag" column="rcm_tag" jdbcType="VARCHAR"/>
     </resultMap>
 </mapper>

@@ -13,7 +13,6 @@
         <module>hottube-comment</module>
         <module>hottube-auth</module>
         <module>hottube-publish</module>
-        <module>hottube-recommend</module>
         <module>hottube-search</module>
         <module>hottube-video</module>
         <module>hottube-gateway</module>
