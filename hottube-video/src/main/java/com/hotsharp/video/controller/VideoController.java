@@ -41,8 +41,10 @@ public class VideoController {
      * @return
      */
     @PostMapping("/video/upload-chunk")
-    public Result upload (@RequestBody VideoUploadDTO dto) {
-        return Results.success(videoService.uploadTrunk(dto.getChunk(), dto.getIndex(), dto.getHash()));
+    public Result upload (@RequestParam("chunk") MultipartFile chunk,
+                          @RequestParam("hash") String hash,
+                          @RequestParam("index") Integer index) {
+        return Results.success(videoService.uploadTrunk(chunk, index, hash));
     }
 
     @GetMapping("/video/cancel-upload")
@@ -51,9 +53,9 @@ public class VideoController {
         return Results.success();
     }
 
-    @GetMapping("/video/upload/complete")
-    public Result complete (@RequestParam String uploadId) {
-        videoService.complete(uploadId);
+    @PostMapping("/video/add")
+    public Result complete (VideoUploadDTO videoUploadDTO) {
+        videoService.complete(videoUploadDTO);
         return Results.success();
     }
 }

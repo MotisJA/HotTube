@@ -1,5 +1,6 @@
 package com.hotsharp.video.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.Video;
@@ -9,6 +10,7 @@ import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.mapper.VideoMapper;
 import com.hotsharp.video.pojo.dto.VideoInitDTO;
+import com.hotsharp.video.pojo.dto.VideoUploadDTO;
 import com.hotsharp.video.pojo.vo.VideoUploadVo;
 import com.hotsharp.video.properties.FileProperty;
 import com.hotsharp.video.properties.MinioProperty;
@@ -25,6 +27,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class VideoServiceImpl implements VideoService {
@@ -81,27 +84,27 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoUploadVo uploadTrunk(MultipartFile file, Integer index, String hash) {
         Integer userId = UserContext.getUserId();
-        String userFileHash = hash+userId;
-        String uploadId = DigestUtil.sha256(userFileHash).toString();
-        String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
+        String uploadId = hash+userId;
+        String key = RedisConstant.VIDEO_UPLOAD_PREFIX + uploadId;
         VideoUploadVo uploadVo = redisUtil.getObject(key, VideoUploadVo.class);
         // 查看是否重复上传
-        if (uploadVo == null || uploadVo.getTrunk() != index-1) return uploadVo;
-        String path = fileProperty.getTmp() + uploadId;
+        if (uploadVo != null && uploadVo.getTrunk() != index-1) return uploadVo;
+        if (null == uploadVo) uploadVo = new VideoUploadVo();
+        String path = System.getProperty("user.dir") + "/" + fileProperty.getTmp() + uploadId;
         // 确保目录存在，如果不存在则创建
         File targetDir = new File(path);
         if (!targetDir.exists()) {
             targetDir.mkdirs();  // 创建文件夹
         }
         // 将分片文件存储到指定路径，文件名包含分片索引
-        String fileName = index + "_" + file.getOriginalFilename();  // 根据分片索引生成文件名
+        String fileName = index + "_" + hash + ".mp4";  // 根据分片索引生成文件名
         File targetFile = new File(path, fileName);
         try {
             // 将上传的文件存储到目标文件
             file.transferTo(targetFile);
             // 返回上传成功信息，VideoUploadVo 可以封装上传的状态和信息
             uploadVo.setTrunk(index);
-            redisUtil.setExValue(key, uploadVo);
+            redisUtil.setExObjectValue(key, uploadVo);
             return uploadVo;
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,14 +113,28 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    public void complete(VideoUploadDTO videoUploadDTO) {
+        // TODO: 封面上传 写入实体
+        Video video = new Video();
+        BeanUtil.copyProperties(videoUploadDTO, video);
+        video.setUid(UserContext.getUserId());
+        int i = videoMapper.insert(video);
+        Integer userId = UserContext.getUserId();
+        String uploadId = videoUploadDTO.getHash() + userId;
+        redisUtil.setExValue(RedisConstant.VIDEO_URL_PREFIX + uploadId, i, 24, TimeUnit.HOURS);
+        merge(videoUploadDTO.getHash());
+    }
+
     @Async("videoProcessThreadPool") // 异步执行
-    public void complete(String uploadId) {
-        String path = fileProperty.getTmp() + uploadId;
+    void merge(String hash) {
+        Integer userId = UserContext.getUserId();
+        String uploadId = hash + userId;
+        String path = System.getProperty("user.dir") + "/" + fileProperty.getTmp() + uploadId;
         File dir = new File(path);
         // 1. 合并文件分片
         String videoPath = mergeChunks(dir, uploadId);
         // 2. 转码 转码后的文件存在m3u8文件夹下
-        String destFolder = fileProperty.getM3u8() + uploadId;
+        String destFolder = System.getProperty("user.dir") + "/" + fileProperty.getM3u8() + uploadId;
         File destDir = new File(destFolder);
         if (!destDir.exists()) destDir.mkdir();
         ffmpegUtil.convertToM3U8(videoPath, destFolder);
@@ -128,6 +145,7 @@ public class VideoServiceImpl implements VideoService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        // TODO: 删除缓存和本地文件
         // 4. 更新数据库中视频文件的信息
         if (StringUtils.isNotEmpty(url)) sendBackUrl(uploadId, url);
         else throw new RuntimeException("error convert : " + uploadId + " url is empty ...");
@@ -140,7 +158,7 @@ public class VideoServiceImpl implements VideoService {
         String uploadId = DigestUtil.sha256(userFileHash).toString();
         String key = uploadId + RedisConstant.VIDEO_UPLOAD_PREFIX;
         VideoUploadVo videoUploadVo = redisUtil.getObject(key, VideoUploadVo.class);
-        return videoUploadVo.getTrunk()+1; // 返回下一个需要上传的分片
+        return videoUploadVo==null ? 0 : videoUploadVo.getTrunk()+1; // 返回下一个需要上传的分片
     }
 
     @Override
@@ -179,7 +197,7 @@ public class VideoServiceImpl implements VideoService {
         video.setVid(videoId);
         video.setVideoUrl(url);
         video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
-        videoMapper.updateById(video); // TODO: 应该是调用publish服务
+        videoMapper.updateById(video);
     }
 
     /**
