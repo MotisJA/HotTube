@@ -56,7 +56,7 @@ public class ChatHandler {
     public static void send(ChannelHandlerContext ctx, TextWebSocketFrame tx) {
         try {
             ChatDetailed chatDetailed = JSONObject.parseObject(tx.text(), ChatDetailed.class);
-//            System.out.println("接收到聊天消息：" + chatDetailed);
+            System.out.println("接收到聊天消息：" + chatDetailed);
 
             // 从channel中获取当前用户id 封装写库
             Integer user_id = (Integer) ctx.channel().attr(AttributeKey.valueOf("userId")).get();
