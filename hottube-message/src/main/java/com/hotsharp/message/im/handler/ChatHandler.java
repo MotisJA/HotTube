@@ -3,6 +3,7 @@ package com.hotsharp.message.im.handler;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.api.client.UserClient;
+import com.hotsharp.common.domain.ChatDetailed;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.message.domain.vo.IMResponse;
 import com.hotsharp.message.im.IMServer;

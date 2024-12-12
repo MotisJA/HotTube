@@ -83,6 +83,7 @@ public class SearchController {
         return Results.success(searchService.getCount(keyword));
     }
 
+// TODO
 //    /**
 //     * 搜索相关已过审视频
 //     * @param keyword   关键词
@@ -109,7 +110,6 @@ public class SearchController {
     public Result getMatchingUser(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page) throws UnsupportedEncodingException {
         keyword = URLDecoder.decode(keyword, "UTF-8");  // 解码经过url传输的字符串
         List<Integer> uids = esUtil.searchUsersByKeyword(keyword, page, 30);
-//        return Results.success(userClient.getUserByIdList(uids));
-        return null;
+        return Results.success(userClient.getUserByIdList(uids));
     }
 }

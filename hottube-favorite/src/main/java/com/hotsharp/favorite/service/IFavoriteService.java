@@ -1,7 +1,7 @@
 package com.hotsharp.favorite.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hotsharp.favorite.domain.po.Favorite;
+import com.hotsharp.common.domain.Favorite;
 
 import java.util.List;
 import java.util.Set;

@@ -27,7 +27,7 @@ public class UserInfoInterceptor implements HandlerInterceptor {
         // 判断用户信息是否为空，如果不为空则解析并存入 UserContext
         if (StrUtil.isNotBlank(userInfo)) {
             try {
-                Long userId = Long.valueOf(userInfo);
+                Integer userId = Integer.valueOf(userInfo);
                 UserContext.setUser(userId); // 存储用户信息到 ThreadLocal
             } catch (NumberFormatException e) {
                 // 如果 user-info 无法解析为 Long，返回 400 错误

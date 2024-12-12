@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hotsharp.common.utils.RedisUtil;
-import com.hotsharp.favorite.domain.po.Favorite;
+import com.hotsharp.common.domain.Favorite;
 import com.hotsharp.favorite.mapper.FavoriteMapper;
 import com.hotsharp.favorite.service.IFavoriteService;
 import org.apache.ibatis.session.SqlSessionFactory;

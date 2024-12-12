@@ -3,7 +3,7 @@ package com.hotsharp.favorite.controller;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.UserContext;
-import com.hotsharp.favorite.domain.po.Favorite;
+import com.hotsharp.common.domain.Favorite;
 import com.hotsharp.favorite.service.IFavoriteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,7 +1,7 @@
 package com.hotsharp.message.service;
 
 
-import com.hotsharp.message.domain.po.MsgUnread;
+import com.hotsharp.common.domain.MsgUnread;
 
 public interface MsgUnreadService {
 

@@ -34,9 +34,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Autowired
     private ChatMapper chatMapper;
-//
-//    @Autowired
-//    private UserMapper userMapper;
 
     @Autowired
     private MsgUnreadService msgUnreadService;

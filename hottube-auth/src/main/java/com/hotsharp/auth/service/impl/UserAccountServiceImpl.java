@@ -2,14 +2,18 @@ package com.hotsharp.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.hotsharp.api.client.FavoriteClient;
 import com.hotsharp.api.client.MessageClient;
 import com.hotsharp.api.client.UserClient;
 import com.hotsharp.api.dto.UserDTO;
 import com.hotsharp.auth.mapper.UserMapper;
 import com.hotsharp.auth.service.IUserAccountService;
+import com.hotsharp.common.domain.Favorite;
+import com.hotsharp.common.domain.MsgUnread;
 import com.hotsharp.common.domain.User;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
+import com.hotsharp.common.utils.ESUtil;
 import com.hotsharp.common.utils.JwtUtil;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.common.utils.UserContext;
@@ -37,6 +41,12 @@ public class UserAccountServiceImpl implements IUserAccountService {
     private UserClient userClient;
 
     @Autowired
+    private MessageClient messageClient;
+
+    @Autowired
+    private FavoriteClient favoriteClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
@@ -54,8 +64,8 @@ public class UserAccountServiceImpl implements IUserAccountService {
     @Autowired
     private JwtUtil jwtUtil;
 
-//    @Autowired
-//    private ESUtil esUtil;
+    @Autowired
+    private ESUtil esUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -66,8 +76,6 @@ public class UserAccountServiceImpl implements IUserAccountService {
     @Autowired
     @Qualifier("taskExecutor")
     private Executor taskExecutor;
-    @Autowired
-    private MessageClient messageClient;
 
     /**
      * 用户注册
@@ -80,43 +88,29 @@ public class UserAccountServiceImpl implements IUserAccountService {
     @Transactional
     public Result register(String username, String password, String confirmedPassword) throws IOException {
         Result result = new Result<>();
-//        CustomResponse customResponse = new CustomResponse();
-//        if (username == null) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("账号不能为空");
-//            return customResponse;
-//        }
-//        if (password == null || confirmedPassword == null) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("密码不能为空");
-//            return customResponse;
-//        }
-//        username = username.trim();   //删掉用户名的空白符
-//        if (username.length() == 0) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("账号不能为空");
-//            return customResponse;
-//        }
-//        if (username.length() > 50) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("账号长度不能大于50");
-//            return customResponse;
-//        }
-//        if (password.length() == 0 || confirmedPassword.length() == 0 ) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("密码不能为空");
-//            return customResponse;
-//        }
-//        if (password.length() > 50 || confirmedPassword.length() > 50 ) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("密码长度不能大于50");
-//            return customResponse;
-//        }
-//        if (!password.equals(confirmedPassword)) {
-//            customResponse.setCode(403);
-//            customResponse.setMessage("两次输入的密码不一致");
-//            return customResponse;
-//        }
+        if (username == null) {
+            return Results.failure(403, "账号不能为空");
+        }
+        if (password == null || confirmedPassword == null) {
+
+            return Results.failure(403, "密码不能为空");
+        }
+        username = username.trim();   //删掉用户名的空白符
+        if (username.length() == 0) {
+            return Results.failure(403, "账号不能为空");
+        }
+        if (username.length() > 50) {
+            return Results.failure(403, "账号长度不能大于50");
+        }
+        if (password.length() == 0 || confirmedPassword.length() == 0 ) {
+            return Results.failure(403, "密码不能为空");
+        }
+        if (password.length() > 50 || confirmedPassword.length() > 50 ) {
+            return Results.failure(403, "密码长度不能大于50");
+        }
+        if (!password.equals(confirmedPassword)) {
+            return Results.failure(403, "两次输入的密码不一致");
+        }
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
@@ -159,11 +153,11 @@ public class UserAccountServiceImpl implements IUserAccountService {
                 null
         );
         userMapper.insert(new_user);
-//        msgUnreadMapper.insert(new MsgUnread(new_user.getUid(),0,0,0,0,0,0));
-//        favoriteMapper.insert(new Favorite(null, new_user.getUid(), 1, 1, null, "默认收藏夹", "", 0, null));
-//        esUtil.addUser(new_user);
-//        result.setMessage("注册成功！欢迎加入T站");
-        return Results.success(user);
+        UserContext.setUser(new_user.getUid());
+        messageClient.insertMsgUnread(new MsgUnread(new_user.getUid(),0,0,0,0,0,0));
+        favoriteClient.insertFavorite(new Favorite(null, new_user.getUid(), 1, 1, null, "默认收藏夹", "", 0, null));
+        esUtil.addUser(new_user);
+        return Results.success(user).setMessage("注册成功！欢迎加入HotTube");
     }
 
     /**

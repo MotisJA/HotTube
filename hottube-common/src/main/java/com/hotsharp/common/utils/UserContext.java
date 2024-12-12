@@ -7,8 +7,8 @@ public class UserContext {
      * 保存当前登录用户信息到ThreadLocal
      * @param userId 用户id
      */
-    public static void setUser(Long userId) {
-        tl.set(userId);
+    public static void setUser(Integer userId) {
+        tl.set(Long.valueOf(userId));
     }
 
     /**
@@ -17,7 +17,10 @@ public class UserContext {
      * @return 用户id
      */
     public static Integer getUserId() {
-        return tl.get().intValue();
+        if(tl.get() != null){
+            return tl.get().intValue();
+        }
+        return null;
     }
 
     /**

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.message.domain.po.Chat;
-import com.hotsharp.message.domain.po.MsgUnread;
+import com.hotsharp.common.domain.MsgUnread;
 import com.hotsharp.message.domain.vo.IMResponse;
 import com.hotsharp.message.im.IMServer;
 import com.hotsharp.message.mapper.ChatMapper;

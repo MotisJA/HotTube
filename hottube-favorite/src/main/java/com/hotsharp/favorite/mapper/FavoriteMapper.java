@@ -1,7 +1,7 @@
 package com.hotsharp.favorite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hotsharp.favorite.domain.po.Favorite;
+import com.hotsharp.common.domain.Favorite;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
