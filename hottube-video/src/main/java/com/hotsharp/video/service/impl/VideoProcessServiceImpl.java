@@ -2,7 +2,9 @@ package com.hotsharp.video.service.impl;
 
 import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.Video;
+import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.video.constant.FileConstant;
+import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.mapper.VideoMapper;
 import com.hotsharp.video.properties.FileProperty;
 import com.hotsharp.video.properties.MinioProperty;
@@ -40,6 +42,9 @@ public class VideoProcessServiceImpl implements VideoProcessService {
     @Resource
     private ThreadPoolTaskExecutor minioUploadThreadPool;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Override
     @Async("videoProcessThreadPool") // 异步执行
     public void merge(int vid, String hash, Integer userId) {
@@ -60,10 +65,29 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // TODO: 删除缓存和本地文件
+        // 删除缓存
+        String key = RedisConstant.VIDEO_UPLOAD_PREFIX + uploadId;
+        redisUtil.removeCache(key);
+        // 删除文件
+        String dir1 = System.getProperty("user.dir") + "/" + fileProperty.getTmp() + uploadId;
+        String dir2 = System.getProperty("user.dir") + "/" + fileProperty.getM3u8() + uploadId;
+        deleteFile(new File(dir1));
+        deleteFile(new File(dir2));
         // 4. 更新数据库中视频文件的信息
         if (StringUtils.isNotEmpty(url)) sendBackUrl(vid, uploadId, url);
         else throw new RuntimeException("error convert : " + uploadId + " url is empty ...");
+    }
+
+    @Override
+    public void deleteFile(File file) {
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                for (File listFile : file.listFiles()) {
+                    deleteFile(listFile);
+                }
+            }
+            file.delete();
+        }
     }
 
     /**
@@ -76,7 +100,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         File file = new File(dir);
         if (!file.exists()) return "";
         String fullPath = dir + "/" + uploadId + ".m3u8";
-        replaceUrl(fullPath, minioProperty.getBaseUrl());
+        replaceUrl(fullPath, minioProperty.getBaseUrl()+"video/");
         File[] files = file.listFiles();
         // 依次上传和处理
         CountDownLatch latch = new CountDownLatch(files.length);  // 计数器，等待所有文件上传完成

@@ -149,17 +149,6 @@ public class VideoServiceImpl implements VideoService {
         // 找到文件夹 删除文件
         String path = fileProperty.getTmp() + uploadId;
         File targetDir = new File(path);
-        deleteFile(targetDir);
-    }
-
-    private void deleteFile(File file) {
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                for (File listFile : file.listFiles()) {
-                    deleteFile(listFile);
-                }
-            }
-            file.delete();
-        }
+        videoProcessService.deleteFile(targetDir);
     }
 }

@@ -16,13 +16,6 @@ public class VideoController {
     private VideoService videoService;
 
     /**
-     * TODO:
-     * 1.客户端发送上传请求 服务端根据文件名判断是否存在上传记录（redis）
-     *      - 如果没有就生成标识-路径 返回同时存入redis
-     * 2.开始上传
-     */
-
-    /**
      * 初始化接口 创建临时目录
      * @param videoInitDTO
      * @return
