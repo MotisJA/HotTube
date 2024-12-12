@@ -14,6 +14,7 @@ spring:
           - data-id: shared-log.yaml
           - data-id: shared-openapi.yaml
           - data-id: shared-datasource-motisja.yaml
+          - data-id: shared-redis.yaml
 # minio配置 文件上传使用
 minio:
   endpoint: ${com.hotsharp.minio.endpoint}

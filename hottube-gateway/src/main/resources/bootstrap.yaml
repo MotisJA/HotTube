@@ -11,7 +11,6 @@ spring:
         metadata:
           response-timeout: 10000
           connect-timeout: 3000
-        namespace: b62f0c48-d9bd-4496-aaf4-4f380dfbe1ee
       config:
         file-extension: yaml
         shared-configs:

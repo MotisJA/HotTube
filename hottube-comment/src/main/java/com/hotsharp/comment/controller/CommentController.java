@@ -24,8 +24,7 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
-//    @Autowired
-//    private UserContext currentUser;
+
     @Autowired
     private RedisUtil redisUtil;
 

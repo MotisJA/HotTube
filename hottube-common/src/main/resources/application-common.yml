@@ -11,3 +11,7 @@ hotsharp:
   elasticsearch:
     host: 172.31.170.153
     port: 9200
+
+feign:
+  okhttp:
+    enabled: true # 开启OKHttp功能
