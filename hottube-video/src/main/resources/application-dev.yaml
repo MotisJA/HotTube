@@ -1,7 +1,7 @@
 com:
   hotsharp:
     minio:
-      endpoint: http://47.121.126.119:9090/
+      endpoint: http://47.121.126.119:9000/
       accessKey: dBx9QNbiq9ztwqRChXXO
       secretKey: jeC6bk0rCHyFWn08uKUxSp2cVaAG67t2Jkkc5nqP
       bucket: hottube

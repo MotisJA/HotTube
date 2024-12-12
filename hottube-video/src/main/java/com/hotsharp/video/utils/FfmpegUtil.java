@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class FfmpegUtil {
     private boolean processM3U8(String videoPath, String destUrl) {
         // 先处理特殊字符防止出错
         videoPath = videoPath.replace(" ", "");
+        destUrl = destUrl.replace("\\", "/");
+        File target = new File(destUrl);
+        if (!target.exists()) target.mkdirs();
         String filename = StringUtils.substringAfterLast(videoPath.replace("\\", "/"), "/");
         filename = StringUtils.substringBefore(filename, ".");
         List commend = new ArrayList();
@@ -63,7 +67,7 @@ public class FfmpegUtil {
         commend.add("-2");
         commend.add("-f");
         commend.add("hls");
-        commend.add(destUrl+filename +".m3u8");
+        commend.add(destUrl+"/"+filename +".m3u8");
         try {
             ProcessBuilder builder = new ProcessBuilder();//java
             builder.command(commend);

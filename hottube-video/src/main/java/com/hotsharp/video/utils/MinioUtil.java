@@ -1,5 +1,6 @@
 package com.hotsharp.video.utils;
 
+import com.hotsharp.common.constant.ContentType;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.properties.MinioProperty;
 import io.micrometer.common.util.StringUtils;
@@ -42,6 +43,31 @@ public class MinioUtil {
         try {
             PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(properties.getBucket()).object(objectName)
                     .stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build();
+            minioClient.putObject(objectArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return objectName;
+    }
+
+    /**
+     * 指定上传类型
+     * @param file
+     * @param contentType
+     * @return
+     */
+    public String upload(MultipartFile file, ContentType contentType) {
+        String originalFilename = file.getOriginalFilename();
+        if (StringUtils.isBlank(originalFilename)) {
+            throw new RuntimeException("上传文件文件名为空");
+        }
+        String preName = originalFilename.substring(0,originalFilename.lastIndexOf("."));
+        String pastName = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String objectName =  preName + UUID.randomUUID() + pastName;
+        try {
+            PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(properties.getBucket()).object(objectName)
+                    .stream(file.getInputStream(), file.getSize(), -1).contentType(contentType.getType()).build();
             minioClient.putObject(objectArgs);
         } catch (Exception e) {
             e.printStackTrace();
