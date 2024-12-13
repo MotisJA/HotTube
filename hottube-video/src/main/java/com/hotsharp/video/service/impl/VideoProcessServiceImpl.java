@@ -98,6 +98,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
     /**
      * 上传流视频到服务器
      *    注意需要更改路径
+     *    TODO: 删除切片视频
      * @param uploadId
      */
     private String uploadM3U8ToMinio(String uploadId) throws InterruptedException {

@@ -211,7 +211,7 @@ public class MinioUtil {
      * 上传File对象 名字不变
      * @param file
      */
-    public void upload(File file, String dir) {
+    public String upload(File file, String dir) {
         String name = file.getName();
         String objectName = FileConstant.MINIO_VIDEO_PREFIX + dir + "/" + name;
         try {
@@ -226,6 +226,7 @@ public class MinioUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return objectName;
     }
 
 }
