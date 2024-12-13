@@ -47,16 +47,23 @@ public class RelationServiceImpl extends ServiceImpl<RelationMapper, Relation> i
         Long follower = form.getFollowerUid();
         Long followed = form.getFollowedUid();
         // 1.校验关注条目是否存在
-        Relation relation = lambdaQuery().eq(Relation::getFollowerId, follower).one();
-        Assert.isNull(relation, "已关注，不可重复关注");
+        Relation relation = lambdaQuery().eq(Relation::getFollowerId, follower).eq(Relation::getFollowedId, followed).one();
 
-        // 2.保存关注条目
-        Relation newRelation = new Relation()
-                .setFollowerId(follower)
-                .setFollowedId(followed)
-                .setStatus(true)
-                .setCreatedDate(LocalDateTime.now());
-        save(newRelation);
+        if(relation != null){
+            // 2.存在则更新条目状态
+            relation.setStatus(form.getStatus());
+            relation.setCreatedDate(LocalDateTime.now());
+            save(relation);
+        }
+        else {
+            // 2.保存关注条目
+            Relation newRelation = new Relation()
+                    .setFollowerId(follower)
+                    .setFollowedId(followed)
+                    .setStatus(true)
+                    .setCreatedDate(LocalDateTime.now());
+            save(newRelation);
+        }
         // 3.返回VO
         RelationVO vo = new RelationVO()
                 .setFollowerId(follower)
@@ -69,7 +76,7 @@ public class RelationServiceImpl extends ServiceImpl<RelationMapper, Relation> i
         Long follower = form.getFollowerUid();
         Long followed = form.getFollowedUid();
         // 1.校验关注条目是否存在
-        Relation relation = lambdaQuery().eq(Relation::getFollowerId, follower).one();
+        Relation relation = lambdaQuery().eq(Relation::getFollowerId, follower).eq(Relation::getFollowedId, followed).one();
         Assert.notNull(relation, "未找到关注条目");
 
         // 2.更新关注条目状态
