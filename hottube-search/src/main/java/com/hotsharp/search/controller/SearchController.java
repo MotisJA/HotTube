@@ -93,7 +93,7 @@ public class SearchController {
     @GetMapping("/search/video/only-pass")
     public Result getMatchingVideo(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page) throws UnsupportedEncodingException {
         keyword = URLDecoder.decode(keyword, "UTF-8");  // 解码经过url传输的字符串
-        List<Integer> vids = esUtil.searchVideosByKeyword(keyword, page, 30, true);
+        List<Integer> vids = esUtil.searchVideosByKeyword(keyword, page, 30, false);
         return Results.success(videoClient.getVideosWithDataByIdList(vids));
     }
 

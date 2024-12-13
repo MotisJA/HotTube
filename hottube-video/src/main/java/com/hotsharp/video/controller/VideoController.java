@@ -148,4 +148,53 @@ public class VideoController {
         customResponse.setData(map);
         return customResponse;
     }
+
+    /**
+     * 累加获取更多视频
+     * @param vids  曾经查询过的视频id列表，用于去重
+     * @return  每次返回新的10条视频，以及其id列表，并标注是否还有更多视频可以获取
+     */
+    @GetMapping("/video/cumulative/visitor")
+    public Result cumulativeVideosForVisitor(@RequestParam("vids") String vids) {
+        Result customResponse = new Result();
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> vidsList = new ArrayList<>();
+        if (vids.trim().length() > 0) {
+            vidsList = Arrays.stream(vids.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());  // 从字符串切分出id列表
+        }
+        Set<Object> set = redisUtil.getMembers("video_status:1");
+        if (set == null) {
+            map.put("videos", new ArrayList<>());
+            map.put("vids", new ArrayList<>());
+            map.put("more", false);
+            customResponse.setData(map);
+            return customResponse;
+        }
+        vidsList.forEach(set::remove);  // 去除已获取的元素
+        Set<Object> idSet = new HashSet<>();    // 存放将要返回的id集合
+        Random random = new Random();
+        // 随机获取10个vid
+        for (int i = 0; i < 10 && !set.isEmpty(); i++) {
+            Object[] arr = set.toArray();
+            int randomIndex = random.nextInt(set.size());
+            idSet.add(arr[randomIndex]);
+            set.remove(arr[randomIndex]);   // 查过的元素移除
+        }
+        List<Map<String, Object>> videoList = new ArrayList<>();
+        if (!idSet.isEmpty()) {
+            videoList = videoService.getVideosWithDataByIds(idSet, 1, 10);
+            Collections.shuffle(videoList);     // 随机打乱列表顺序
+        }
+        map.put("videos", videoList);
+        map.put("vids", idSet);
+        if (!set.isEmpty()) {
+            map.put("more", true);
+        } else {
+            map.put("more", false);
+        }
+        customResponse.setData(map);
+        return customResponse;
+    }
 }
