@@ -417,8 +417,8 @@ CREATE TABLE `relation` (
   `created_date` datetime NOT NULL COMMENT '关注时间',
   `deleted_date` datetime NULL DEFAULT NULL COMMENT '取关时间',
   PRIMARY KEY (`follower_id`) USING BTREE,
-  UNIQUE INDEX `follower_uid`(`follower_id` ASC) USING BTREE,
-  UNIQUE INDEX `followed_uid`(`followed_id` ASC) USING BTREE
+  UNIQUE INDEX `follower_id`(`follower_id` ASC) USING BTREE,
+  UNIQUE INDEX `followed_id`(`followed_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户关注关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
