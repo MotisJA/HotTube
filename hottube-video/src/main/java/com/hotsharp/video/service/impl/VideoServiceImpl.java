@@ -195,7 +195,7 @@ public class VideoServiceImpl implements VideoService {
         int endIndex = startIndex + quantity;
         // 检查数据是否足够满足分页查询
 //        if (startIndex > set.size()) {
-//            // 如果数据不足以填充当前分页，返回空列表 ??? TODO: 没明白为什么不让查询
+//            // 如果数据不足以填充当前分页，返回空列表
 //            return Collections.emptyList();
 //        }
         // 使用线程安全的集合类 CopyOnWriteArrayList 保证多线程处理共享List不会出现并发问题
@@ -282,7 +282,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<Integer> getActiveVideoIds() {
         QueryWrapper<Video> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("status", 2);
+        queryWrapper.eq("status", 1);
         queryWrapper.select("vid");
         return videoMapper.selectObjs(queryWrapper);
     }
