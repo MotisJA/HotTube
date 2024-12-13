@@ -75,7 +75,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         String key = RedisConstant.VIDEO_UPLOAD_PREFIX + uploadId;
         redisUtil.removeCache(key);
         // 删除文件
-        String dir1 = System.getProperty("user.dir") + "/" + fileProperty.getTmp() + uploadId;
+        String dir1 = System.getProperty("user.dir") + "/" + fileProperty.getTmp() + uploadId; // TODO : 路径没删掉 不知道为什么
 //        String dir2 = System.getProperty("user.dir") + "/" + fileProperty.getM3u8() + uploadId;
         deleteFile(new File(dir1));
 //        deleteFile(new File(dir2));
