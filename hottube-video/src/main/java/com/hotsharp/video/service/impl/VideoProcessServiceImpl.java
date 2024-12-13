@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoProcessServiceImpl implements VideoProcessService {
@@ -170,12 +172,13 @@ public class VideoProcessServiceImpl implements VideoProcessService {
     private void sendBackUrl(int vid, String uploadId, String url) {
         Video video = videoMapper.selectById(vid);
         video.setVideoUrl(url);
-        video.setStatus(VideoConstant.VIDEO_STATUS_REVIEWED);
+        video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
         videoMapper.updateById(video);
         // 插入视频数据信息
         VideoStats videoStats = new VideoStats();
         videoStats.setVid(vid);
         favoriteClient.insertVideoStats(videoStats);
+        redisUtil.addMember(RedisConstant.VIDEO_STATUS_ACTIVE,  vid);
         try {
             esUtil.addVideo(video);
         } catch (IOException e) {
