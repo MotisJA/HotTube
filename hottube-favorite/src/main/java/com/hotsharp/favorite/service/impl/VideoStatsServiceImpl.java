@@ -1,8 +1,9 @@
 package com.hotsharp.favorite.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hotsharp.common.utils.RedisUtil;
-import com.hotsharp.favorite.domain.po.VideoStats;
+import com.hotsharp.common.domain.VideoStats;
 import com.hotsharp.favorite.mapper.VideoStatsMapper;
 import com.hotsharp.favorite.service.VideoStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,12 @@ public class VideoStatsServiceImpl implements VideoStatsService {
         }
         videoStatsMapper.update(null, updateWrapper);
         redisUtil.delValue("videoStats:" + vid);
+    }
+
+    @Override
+    public VideoStats selectByVid(Integer vid) {
+        QueryWrapper<VideoStats> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("vid", vid);
+        return videoStatsMapper.selectOne(queryWrapper);
     }
 }

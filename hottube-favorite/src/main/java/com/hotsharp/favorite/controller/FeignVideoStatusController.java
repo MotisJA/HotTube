@@ -1,11 +1,9 @@
 package com.hotsharp.favorite.controller;
 
-import com.hotsharp.api.dto.VideoStatsDTO;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
-import com.hotsharp.favorite.mapper.VideoStatsMapper;
+import com.hotsharp.common.domain.VideoStats;
 import com.hotsharp.favorite.service.VideoStatsService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,16 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class FeignVideoStatusController {
 
     @Autowired
-    private VideoStatsMapper videoStatsMapper;
-
-    @Autowired
     private VideoStatsService videoStatsService;
 
     @GetMapping("/favorite/video/status/{vid}")
-    public VideoStatsDTO getVideoStatusByVid(@PathVariable("vid") Integer vid) {
-        VideoStatsDTO videoStatsDTO = new VideoStatsDTO();
-        BeanUtils.copyProperties(videoStatsMapper.selectById(vid), videoStatsDTO);
-        return videoStatsDTO;
+    public VideoStats getVideoStatusByVid(@PathVariable("vid") Integer vid) {
+        return videoStatsService.selectByVid(vid);
     }
 
     @PostMapping("/favorite/video/status/update")

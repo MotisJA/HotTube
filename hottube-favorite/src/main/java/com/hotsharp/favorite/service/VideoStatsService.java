@@ -1,7 +1,7 @@
 package com.hotsharp.favorite.service;
 
 
-import com.hotsharp.favorite.domain.po.VideoStats;
+import com.hotsharp.common.domain.VideoStats;
 
 public interface VideoStatsService {
     /**
@@ -26,4 +26,6 @@ public interface VideoStatsService {
      * @param addGood   是否点赞，true则good+1&bad-1，false则good-1&bad+1
      */
     void updateGoodAndBad(Integer vid, boolean addGood);
+
+    VideoStats selectByVid(Integer vid);
 }

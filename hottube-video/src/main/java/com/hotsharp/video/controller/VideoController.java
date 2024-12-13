@@ -1,18 +1,15 @@
 package com.hotsharp.video.controller;
 
-import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.video.constant.RedisConstant;
 import com.hotsharp.video.pojo.dto.VideoInitDTO;
 import com.hotsharp.video.pojo.dto.VideoUploadDTO;
-import com.hotsharp.video.pojo.entity.VideoStatus;
 import com.hotsharp.video.service.VideoService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
