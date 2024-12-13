@@ -4,6 +4,7 @@ import com.hotsharp.api.client.FavoriteClient;
 import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.domain.VideoStats;
+import com.hotsharp.common.utils.ESUtil;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
@@ -49,6 +50,9 @@ public class VideoProcessServiceImpl implements VideoProcessService {
 
     @Resource
     private FavoriteClient favoriteClient;
+
+    @Resource
+    private ESUtil esUtil;
 
     @Override
     @Async("videoProcessThreadPool") // 异步执行
@@ -164,8 +168,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
      * @param url
      */
     private void sendBackUrl(int vid, String uploadId, String url) {
-        Video video = new Video();
-        video.setVid(vid);
+        Video video = videoMapper.selectById(vid);
         video.setVideoUrl(url);
         video.setStatus(VideoConstant.VIDEO_STATUS_REVIEWED);
         videoMapper.updateById(video);
@@ -173,6 +176,11 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         VideoStats videoStats = new VideoStats();
         videoStats.setVid(vid);
         favoriteClient.insertVideoStats(videoStats);
+        try {
+            esUtil.addVideo(video);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
