@@ -33,7 +33,7 @@ public class FeignVideoController {
         return Results.success(videoMapper.selectList(queryWrapper));
     }
 
-    @GetMapping("/video/feign/getVideosWithDataByIdList")
+    @PostMapping("/video/feign/getbyids")
     public List<Map<String, Object>> getVideosWithDataByIdList(@RequestBody List<Integer> list){
         return videoService.getVideosWithDataByIdList(list);
     }

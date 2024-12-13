@@ -3,10 +3,7 @@ package com.hotsharp.api.client;
 import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +17,6 @@ public interface VideoClient {
     @GetMapping("/video/mapper/get")
     Result<List<Video>> selectVideos(@RequestParam Video video);
 
-    @GetMapping("/video/feign/getVideosWithDataByIdList")
+    @PostMapping("/video/feign/getbyids")
     List<Map<String, Object>> getVideosWithDataByIdList(@RequestBody List<Integer> list);
 }
