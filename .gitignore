@@ -34,3 +34,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/hottube-common/src/main/resources/application-common.yml
