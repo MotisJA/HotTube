@@ -1,7 +1,7 @@
 package com.hotsharp.api.client;
 
-import com.hotsharp.api.dto.VideoStatusDTO;
 import com.hotsharp.common.domain.Favorite;
+import com.hotsharp.common.domain.VideoStats;
 import com.hotsharp.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public interface FavoriteClient {
 
     @GetMapping("/favorite/video/status/{vid}")
-    VideoStatusDTO getVideoStatusByVid(@PathVariable("vid") Integer vid);
+    VideoStats getVideoStatusByVid(@PathVariable("vid") Integer vid);
 
     @PostMapping("/favorite/video/status/update")
     Result updateStatus(@RequestParam("vid") Integer vid,

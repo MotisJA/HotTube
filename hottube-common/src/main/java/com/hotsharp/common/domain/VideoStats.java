@@ -1,4 +1,4 @@
-package com.hotsharp.favorite.domain.po;
+package com.hotsharp.common.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoStatus {
+public class VideoStats {
     @TableId
     private Integer vid;
     private Integer play;

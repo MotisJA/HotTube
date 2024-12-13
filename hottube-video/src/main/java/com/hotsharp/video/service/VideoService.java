@@ -5,6 +5,10 @@ import com.hotsharp.video.pojo.dto.VideoUploadDTO;
 import com.hotsharp.video.pojo.vo.VideoUploadVo;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public interface VideoService {
     VideoUploadVo init(VideoInitDTO videoDTO);
 
@@ -16,4 +20,7 @@ public interface VideoService {
 
     void cancel(String hash);
 
+    List<Map<String, Object>> getVideosWithDataByIds(Set<Object> set, Integer index, Integer count);
+
+    List<Integer> getActiveVideoIds();
 }
