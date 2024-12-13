@@ -83,20 +83,19 @@ public class SearchController {
         return Results.success(searchService.getCount(keyword));
     }
 
-// TODO
-//    /**
-//     * 搜索相关已过审视频
-//     * @param keyword   关键词
-//     * @param page  第几页
-//     * @return  视频列表
-//     * @throws UnsupportedEncodingException
-//     */
-//    @GetMapping("/search/video/only-pass")
-//    public Result getMatchingVideo(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page) throws UnsupportedEncodingException {
-//        keyword = URLDecoder.decode(keyword, "UTF-8");  // 解码经过url传输的字符串
-//        List<Integer> vids = esUtil.searchVideosByKeyword(keyword, page, 30, true);
-//        return Results.success(videoClient.getVideosWithDataByIdList(vids));
-//    }
+    /**
+     * 搜索相关已过审视频
+     * @param keyword   关键词
+     * @param page  第几页
+     * @return  视频列表
+     * @throws UnsupportedEncodingException
+     */
+    @GetMapping("/search/video/only-pass")
+    public Result getMatchingVideo(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page) throws UnsupportedEncodingException {
+        keyword = URLDecoder.decode(keyword, "UTF-8");  // 解码经过url传输的字符串
+        List<Integer> vids = esUtil.searchVideosByKeyword(keyword, page, 30, true);
+        return Results.success(videoClient.getVideosWithDataByIdList(vids));
+    }
 
     /**
      * 搜索用户

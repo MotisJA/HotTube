@@ -22,6 +22,8 @@ public interface VideoService {
 
     List<Map<String, Object>> getVideosWithDataByIds(Set<Object> set, Integer index, Integer count);
 
+    List<Map<String, Object>> getVideosWithDataByIdList(List<Integer> list);
+
     List<Integer> getActiveVideoIds();
 
     Map<String, Object> getVideoWithDataById(Integer vid);

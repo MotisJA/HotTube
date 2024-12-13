@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient("favorite-service")
 public interface FavoriteClient {
 
-    @GetMapping("/favorite/video/status/{vid}")
-    VideoStats getVideoStatusByVid(@PathVariable("vid") Integer vid);
+    @GetMapping("/favorite/video/stats/{vid}")
+    VideoStats getVideoStatsByVid(@PathVariable("vid") Integer vid);
 
-    @PostMapping("/favorite/video/status/update")
-    Result updateStatus(@RequestParam("vid") Integer vid,
+    @PostMapping("/favorite/video/stats/update")
+    Result updateStats(@RequestParam("vid") Integer vid,
                                @RequestParam("column") String column,
                                @RequestParam("increase") boolean increase,
                                @RequestParam("count") Integer count);

@@ -13,13 +13,13 @@ public class FeignVideoStatusController {
     @Autowired
     private VideoStatsService videoStatsService;
 
-    @GetMapping("/favorite/video/status/{vid}")
-    public VideoStats getVideoStatusByVid(@PathVariable("vid") Integer vid) {
+    @GetMapping("/favorite/video/stats/{vid}")
+    public VideoStats getVideoStatsByVid(@PathVariable("vid") Integer vid) {
         return videoStatsService.selectByVid(vid);
     }
 
-    @PostMapping("/favorite/video/status/update")
-    public Result updateStatus(@RequestParam("vid") Integer vid,
+    @PostMapping("/favorite/video/stats/update")
+    public Result updateStats(@RequestParam("vid") Integer vid,
                                @RequestParam("column") String column,
                                @RequestParam("increase") boolean increase,
                                @RequestParam("count") Integer count) {

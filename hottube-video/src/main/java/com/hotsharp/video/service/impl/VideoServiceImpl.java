@@ -143,6 +143,7 @@ public class VideoServiceImpl implements VideoService {
                 .desc(videoUploadDTO.getDesc())
                 .uploadDate(new Date())
                 .coverUrl(img)
+                .status(VideoConstant.VIDEO_STATUS_CONVERTING)
                 .videoUrl("")
                 .uid(UserContext.getUserId()).build();
         videoMapper.insert(video);

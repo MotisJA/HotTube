@@ -5,9 +5,11 @@ import com.hotsharp.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient("video-service")
 public interface VideoClient {
@@ -17,4 +19,7 @@ public interface VideoClient {
 
     @GetMapping("/video/mapper/get")
     Result<List<Video>> selectVideos(@RequestParam Video video);
+
+    @GetMapping("/video/feign/getVideosWithDataByIdList")
+    List<Map<String, Object>> getVideosWithDataByIdList(@RequestBody List<Integer> list);
 }
