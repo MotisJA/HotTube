@@ -95,4 +95,9 @@ public class VideoStatsServiceImpl implements VideoStatsService {
         queryWrapper.eq("vid", vid);
         return videoStatsMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public void add(VideoStats videoStats) {
+        videoStatsMapper.insert(videoStats);
+    }
 }

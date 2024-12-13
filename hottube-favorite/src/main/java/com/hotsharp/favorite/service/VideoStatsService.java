@@ -28,4 +28,6 @@ public interface VideoStatsService {
     void updateGoodAndBad(Integer vid, boolean addGood);
 
     VideoStats selectByVid(Integer vid);
+
+    void add(VideoStats videoStats);
 }

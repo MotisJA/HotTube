@@ -1,7 +1,9 @@
 package com.hotsharp.video.service.impl;
 
+import com.hotsharp.api.client.FavoriteClient;
 import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.Video;
+import com.hotsharp.common.domain.VideoStats;
 import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.video.constant.FileConstant;
 import com.hotsharp.video.constant.RedisConstant;
@@ -44,6 +46,9 @@ public class VideoProcessServiceImpl implements VideoProcessService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private FavoriteClient favoriteClient;
 
     @Override
     @Async("videoProcessThreadPool") // 异步执行
@@ -156,6 +161,10 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         video.setVideoUrl(url);
         video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
         videoMapper.updateById(video);
+        // 插入视频数据信息
+        VideoStats videoStats = new VideoStats();
+        videoStats.setVid(vid);
+        favoriteClient.insertVideoStats(videoStats);
     }
 
     /**

@@ -26,4 +26,10 @@ public class FeignVideoStatusController {
         videoStatsService.updateStats(vid, column, increase, count);
         return Results.success();
     }
+
+    @PutMapping("/favorite/video/stats")
+    public Result add (@RequestBody VideoStats videoStats) {
+        videoStatsService.add(videoStats);
+        return Results.success();
+    }
 }
