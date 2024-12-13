@@ -5,5 +5,6 @@ public class RedisConstant {
     public static final long VIDEO_UPLOAD_TIMEOUT = 24L;
     public static final String VIDEO_URL_PREFIX = "videoId_";
     public static final String VIDEO_STATUS_ACTIVE = "video_status:1";
+    public static final String VIDEO_PREFIX = "video:";
 }
 
