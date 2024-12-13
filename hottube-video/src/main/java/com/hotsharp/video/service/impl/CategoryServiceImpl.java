@@ -130,7 +130,6 @@ public class CategoryServiceImpl implements CategoryService {
             if (category == null) {
                 return new Category();    // 如果不存在则返回空
             }
-
             Category finalCategory = category;
             CompletableFuture.runAsync(() -> {
                 redisUtil.setExObjectValue("category:" + mcId + ":" + scId, finalCategory);  // 默认存活1小时
