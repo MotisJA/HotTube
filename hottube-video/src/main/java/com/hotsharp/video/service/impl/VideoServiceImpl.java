@@ -231,4 +231,39 @@ public class VideoServiceImpl implements VideoService {
         queryWrapper.select("vid");
         return videoMapper.selectObjs(queryWrapper);
     }
+
+    @Override
+    public Map<String, Object> getVideoWithDataById(Integer vid) {
+        Map<String, Object> map = new HashMap<>();
+        // 先查询 redis
+        Video video = redisUtil.getObject(RedisConstant.VIDEO_PREFIX + vid, Video.class);
+        if (video == null) {
+            // redis 查不到再查数据库
+            QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("vid", vid);
+            video = videoMapper.selectOne(queryWrapper);
+            if (video != null) {
+                Video finalVideo1 = video;
+                CompletableFuture.runAsync(() -> {
+                    redisUtil.setExObjectValue("video:" + vid, finalVideo1);    // 异步更新到redis
+                }, taskExecutor);
+            } else  {
+                return null;
+            }
+        }
+        // 多线程异步并行查询用户信息和分区信息并封装
+        Video finalVideo = video;
+        CompletableFuture<Void> userFuture = CompletableFuture.runAsync(() -> {
+            map.put("user", userClient.getUserById(finalVideo.getUid()));
+            map.put("stats", favoriteClient.getVideoStatusByVid(finalVideo.getVid()));
+        }, taskExecutor);
+        CompletableFuture<Void> categoryFuture = CompletableFuture.runAsync(() -> {
+            map.put("category", categoryService.getCategoryById(finalVideo.getMcId(), finalVideo.getScId()));
+        }, taskExecutor);
+        map.put("video", video);
+        // 使用join()等待userFuture和categoryFuture任务完成
+        userFuture.join();
+        categoryFuture.join();
+        return map;
+    }
 }

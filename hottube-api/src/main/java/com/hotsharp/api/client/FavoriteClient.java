@@ -20,4 +20,7 @@ public interface FavoriteClient {
 
     @PostMapping("/favorite/feign/insert")
     void insertFavorite(@RequestBody Favorite favorite);
+
+    @PutMapping("/favorite/video/stats")
+    Result insertVideoStats(@RequestBody VideoStats videoStats);
 }

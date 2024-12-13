@@ -1,5 +1,6 @@
 package com.hotsharp.video.controller;
 
+import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.RedisUtil;
@@ -82,5 +83,20 @@ public class VideoController {
             Collections.shuffle(list);
         }
         return Results.success(list);
+    }
+
+    /**
+     * 获取单个视频的信息
+     * @param vid
+     * @return
+     */
+    @GetMapping("/video/getone")
+    public Result getOneVideo(@RequestParam("vid") Integer vid) {
+        Map<String, Object> map = videoService.getVideoWithDataById(vid);
+        if (map == null) {
+            return Results.failure(404, "没有找到该视频");
+        }
+        Video video = (Video) map.get("video");
+        return Results.success(map);
     }
 }

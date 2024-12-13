@@ -21,7 +21,7 @@ public class RelationController {
     private final IRelationService relationService;
 
     @Operation(summary = "获取粉丝信息")
-    @GetMapping("/following/{userId}")
+    @GetMapping("/follower/{userId}")
     public Result<List<Long>> getFollowerInfo(@PathVariable Long userId){
         return Results.success(relationService.getFollowerById(userId));
     }
@@ -33,13 +33,13 @@ public class RelationController {
     }
 
     @Operation(summary = "添加关注条目接口")
-    @PostMapping("add")
+    @PostMapping("/add")
     public Result<RelationVO> add(@RequestBody RelationFormDTO relationFormDTO){
         return Results.success(relationService.add(relationFormDTO));
     }
 
     @Operation(summary = "更新关注条目接口")
-    @PostMapping("update")
+    @PostMapping("/update")
     public Result<RelationVO> upd(@RequestBody RelationFormDTO relationFormDTO){
         return Results.success(relationService.upd(relationFormDTO));
     }
