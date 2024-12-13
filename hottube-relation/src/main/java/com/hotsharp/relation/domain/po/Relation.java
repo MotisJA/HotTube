@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @TableName("relation")
 public class Relation implements Serializable {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "follower_id", type = IdType.AUTO)
     private Long followerId;           // 关注者ID
 
     private Long followedId;           // 被关注者ID

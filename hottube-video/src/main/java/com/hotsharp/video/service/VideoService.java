@@ -5,6 +5,7 @@ import com.hotsharp.video.pojo.dto.VideoUploadDTO;
 import com.hotsharp.video.pojo.vo.VideoUploadVo;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,4 +28,6 @@ public interface VideoService {
     List<Integer> getActiveVideoIds();
 
     Map<String, Object> getVideoWithDataById(Integer vid);
+
+    List<Map<String, Object>> getVideosWithDataByIdsOrderByDesc(List<Integer> idList, @Nullable String column, Integer page, Integer quantity);
 }

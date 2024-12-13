@@ -10,6 +10,7 @@ import com.hotsharp.video.service.impl.VideoServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +37,13 @@ public class FeignVideoController {
     @PostMapping("/video/feign/getbyids")
     public List<Map<String, Object>> getVideosWithDataByIdList(@RequestBody List<Integer> list){
         return videoService.getVideosWithDataByIdList(list);
+    }
+
+    @PostMapping("/video/feign/getbydesc")
+    List<Map<String, Object>> getVideosWithDataByIdsOrderByDesc(@RequestBody List<Integer> idList,
+                                                                @RequestParam @Nullable String column,
+                                                                @RequestParam Integer page,
+                                                                @RequestParam Integer quantity){
+        return videoService.getVideosWithDataByIdsOrderByDesc(idList, column, page, quantity);
     }
 }

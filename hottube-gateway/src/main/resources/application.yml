@@ -81,7 +81,9 @@ hottube:
       - /user/info/get-one
       - /video/user-works-count
       - /video/user-works
-      - /video/user-love
-      - /video/user-collect
+      - /favorite/video/user-love
+      - /favorite/video/user-collect
+      - /relation/followed/**
+      - /relation/follower/**
 
 

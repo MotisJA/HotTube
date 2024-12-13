@@ -5,6 +5,7 @@ import com.hotsharp.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +20,10 @@ public interface VideoClient {
 
     @PostMapping("/video/feign/getbyids")
     List<Map<String, Object>> getVideosWithDataByIdList(@RequestBody List<Integer> list);
+
+    @PostMapping("/video/feign/getbydesc")
+    List<Map<String, Object>> getVideosWithDataByIdsOrderByDesc(@RequestBody List<Integer> idList,
+                                                                @RequestParam @Nullable String column,
+                                                                @RequestParam Integer page,
+                                                                @RequestParam Integer quantity);
 }

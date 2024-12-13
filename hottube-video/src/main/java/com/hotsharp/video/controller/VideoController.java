@@ -99,4 +99,53 @@ public class VideoController {
         Video video = (Video) map.get("video");
         return Results.success(map);
     }
+
+    @GetMapping("/video/user-works-count")
+    public Result getUserWorksCount(@RequestParam("uid") Integer uid) {
+        return Results.success(redisUtil.zCard("user_video_upload:" + uid)).setMessage("OK");
+    }
+
+    /**
+     * 获取用户视频投稿
+     * @param uid   用户id
+     * @param rule  排序方式 1 投稿日期 2 播放量 3 点赞数
+     * @param page  分页 从1开始
+     * @param quantity  每页查询数量
+     * @return  视频信息列表
+     */
+    @GetMapping("/video/user-works")
+    public Result getUserWorks(@RequestParam("uid") Integer uid,
+                                       @RequestParam("rule") Integer rule,
+                                       @RequestParam("page") Integer page,
+                                       @RequestParam("quantity") Integer quantity) {
+        Result customResponse = new Result();
+        Map<String, Object> map = new HashMap<>();
+        Set<Object> set = redisUtil.zReverange("user_video_upload:" + uid, 0, -1);
+        if (set == null || set.isEmpty()) {
+            map.put("count", 0);
+            map.put("list", Collections.emptyList());
+            customResponse.setData(map);
+            return customResponse;
+        }
+        List<Integer> list = new ArrayList<>();
+        set.forEach(vid -> {
+            list.add((Integer) vid);
+        });
+        map.put("count", set.size());
+        switch (rule) {
+            case 1:
+                map.put("list", videoService.getVideosWithDataByIdsOrderByDesc(list, "upload_date", page, quantity));
+                break;
+            case 2:
+                map.put("list", videoService.getVideosWithDataByIdsOrderByDesc(list, "play", page, quantity));
+                break;
+            case 3:
+                map.put("list", videoService.getVideosWithDataByIdsOrderByDesc(list, "good", page, quantity));
+                break;
+            default:
+                map.put("list", videoService.getVideosWithDataByIdsOrderByDesc(list, "upload_date", page, quantity));
+        }
+        customResponse.setData(map);
+        return customResponse;
+    }
 }

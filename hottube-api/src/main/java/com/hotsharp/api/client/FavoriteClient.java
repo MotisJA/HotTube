@@ -6,6 +6,9 @@ import com.hotsharp.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 @FeignClient("favorite-service")
 public interface FavoriteClient {
 
@@ -23,4 +26,10 @@ public interface FavoriteClient {
 
     @PutMapping("/favorite/video/stats")
     Result insertVideoStats(@RequestBody VideoStats videoStats);
+
+    @PostMapping("/favorite/video/stats/list")
+    List<VideoStats> selectList(@RequestBody List<Integer> idList,
+                                @RequestParam @Nullable String column,
+                                @RequestParam Integer page,
+                                @RequestParam Integer quantity);
 }
