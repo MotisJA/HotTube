@@ -7,6 +7,7 @@ import com.hotsharp.api.client.FavoriteClient;
 import com.hotsharp.api.client.UserClient;
 import com.hotsharp.api.dto.UserDTO;
 import com.hotsharp.common.constant.ContentType;
+import com.hotsharp.common.constant.VideoConstant;
 import com.hotsharp.common.domain.User;
 import com.hotsharp.common.domain.Video;
 import com.hotsharp.common.domain.VideoStats;
@@ -143,6 +144,7 @@ public class VideoServiceImpl implements VideoService {
                 .desc(videoUploadDTO.getDesc())
                 .uploadDate(new Date())
                 .coverUrl(img)
+                .status(VideoConstant.VIDEO_STATUS_CONVERTING)
                 .videoUrl("")
                 .uid(UserContext.getUserId()).build();
         videoMapper.insert(video);

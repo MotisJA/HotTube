@@ -167,7 +167,7 @@ public class VideoProcessServiceImpl implements VideoProcessService {
         Video video = new Video();
         video.setVid(vid);
         video.setVideoUrl(url);
-        video.setStatus(VideoConstant.VIDEO_STATUS_AUDIT);
+        video.setStatus(VideoConstant.VIDEO_STATUS_REVIEWED);
         videoMapper.updateById(video);
         // 插入视频数据信息
         VideoStats videoStats = new VideoStats();
