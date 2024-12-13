@@ -18,7 +18,7 @@ public class MinioConnectionTest {
         try {
             // 创建 MinioClient 对象
             MinioClient minioClient = MinioClient.builder()
-                    .endpoint("http://47.121.126.119:9090/") // 替换为你的 MinIO 服务器地址和端口
+                    .endpoint("http://47.121.126.119:9000/") // 替换为你的 MinIO 服务器地址和端口
                     .credentials("dBx9QNbiq9ztwqRChXXO", "jeC6bk0rCHyFWn08uKUxSp2cVaAG67t2Jkkc5nqP") // 替换为你的访问密钥和秘密密钥
                     .build();
 
