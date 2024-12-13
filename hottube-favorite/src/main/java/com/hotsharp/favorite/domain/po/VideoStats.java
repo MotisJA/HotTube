@@ -1,9 +1,15 @@
-package com.hotsharp.api.dto;
+package com.hotsharp.favorite.domain.po;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class VideoStatusDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class VideoStats {
+    @TableId
     private Integer vid;
     private Integer play;
     private Integer danmu;

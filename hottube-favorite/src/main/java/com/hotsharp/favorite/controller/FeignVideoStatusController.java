@@ -1,10 +1,10 @@
 package com.hotsharp.favorite.controller;
 
-import com.hotsharp.api.dto.VideoStatusDTO;
+import com.hotsharp.api.dto.VideoStatsDTO;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
-import com.hotsharp.favorite.mapper.VideoStatusMapper;
-import com.hotsharp.favorite.service.VideoStatusService;
+import com.hotsharp.favorite.mapper.VideoStatsMapper;
+import com.hotsharp.favorite.service.VideoStatsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class FeignVideoStatusController {
 
     @Autowired
-    private VideoStatusMapper videoStatusMapper;
+    private VideoStatsMapper videoStatsMapper;
 
     @Autowired
-    private VideoStatusService videoStatsService;
+    private VideoStatsService videoStatsService;
 
     @GetMapping("/favorite/video/status/{vid}")
-    public VideoStatusDTO getVideoStatusByVid(@PathVariable("vid") Integer vid) {
-        VideoStatusDTO videoStatusDTO = new VideoStatusDTO();
-        BeanUtils.copyProperties(videoStatusMapper.selectById(vid), videoStatusDTO);
-        return videoStatusDTO;
+    public VideoStatsDTO getVideoStatusByVid(@PathVariable("vid") Integer vid) {
+        VideoStatsDTO videoStatsDTO = new VideoStatsDTO();
+        BeanUtils.copyProperties(videoStatsMapper.selectById(vid), videoStatsDTO);
+        return videoStatsDTO;
     }
 
     @PostMapping("/favorite/video/status/update")
@@ -30,7 +30,7 @@ public class FeignVideoStatusController {
                                @RequestParam("column") String column,
                                @RequestParam("increase") boolean increase,
                                @RequestParam("count") Integer count) {
-        videoStatsService.updateStatus(vid, column, increase, count);
+        videoStatsService.updateStats(vid, column, increase, count);
         return Results.success();
     }
 }
