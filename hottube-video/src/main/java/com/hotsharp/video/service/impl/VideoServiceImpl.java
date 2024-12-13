@@ -25,6 +25,7 @@ import com.hotsharp.video.service.VideoProcessService;
 import com.hotsharp.video.service.VideoService;
 import com.hotsharp.video.utils.MinioUtil;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -211,7 +212,7 @@ public class VideoServiceImpl implements VideoService {
                         User user = new User();
                         BeanUtil.copyProperties(userDTO, user);
                         map.put("user", user);
-                        VideoStats videoStats = favoriteClient.getVideoStatusByVid(video.getVid());
+                        VideoStats videoStats = favoriteClient.getVideoStatsByVid(video.getVid());
                         map.put("stats", videoStats);
                     }, taskExecutor);
                     CompletableFuture<Void> categoryFuture = CompletableFuture.runAsync(() -> {
@@ -223,6 +224,50 @@ public class VideoServiceImpl implements VideoService {
                     return map;
                 })
                 .collect(Collectors.toList());
+        return mapList;
+    }
+
+    /**
+     * 根据有序vid列表查询视频以及相关信息
+     * @param list  vid有序列表
+     * @return  有序的视频列表
+     */
+    @Override
+    public List<Map<String, Object>> getVideosWithDataByIdList(List<Integer> list) {
+        if (list.isEmpty()) return Collections.emptyList();
+        QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("vid", list).ne("status", 3);
+        List<Video> videos = videoMapper.selectList(queryWrapper);
+        if (videos.isEmpty()) return Collections.emptyList();
+        List<Map<String, Object>> mapList = list.stream().parallel().flatMap(
+                vid -> {
+                    Map<String, Object> map = new HashMap<>();
+                    // 找到videos中为vid的视频
+                    Video video = videos.stream()
+                            .filter(v -> Objects.equals(v.getVid(), vid))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (video == null) {
+                        return Stream.empty(); // 跳过该项
+                    }
+                    map.put("video", video);
+
+                    CompletableFuture<Void> userFuture = CompletableFuture.runAsync(() -> {
+                        map.put("user", userClient.getUserById(video.getUid()));
+                        map.put("stats", favoriteClient.getVideoStatsByVid(video.getVid()));
+                    }, taskExecutor);
+
+                    CompletableFuture<Void> categoryFuture = CompletableFuture.runAsync(() -> {
+                        map.put("category", categoryService.getCategoryById(video.getMcId(), video.getScId()));
+                    }, taskExecutor);
+
+                    userFuture.join();
+                    categoryFuture.join();
+
+                    return Stream.of(map);
+                }
+        ).collect(Collectors.toList());
         return mapList;
     }
 
@@ -257,7 +302,7 @@ public class VideoServiceImpl implements VideoService {
         Video finalVideo = video;
         CompletableFuture<Void> userFuture = CompletableFuture.runAsync(() -> {
             map.put("user", userClient.getUserById(finalVideo.getUid()));
-            map.put("stats", favoriteClient.getVideoStatusByVid(finalVideo.getVid()));
+            map.put("stats", favoriteClient.getVideoStatsByVid(finalVideo.getVid()));
         }, taskExecutor);
         CompletableFuture<Void> categoryFuture = CompletableFuture.runAsync(() -> {
             map.put("category", categoryService.getCategoryById(finalVideo.getMcId(), finalVideo.getScId()));

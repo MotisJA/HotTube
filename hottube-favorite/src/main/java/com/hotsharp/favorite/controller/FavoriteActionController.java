@@ -34,6 +34,19 @@ public class FavoriteActionController {
     private IFavoriteService favoriteService;
 
     /**
+     * 登录用户播放视频时更新播放次数，有30秒更新间隔（防止用户刷播放量）
+     * @param vid   视频ID
+     * @return  返回用户与该视频的交互数据
+     */
+    @PostMapping("/favorite/video/play/user")
+    public Result newPlayWithLoginUser(@RequestParam("vid") Integer vid) {
+        Integer uid = UserContext.getUserId();
+        Result customResponse = new Result();
+        customResponse.setData(userVideoService.updatePlay(uid, vid));
+        return customResponse;
+    }
+
+    /**
      * 点赞或点踩
      * @param vid   视频ID
      * @param isLove    赞还是踩 true赞 false踩

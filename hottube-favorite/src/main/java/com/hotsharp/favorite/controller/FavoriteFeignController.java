@@ -17,4 +17,6 @@ public class FavoriteFeignController {
     public void insertFavorite(@RequestBody Favorite favorite) {
         favoriteMapper.insert(favorite);
     }
+
+
 }

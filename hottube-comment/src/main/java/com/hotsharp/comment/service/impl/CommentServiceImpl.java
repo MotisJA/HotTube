@@ -128,7 +128,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = new Comment(null, vid, uid, rootId, parentId, toUserId, content, 0, 0, new Date(), null, null);
         commentMapper.insert(comment);
         // 更新视频评论 + 1
-        favoriteClient.updateStatus(comment.getVid(), "comment", true, 1);
+        favoriteClient.updateStats(comment.getVid(), "comment", true, 1);
 
         CommentTree commentTree = buildCommentTree(comment, 0L, -1L);
 
@@ -197,11 +197,11 @@ public class CommentServiceImpl implements CommentService {
             if (Objects.equals(comment.getRootId(), 0)) {
                 // 查询总共要减少多少评论数
                 int count = Math.toIntExact(redisUtil.zCard("comment_reply:" + comment.getId()));
-                favoriteClient.updateStatus(comment.getVid(), "comment", false, count + 1);
+                favoriteClient.updateStats(comment.getVid(), "comment", false, count + 1);
                 redisUtil.zsetDelMember("comment_video:" + comment.getVid(), comment.getId());
                 redisUtil.delValue("comment_reply:" + comment.getId());
             } else {
-                favoriteClient.updateStatus(comment.getVid(), "comment", false, 1);
+                favoriteClient.updateStats(comment.getVid(), "comment", false, 1);
                 redisUtil.zsetDelMember("comment_reply:" + comment.getRootId(), comment.getId());
             }
             return Results.success();

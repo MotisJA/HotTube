@@ -76,6 +76,11 @@ public class UserVideoServiceImpl implements IUserVideoService {
         QueryWrapper<UserVideo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid", uid).eq("vid", vid);
         UserVideo userVideo = userVideoMapper.selectOne(queryWrapper);
+        if (userVideo == null) {
+            // 不存在记录则创建新记录
+            userVideo = new UserVideo(null, uid, vid, 0, 0, 0, 0, 0, new Date(), null, null);
+            userVideoMapper.insert(userVideo);
+        }
 
         if (isLove && isSet) {
             // 处理点赞

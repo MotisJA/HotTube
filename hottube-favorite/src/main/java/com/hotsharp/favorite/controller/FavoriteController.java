@@ -2,6 +2,7 @@ package com.hotsharp.favorite.controller;
 
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
+import com.hotsharp.common.utils.RedisUtil;
 import com.hotsharp.common.utils.UserContext;
 import com.hotsharp.common.domain.Favorite;
 import com.hotsharp.favorite.service.IFavoriteService;
@@ -22,6 +23,9 @@ public class FavoriteController {
 
     @Autowired
     private IFavoriteService favoriteService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 站内用户请求某个用户的收藏夹列表（需要jwt鉴权）

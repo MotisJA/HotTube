@@ -199,7 +199,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Result updateUserAvatar(Integer uid, MultipartFile multipartFile) throws IOException {
         // 保存封面到OSS，返回URL
-        String avatar_url = minioUtil.uploadImage(multipartFile);
+        String avatar_url = minioProperty.getBaseUrl() + minioUtil.uploadImage(multipartFile);
         // 查旧的头像地址
         User user = userMapper.selectById(uid);
         // 先更新数据库
