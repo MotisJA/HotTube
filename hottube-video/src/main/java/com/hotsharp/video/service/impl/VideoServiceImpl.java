@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -193,27 +194,21 @@ public class VideoServiceImpl implements VideoService {
         if (quantity == null) quantity = 10;
         int startIndex = (index - 1) * quantity;
         int endIndex = startIndex + quantity;
-        // 检查数据是否足够满足分页查询
-//        if (startIndex > set.size()) {
-//            // 如果数据不足以填充当前分页，返回空列表
-//            return Collections.emptyList();
-//        }
-        // 使用线程安全的集合类 CopyOnWriteArrayList 保证多线程处理共享List不会出现并发问题
+        // 使用线程安全的集合类 CopyOnWriteArrayList
         List<Video> videoList = new CopyOnWriteArrayList<>();
         // 直接数据库分页查询
         List<Object> idList = new ArrayList<>(set);
         endIndex = Math.min(endIndex, idList.size());
         List<Object> sublist = idList.subList(startIndex, endIndex);
         QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("vid", sublist).ne("status", 3);
+        queryWrapper.in("vid", sublist).ne("status", VideoConstant.VIDEO_STATUS_DELETED);
         videoList = videoMapper.selectList(queryWrapper);
         if (videoList.isEmpty()) return Collections.emptyList();
         // 并行处理每一个视频，提高效率
-        // 先将videoList转换为Stream
         Stream<Video> videoStream = videoList.stream();
         List<Map<String, Object>> mapList = videoStream.parallel() // 利用parallel()并行处理
                 .map(video -> {
-                    Map<String, Object> map = new HashMap<>();
+                    Map<String, Object> map = new ConcurrentHashMap<>();
                     map.put("video", video);
                     CompletableFuture<Void> userFuture = CompletableFuture.runAsync(() -> {
                         UserDTO userDTO = userClient.getUserById(video.getUid()).getData();
@@ -289,7 +284,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Map<String, Object> getVideoWithDataById(Integer vid) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new ConcurrentHashMap<>();
         // 先查询 redis
         Video video = redisUtil.getObject(RedisConstant.VIDEO_PREFIX + vid, Video.class);
         if (video == null) {

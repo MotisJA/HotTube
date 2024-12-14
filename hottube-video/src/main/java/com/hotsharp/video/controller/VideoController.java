@@ -1,6 +1,6 @@
 package com.hotsharp.video.controller;
 
-import com.hotsharp.common.domain.Video;
+import com.hotsharp.common.constant.BaseErrorCode;
 import com.hotsharp.common.result.Result;
 import com.hotsharp.common.result.Results;
 import com.hotsharp.common.utils.RedisUtil;
@@ -61,7 +61,7 @@ public class VideoController {
     }
 
     /**
-     * 游客访问随机推荐
+     * 随机推荐
      * @return
      */
     @GetMapping("/video/random/visitor")
@@ -94,9 +94,9 @@ public class VideoController {
     public Result getOneVideo(@RequestParam("vid") Integer vid) {
         Map<String, Object> map = videoService.getVideoWithDataById(vid);
         if (map == null) {
-            return Results.failure(404, "没有找到该视频");
+            return Results.failure(BaseErrorCode.SERVICE_ERROR.code(), "没有找到该视频");
         }
-        Video video = (Video) map.get("video");
+//        Video video = (Video) map.get("video");
         return Results.success(map);
     }
 
